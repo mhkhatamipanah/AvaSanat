@@ -1,15 +1,9 @@
-"use client"
-import {Button} from "@nextui-org/react";
+import Home from "@/components/Main/Home/Home";
 
 export default function Page() {
   return (
     <>
-    <section className="flex justify-center w-full">
-
-    <Button color="primary">
-      Button
-    </Button>
-    </section>
+      <Home />
     </>
   );
 }

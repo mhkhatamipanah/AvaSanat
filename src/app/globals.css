@@ -1,3 +1,6 @@
+@import "../../public/styles/NextUi.css"; 
+@import "../../public/styles/Navbar.css"; 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,9 +52,10 @@ img {
 
 /*===== Global Variables =====*/
 :root {
-  --color-1: #ceece9;  /* background image */
+  --color-1: #d52727;  /* Main Color */
 
-  --color-2: #0ea392; /* main color */
+  --color-2: #9ca3af; /* Gray color */
+  
   --color-3: #0d9283;   /* hover color */
   --color-4: #2355df74; 
 
@@ -68,16 +72,18 @@ img {
   --color-11: #ffffff; /* White */
   --color-12: #000000; /* Black */
 }
-/* 
-.iranSansBold{
+.vazirLight{
   font-family: var(--font_2);
 }
-.iranSansDemibold{
+.vazirMedium{
+  font-family: var(--font_2);
+}
+.vazirDemibold{
   font-family: var(--font_3);
 }
-.iranSansMedium{
+.vazirBold{
   font-family: var(--font_4);
-} */
+}
 
 .rtl {
   direction: rtl !important;
