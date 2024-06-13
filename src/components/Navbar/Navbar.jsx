@@ -4,10 +4,9 @@ import { Main } from "./Main/Main"
 
 const Navbar = () => {
   const pathname = usePathname()
-
   return (
     <>
-    {pathname!=="/login" && <Main/> }
+    {(pathname!=="/login" && pathname!=="/dashboard") && <Main/> }
    
     </>
   )
