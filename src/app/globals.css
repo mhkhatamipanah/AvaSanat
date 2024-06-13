@@ -1,5 +1,6 @@
 @import "../../public/styles/NextUi.css"; 
 @import "../../public/styles/Navbar.css"; 
+@import "../../public/styles/Login.css"; 
 
 @tailwind base;
 @tailwind components;
