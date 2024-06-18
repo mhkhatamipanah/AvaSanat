@@ -1,7 +1,8 @@
 import localFont from "next/font/local";
 import { NextUIProvider } from "@nextui-org/react";
-import Navbar from "@/components/Navbar/Navbar";
+import Navbar from "@/src/components/Navbar/Navbar";
 import "./globals.css";
+import Footer from "@/src/components/Main/Footer/Footer";
 
 
 export const metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
         <NextUIProvider>
           <Navbar/>
             {children}
+            <Footer/>
         </NextUIProvider>
       </body>
     </html>

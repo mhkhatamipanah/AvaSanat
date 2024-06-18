@@ -1,0 +1,129 @@
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*===== CSS Resets =====*/
+
+input,
+button,
+textarea {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+body{
+    background-color: rgb(252, 252, 252);
+}
+
+/*===== Global Variables =====*/
+:root {
+  --color-1: #d52727;  /* Main Color */
+
+  --color-2: #9ca3af; /* Gray color */
+  
+  --color-3: #0d9283;   /* hover color */
+  --color-4: #2355df74; 
+
+  --color-5: #2c7bfe;   /* Services */
+
+  --color-6: #cbd5e1; /* text Dark */
+  --color-7: #f9fbfd; /* text Dark */
+
+  --color-8: #6b7280; /* Semi Black */
+
+  --color-9: #363e48; /* White */
+  --color-10: #c0c0c05a; /* White */
+
+  --color-11: #ffffff; /* White */
+  --color-12: #000000; /* Black */
+}
+.vazirLight{
+  font-family: var(--font_2);
+}
+.vazirMedium{
+  font-family: var(--font_2);
+}
+.vazirDemibold{
+  font-family: var(--font_3);
+}
+.vazirBold{
+  font-family: var(--font_4);
+}
+
+.rtl {
+  direction: rtl !important;
+}
+.ltr{
+  direction: ltr !important;
+}
+.oneLineShow{
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.twoLineShow{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .threeLineShow{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill
+
+/* input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus */
+ {
+  /* border: 1px solid #253341; */
+  /* -webkit-text-fill-color: white; */
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+  /* box-shadow: 0 0 0px 1000px #253341 inset; */
+  /* transition: background-color 5000s ease-in-out 0s; */
+  /* color: white; */
+}

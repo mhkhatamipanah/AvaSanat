@@ -1,4 +1,4 @@
-import Desktop from "@/components/Navbar/Main/Desktop/Desktop"
+import Desktop from "@/src/components/Navbar/Main/Desktop/Desktop"
 
 export const Main = () => {
     return (

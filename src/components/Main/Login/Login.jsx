@@ -2,7 +2,7 @@ import React from 'react'
 
 const Login = () => {
   return (
-    <div>
+    <div className=''>
         <div class=" text-[#333]">
       <div class="min-h-screen flex fle-col items-center justify-center py-6 px-4">
         <div class="grid justify-center items-center gap-4 max-w-7xl w-full">
@@ -36,8 +36,8 @@ const Login = () => {
               </div>
              
               <div class="!mt-10">
-                <button type="button" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#333] hover:bg-black focus:outline-none">
-                  Log in
+                <button type="button" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#333] hover:bg-gray-900 focus:outline-none vazirMedium">
+                 ورود
                 </button>
               </div>
            

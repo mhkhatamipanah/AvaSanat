@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
-import Sidebar , {SidebarItem} from "@/components/Dashboard/SideBar/Sidebar";
-import { Mail, UserRound,Home , ShoppingBagIcon  ,AppWindow, Scroll } from "lucide-react";
+import Sidebar , {SidebarItem} from "@/src/components/Dashboard/SideBar/Sidebar";
+import { Mail, UserRound,Home , ShoppingBagIcon  ,AppWindow, Scroll, ClipboardList } from "lucide-react";
 import DropDownSideBar from "./DropDownSideBar";
 
 
@@ -20,6 +20,12 @@ const ProviderSideBar = ({getChildren}) => {
         text={"خانه"}
         link={"/dashboard"}
       />
+       <SidebarItem
+        icon={<ClipboardList  />}
+        text={"دسته بندی"}
+        link={"/dashboard/category"}
+      />
+     
   <SidebarItem
         icon={<ShoppingBagIcon  />}
         text={"محصولات"}
