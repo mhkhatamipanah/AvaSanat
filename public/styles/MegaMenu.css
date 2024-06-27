@@ -1,0 +1,16 @@
+.Menu {
+  opacity: 0;
+  transform: translateY(20px);
+  visibility: hidden;
+}
+.MegaMenuHover:hover .Menu {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+  z-index: 1000;
+  visibility: visible;
+}
+
+.MegaMenuHover:hover .arrowIcon {
+  transform: rotate(180deg); /* Add 'deg' unit */
+  transition: transform 0.3s ease; /* Smooth transition */
+}

@@ -1,12 +1,13 @@
 
-import React from 'react'
-import { Input , Button } from "@nextui-org/react";
-import { Search, PhoneCall } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { Button, Input } from "@nextui-org/react";
+import { ChevronDown, PhoneCall, Search } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 const Desktop = () => {
     const pathname = usePathname()
+    // const [productFlag, setProductFlag] = useState(false)
     return (
         <>
             <nav className='vazirLight'>
@@ -37,13 +38,26 @@ const Desktop = () => {
 
                 </section>
                 <section className="w-full flex justify-center px-7 h-16 bg-white">
-                    <div className='w-full flex justify-between items-center max-w-[1500px]'>
-                        <ul className='flex gap-4 '>
+                    <div className='w-full flex justify-between items-center max-w-[1500px] relative MenuContainer'>
+
+                        <ul className='flex justify-start items-center gap-4 w-full h-full'>
                             <li>
                                 <Link className={`${pathname === '/' ? 'active' : ''} text-lg`} href='/'>صفحه اصلی</Link>
                             </li>
                             <li>
-                                <Link className={`${pathname === '/product' ? 'active' : ''} text-lg`} href='/product'>محصولات</Link>
+                                <Link className={`${pathname === '/product' ? 'active' : ''} text-lg flex justify-center items-center gap-1 MegaMenuHover`}
+
+                                    href='/product'>
+                                    <div className={`absolute right-0 top-[64px] h-96 bg-white shadow-md border border-gray-200 border-solid w-96 rounded-md p-4 z-50 Menu !transition-all text-black`}  >
+                                        adsf
+                                    </div>
+                                    محصولات
+                                    <ChevronDown size={20} className={`arrowIcon transition-all`} />
+                                </Link>
+
+
+
+
                             </li>
                             <li>
                                 <Link className={`${pathname === '/blogs' ? 'active' : ''} text-lg`} href='/blogs'>مقالات</Link>
@@ -58,10 +72,10 @@ const Desktop = () => {
                             </li>
                         </ul>
 
-                        <Button className='text-md bg-[var(--color-1)] text-white'  variant="shadow">
-                        پیش فاکتور
+                        <Button className='text-md bg-[var(--color-1)] text-white' variant="shadow">
+                            پیش فاکتور
                         </Button>
-                      
+
                     </div>
 
                 </section>
