@@ -1,4 +1,24 @@
 .inputNextUi div div{
     min-height: 35px !important;
-    height: 35px !important;
+    height: 45px !important;
+}
+.inputNextUi{
+    border-radius: 7px !important;
+}
+.inputNextUi div{
+    border-radius: 7px !important;
+}
+.inputNextUi div div{
+    border-radius: 7px !important;
+}
+
+
+
+/* Tabs */
+.TabContainerNextUI div{
+    height: 100%;
+}
+
+.TabNextUI2 span{
+    height: 3px !important;
 }
