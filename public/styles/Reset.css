@@ -47,7 +47,8 @@ body{
 
 /*===== Global Variables =====*/
 :root {
-  --color-1: #d52727;  /* Main Color */
+
+  --color-1: #d94038;  /* Main Color */
 
   --color-2: #9ca3af; /* Gray color */
   
@@ -78,6 +79,9 @@ body{
 }
 .vazirBold{
   font-family: var(--font_4);
+}
+.enFont{
+  font-family: var(--font_5);
 }
 
 .rtl {

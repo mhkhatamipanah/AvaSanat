@@ -12,11 +12,11 @@ const Brands = () => {
 
         
         <div className="grid grid-cols-5 gap-6 max-w-[1500px] px-6">
-        <Image className="object-contain" width={500} height={500} src={img1} />
-        <Image className="object-contain" width={500} height={500} src={img2} />
-        <Image className="object-contain" width={500} height={500} src={img3} />
-        <Image className="object-contain" width={500} height={500} src={img4} />
-        <Image className="object-contain" width={500} height={500} src={img5} />
+        <Image alt="" className="object-contain" width={500} height={500} src={img1} />
+        <Image alt="" className="object-contain" width={500} height={500} src={img2} />
+        <Image alt="" className="object-contain" width={500} height={500} src={img3} />
+        <Image alt="" className="object-contain" width={500} height={500} src={img4} />
+        <Image alt="" className="object-contain" width={500} height={500} src={img5} />
         </div>
     </section>
   )

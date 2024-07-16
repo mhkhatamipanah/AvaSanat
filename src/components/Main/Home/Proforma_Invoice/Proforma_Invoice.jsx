@@ -5,7 +5,7 @@ const Proforma_Invoice = () => {
         <>
             <section className="flex justify-center w-full my-20 ">
                 <div className=" max-w-[1500px] px-6">
-                <Image className='w-full' src={img1} />
+                <Image alt='' className='w-full' src={img1} />
                 </div>
             </section>
         </>

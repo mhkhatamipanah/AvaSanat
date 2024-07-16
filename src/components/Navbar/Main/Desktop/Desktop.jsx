@@ -1,9 +1,11 @@
 
 import { Button, Input } from "@nextui-org/react";
 import { ChevronDown, ContactRound, FileText, Home, PhoneCall, Search, ShoppingBag, ShoppingCart, Vote } from 'lucide-react';
+import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
+import logo from "@/public/images/png persian.png"
+import { useEffect } from "react";
 function getOffsetRight(element) {
     if (element) {
         const parent = element.offsetParent;
@@ -13,31 +15,35 @@ function getOffsetRight(element) {
     }
 
 }
-function spanMove (parentTag){
+function spanMove(parentTag) {
     const right = getOffsetRight(parentTag)
-
+    document.getElementsByClassName("spanUnderLineHover")[0].style.width = `0px`
+    
     document.getElementsByClassName("spanUnderLineHover")[0].style.width = `${parentTag.clientWidth}px`
-    if (right) {
+    if (right || right === 0) {
         document.getElementsByClassName("spanUnderLineHover")[0].style.right = `${right}px`
     }
 }
 
 const Desktop = () => {
+  
     const pathname = usePathname()
 
     const spanHoverEnter = (e) => {
 
 
-        if (document.getElementsByClassName("spanUnderLineHover")[0] && (e.target.tagName === "A" || e.target.tagName === "P" || e.target.tagName === "svg")) {
-
+        if (document.getElementsByClassName("spanUnderLineHover")[0] && (e.target.tagName === "A" || e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
             if (e.target.tagName === "A") {
                 var parentTag = e.target
             }
             if (e.target.tagName === "P") {
                 var parentTag = e.target.parentNode
             }
+            if (e.target.tagName === "SPAN") {
+                var parentTag = e.target.parentNode
+            }
             if (e.target.tagName === "svg") {
-                if (e.target.parentNode.tagName === "P") {
+                if (e.target.parentNode.tagName === "SPAN") {
                     var parentTag = e.target.parentNode.parentNode
                 } else {
                     var parentTag = e.target.parentNode
@@ -51,10 +57,10 @@ const Desktop = () => {
     }
     const spanHoverLeave = (e) => {
         if (document.getElementsByClassName("spanUnderLineHover")[0]) {
-          const navbarContainer =  document.getElementsByClassName("NavbarContainer")[0]
+            const navbarContainer = document.getElementsByClassName("NavbarContainer")[0]
             if (navbarContainer) {
                 const links = navbarContainer.querySelectorAll('a');
-                switch(pathname) {
+                switch (pathname) {
                     case '/':
                         spanMove(links[0])
                         break;
@@ -70,27 +76,34 @@ const Desktop = () => {
                     case '/contact-us':
                         spanMove(links[4])
                         break;
-                      
+
                     default:
                         console.log('Unknown fruit!');
                 }
             }
-             
+
         }
     }
 
+
+    useEffect(() => {
+        spanHoverLeave()
+    }, [])
     
+
 
     return (
         <>
 
-            <nav className='vazirLight sticky shadow-md'>
+            <nav className='vazirLight sticky w-full shadow-md'>
                 <section className="w-full flex justify-center items-center px-7 bg-white text-white h-16 ">
                     <div className='w-full flex justify-between max-w-[1500px]'>
 
 
-                        <div className='flex w-96'>
-                            <div className='flex justify-center items-center text-black'>   logo</div>
+                        <div className='flex items-center'>
+                            <div className='flex justify-center items-center text-black'>   
+                            <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo"/>
+                            </div>
                             <div className='mr-3 w-96'>
                                 <Input
 
@@ -102,8 +115,8 @@ const Desktop = () => {
                             </div>
 
                         </div>
-                        <a href="tel:+989023665306" className='flex justify-center items-center gap-2 text-black'>
-                            <p className='ltr'>0902 366 5306</p>
+                        <a href="tel:+989023665306" className='flex justify-center items-center gap-3 text-black'>
+                            <p className='ltr text-[16px]'>0902 366 5306</p>
                             <div className="rounded-md bg-red-200 flex justify-center items-center p-2">
                                 <PhoneCall className="text-[var(--color-1)]" />
 
@@ -114,51 +127,55 @@ const Desktop = () => {
                     </div>
 
                 </section>
-                <section className="w-full flex justify-center px-7 h-[16] bg-white sticky top-0">
+                <section className="w-full flex justify-center px-7 h-12 bg-white sticky top-0">
                     <div className='w-full flex justify-between items-center max-w-[1500px] relative MenuContainer'>
 
                         <ul className='relative flex justify-start items-center gap-5 w-full h-full NavbarContainer'>
-                            <span className="absolute h-[4px] rounded-md w-0 bg-red-400 -bottom-[2px] transition-all spanUnderLineHover"></span>
+                            <span className="absolute h-[3px] rounded-md w-0 bg-red-400 bottom-0 transition-all spanUnderLineHover"></span>
 
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
-                                <Home className={`${pathname === '/' ? 'active' : ''} text-lg`} />
-                                <p className={`${pathname === '/' ? 'active' : ''} text-lg`}>صفحه اصلی</p>
+                                <Home className={`${pathname === '/' ? 'active' : ''} text-[14px]`} />
+                                <p className={`${pathname === '/' ? 'active' : ''} text-[14px]`}>صفحه اصلی</p>
                             </Link>
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px] MegaMenuHover" href='/product' >
-                                <ShoppingCart className={`${pathname === '/product' ? 'active' : ''} text-lg`} />
-                                <p className={`${pathname === '/product' ? 'active' : ''} h-full text-lg flex justify-center items-center gap-1 `}
+                                <ShoppingCart className={`${pathname === '/product' ? 'active' : ''} text-[14px]`} />
+                                <span className={`${pathname === '/product' ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
 
                                 >
-                                    <div className={`absolute right-0 top-[64px] h-96 bg-white shadow-md border border-gray-200 border-solid w-96 rounded-md p-4 z-50 Menu !transition-all text-black`}  >
+                                    <div className={`absolute right-0 top-[48px] h-96 bg-white shadow-md border border-gray-200 border-solid w-96 rounded-md p-4 z-50 Menu !transition-all text-black`}  >
                                         adsf
                                     </div>
                                     محصولات
                                     <ChevronDown size={20} className={`arrowIcon transition-all`} />
-                                </p>
+                                </span>
 
 
 
 
                             </Link>
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px]" href='/blogs'>
-                                <FileText className={`${pathname === '/blogs' ? 'active' : ''} text-lg`} />
+                                <FileText className={`${pathname === '/blogs' ? 'active' : ''} text-[14px]`} />
 
-                                <p className={`${pathname === '/blogs' ? 'active' : ''} text-lg`}>مقالات</p>
+                                <p className={`${pathname === '/blogs' ? 'active' : ''} text-[14px]`}>مقالات</p>
                             </Link>
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/about-us' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
-                                <ContactRound className={`${pathname === '/about-us' ? 'active' : ''} text-lg`} />
+                                <ContactRound className={`${pathname === '/about-us' ? 'active' : ''} text-[14px]`} />
 
-                                <p className={`${pathname === '/about-us' ? 'active' : ''} text-lg`} >درباره ما</p>
+                                <p className={`${pathname === '/about-us' ? 'active' : ''} text-[14px]`} >درباره ما</p>
                             </Link>
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/contact-us' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
-                                <Vote className={`${pathname === '/contact-us' ? 'active' : ''} text-lg`} />
+                                <Vote className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} />
 
-                                <p className={`${pathname === '/contact-us' ? 'active' : ''} text-lg`} >تماس با ما </p>
+                                <p className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} >تماس با ما </p>
                             </Link>
                         </ul>
-                        <Button className='text-md bg-[var(--color-1)] text-white rounded-md' variant="shadow">
-                            <ShoppingBag size={32} />
-                            پیش فاکتور
+                        <Button className='text-md bg-[var(--color-1)] text-white rounded-md ' variant="shadow">
+                            <ShoppingBag size={28} />
+                            <p className="text-[14px]">
+                                پیش فاکتور
+
+                            </p>
+
 
 
                         </Button>
