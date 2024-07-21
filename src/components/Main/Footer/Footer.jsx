@@ -12,12 +12,12 @@ const Footer = () => {
 
   return (
     <>
-      {(pathname !== "/dashboard" && pathname !== "/login") &&
+      {(!pathname.includes("/dashboard") && pathname !== "/login") &&
         <>
           <hr />
           <footer className='relative min-h-[350px] flex flex-col items-center justify-center w-full mt-4'>
             <Wave />
-            <div className=' grid grid-cols-6 vazirMedium h-full items-start p-5 gap-6 max-w-[1500px] px-6'>
+            <div className=' grid grid-cols-6 vazirMedium h-full items-start p-5 gap-6 max-w-[1500px] px-6 z-50'>
 
               <div className='col-span-6 min-[1200px]:col-span-3 flex flex-col p-5 justify-center max-[600px]:items-center gap-4'>
 

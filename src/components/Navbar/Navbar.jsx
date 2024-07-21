@@ -6,7 +6,7 @@ const Navbar = () => {
   const pathname = usePathname()
   return (
     <>
-    {(pathname!=="/login" && pathname!=="/dashboard") && <Main/> }
+    {(pathname!=="/login" && !pathname.includes("/dashboard")) && <Main/> }
    
     </>
   )

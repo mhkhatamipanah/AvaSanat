@@ -1,14 +1,17 @@
 "use client"
 import { useState } from "react";
 import Sidebar , {SidebarItem} from "@/src/components/Dashboard/SideBar/Sidebar";
-import { Mail, UserRound,Home , ShoppingBagIcon  ,AppWindow, Scroll, ClipboardList } from "lucide-react";
+import { Mail, UserRound,Home , ShoppingBagIcon  ,AppWindow, Scroll, ClipboardList, MailOpen } from "lucide-react";
 import DropDownSideBar from "./DropDownSideBar";
+import { usePathname } from "next/navigation"
 
 
 
 
 const ProviderSideBar = ({getChildren}) => {
   const [sidebar, setSidebar] = useState(false);
+
+  const pathname = usePathname()
 
 
 
@@ -19,27 +22,43 @@ const ProviderSideBar = ({getChildren}) => {
         icon={<Home  />}
         text={"خانه"}
         link={"/dashboard"}
+       
+        active={pathname === "/dashboard" ? true : false}
       />
        <SidebarItem
         icon={<ClipboardList  />}
         text={"دسته بندی"}
         link={"/dashboard/category"}
+        active={pathname.includes("/dashboard/category") }
       />
      
   <SidebarItem
         icon={<ShoppingBagIcon  />}
         text={"محصولات"}
-        link={"/dashboard"}
+        link={"/dashboard/product"}
+        active={ pathname.includes("/dashboard/product")}
+
       />
   <SidebarItem
         icon={<AppWindow  />}
         text={"مقالات"}
-        link={"/dashboard"}
+        link={"/dashboard/blogs"}
+        active={  pathname.includes("/dashboard/blogs")}
+
       />
   <SidebarItem
         icon={<Scroll  />}
         text={"پیش فاکتور"}
-        link={"/dashboard"}
+        link={"/dashboard/invoice"}
+        active={ pathname.includes("/dashboard/invoice")}
+
+      />
+       <SidebarItem
+        icon={<MailOpen  />}
+        text={" تماس با ما"}
+        link={"/dashboard/contactUs"}
+        active={pathname.includes("/dashboard/contactUs")}
+
       />
   
 {/* 

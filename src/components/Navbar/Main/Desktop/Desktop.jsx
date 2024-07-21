@@ -1,6 +1,6 @@
 
 import { Button, Input } from "@nextui-org/react";
-import { ChevronDown, ContactRound, FileText, Home, PhoneCall, Search, ShoppingBag, ShoppingCart, Vote } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Search, ShoppingBag, ShoppingCart, Vote } from 'lucide-react';
 import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -18,7 +18,7 @@ function getOffsetRight(element) {
 function spanMove(parentTag) {
     const right = getOffsetRight(parentTag)
     document.getElementsByClassName("spanUnderLineHover")[0].style.width = `0px`
-    
+
     document.getElementsByClassName("spanUnderLineHover")[0].style.width = `${parentTag.clientWidth}px`
     if (right || right === 0) {
         document.getElementsByClassName("spanUnderLineHover")[0].style.right = `${right}px`
@@ -26,7 +26,7 @@ function spanMove(parentTag) {
 }
 
 const Desktop = () => {
-  
+
     const pathname = usePathname()
 
     const spanHoverEnter = (e) => {
@@ -88,8 +88,8 @@ const Desktop = () => {
 
     useEffect(() => {
         spanHoverLeave()
-    }, [])
-    
+    }, [pathname])
+
 
 
     return (
@@ -101,8 +101,8 @@ const Desktop = () => {
 
 
                         <div className='flex items-center'>
-                            <div className='flex justify-center items-center text-black'>   
-                            <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo"/>
+                            <div className='flex justify-center items-center text-black'>
+                                <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo" />
                             </div>
                             <div className='mr-3 w-96'>
                                 <Input
@@ -142,8 +142,85 @@ const Desktop = () => {
                                 <span className={`${pathname === '/product' ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
 
                                 >
-                                    <div className={`absolute right-0 top-[48px] h-96 bg-white shadow-md border border-gray-200 border-solid w-96 rounded-md p-4 z-50 Menu !transition-all text-black`}  >
-                                        adsf
+                                    <div className={`absolute right-0 top-[48px] h-min max-h-[300px] w-[350px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
+                                        <section className="gap-y-2 gap-x-8 flex flex-col flex-wrap h-min max-h-[300px] w-min p-4">
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                            <div className="flex items-center ">
+                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
+                                                <ChevronLeft className="text-gray-600" size={18} />
+                                            </div>
+                                        </section>
+
                                     </div>
                                     محصولات
                                     <ChevronDown size={20} className={`arrowIcon transition-all`} />

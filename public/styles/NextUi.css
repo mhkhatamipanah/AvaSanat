@@ -22,3 +22,23 @@
 .TabNextUI2 span{
     height: 3px !important;
 }
+
+
+/* label */
+.labelRight div div label {
+    right: 0 !important;
+    left: none !important;
+}
+.labelRight div div div {
+padding: 0 10px !important;
+border-radius: 10px;
+}
+.labelRight div div {
+    background-color: rgb(237, 237, 237);
+    border: 1px solid rgb(205, 205, 205) !important;
+padding: 0 !important;
+}
+.labelRight div div div {
+    border:  none !important;
+}
+

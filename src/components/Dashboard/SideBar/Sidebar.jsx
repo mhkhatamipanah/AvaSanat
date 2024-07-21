@@ -3,6 +3,8 @@ import { MoreVertical, ChevronLast } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useContext, createContext } from "react"
+import logo from "@/public/images/png persian.png"
+
 
 const SidebarContext = createContext()
 
@@ -16,7 +18,7 @@ export default function Sidebar({ children , setSidebar , sidebar }) {
           <Image
             width={128}
             height={36.8}
-            src={"https://img.logoipsum.com/243.svg"}
+            src={logo}
             className={`overflow-hidden transition-all ${
                 !sidebar ? "w-32" : "w-0"
             }`}
@@ -36,7 +38,7 @@ export default function Sidebar({ children , setSidebar , sidebar }) {
           <ul className="flex-1 px-3 mt-2">{children}</ul>
         </SidebarContext.Provider>
 
-        <div className="border-t flex p-3 ltr">
+        {/* <div className="border-t flex p-3 ltr">
             <div className="bg-red-400 w-10 h-10 rounded-md flex items-center justify-center font-black font-iranSans_1 pt-1 text-gray-800"> JD</div>
        
           <div
@@ -51,7 +53,7 @@ export default function Sidebar({ children , setSidebar , sidebar }) {
             </div>
             <MoreVertical size={20} />
           </div>
-        </div>
+        </div> */}
       </nav>
     </aside>
   )
