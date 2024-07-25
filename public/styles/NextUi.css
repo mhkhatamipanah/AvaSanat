@@ -42,3 +42,36 @@ padding: 0 !important;
     border:  none !important;
 }
 
+
+
+/* select */
+.selectNextUi div button svg{
+    left: 0.75rem !important;
+    right: auto !important;
+
+}
+.selectNextUi div button{
+    min-height: 0 !important;
+    height: 40px !important;
+    background-color: rgb(237, 237, 237);
+    border: 1px solid rgb(205, 205, 205) !important;
+}
+.selectNextUi div button div span{
+    text-align: right;
+    height: 35px;
+}
+.spanSize div button div span{
+    height: 22px;
+    font-size: 12px;
+}
+.group[data-filled="true"] .group-data-\[filled\=true\]\:scale-85 {
+    --tw-scale-x: 1 !important;
+    --tw-scale-y: 1 !important;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .group[data-filled="true"] .group-data-\[filled\=true\]\:-translate-y-\[calc\(50\%_\+_theme\(fontSize\.small\)\/2_-_6px_-_theme\(borderWidth\.medium\)\)\] {
+    --tw-translate-y: calc(calc(180% + var(--nextui-font-size-small) / 2 - 6px - var(--nextui-border-width-medium)) * -1) !important;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    
+  }

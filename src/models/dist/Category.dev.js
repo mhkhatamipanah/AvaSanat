@@ -22,18 +22,10 @@ var CategorySchema = new Schema({
     type: Buffer,
     required: true
   },
-  path: {
+  roate: {
     type: String,
     required: true
-  },
-  name: {
-    type: String,
-    required: true
-  } // dir: {
-  //   type: String,
-  //   required: true,
-  // },
-
+  }
 }, {
   timestamps: true
 }); // documentSaleSquad.plugin(AutoIncrement, { inc_field: "id_document_sale_squad" });

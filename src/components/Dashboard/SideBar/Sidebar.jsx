@@ -11,7 +11,7 @@ const SidebarContext = createContext()
 export default function Sidebar({ children , setSidebar , sidebar }) {
   
   return (
-    <aside className={`h-screen transition-all duration-300 ${!sidebar? 'w-[270px]':'w-[70px]' }`}>
+    <aside className={`min-h-screen h-auto transition-all duration-300 ${!sidebar? 'w-[270px]':'w-[70px]' }`}>
             
       <nav className="h-full  flex flex-col bg-white border-r shadow-sm ">
         <div className="p-4 py-2 flex justify-between items-center h-[64px]  border-gray-200 border-b-[2px] border-l-[2px]">

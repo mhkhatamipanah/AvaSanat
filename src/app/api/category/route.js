@@ -5,7 +5,6 @@ import Category from "@/src/models/Category";
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 
-const path = require("path");
 // import { whoAreYou } from "@/src/utils/Backend/auth";
 // import moment from "jalali-moment";
 const sharp = require("sharp");
@@ -55,6 +54,8 @@ export async function POST(req, res) {
 
     const title = formData.get("title");
     const description = formData.get("description");
+    const roate = formData.get("roate");
+ 
     const file = formData.get("file");
     const bufferData = await file.arrayBuffer();
     const buffer = Buffer.from(bufferData);
@@ -67,16 +68,14 @@ export async function POST(req, res) {
       .resize(500, 500)
         .webp({ lossless: true, quality: 60, alphaQuality: 80, force: true })
         .toBuffer();
-      const pathImage = `./public/backendImage/${new Date().getTime()}.${"webp"}`;
-      console.log(pathImage);
-      const dir = path.dirname(pathImage);
+  
 
       // const buffer = fs.readFileSync(file.file.path);
       const category = await Category.create({
         title,
         description,
+        roate,
         file: res,
-        path: pathImage,
       });
       if (category) {
         return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
@@ -104,7 +103,7 @@ export async function POST(req, res) {
 
 export async function GET(req, res) {
   connectDB();
-  // const { searchParams } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
 
   // const userData = await whoAreYou(req);
   // if (!userData) {
@@ -155,18 +154,24 @@ export async function GET(req, res) {
 
   //   return NextResponse.json(order);
   // }
+  let allId = searchParams.get("allId");
+  if (allId) {
+    let data = await Category.find({} , "_id title")
+    .catch((err) => {
+      console.log(err);
+      });
+    return NextResponse.json({ data });
+  }
 
-  // let count = searchParams.get("count");
+  let count = searchParams.get("count");
+  if (count) {
+    let countData = await Category.countDocuments()
+    .catch((err) => {
+      console.log(err);
+      });
 
-  // if (count) {
-  //   let countData = await Order.find({ user_id: userData._id })
-  //     .count()
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   return NextResponse.json({ countData });
-  // }
+    return NextResponse.json({ countData });
+  }
 
   // const fourOrder = searchParams.get("fourOrder");
   // if (fourOrder) {
@@ -182,15 +187,15 @@ export async function GET(req, res) {
   //   return NextResponse.json(order);
   // }
 
-  // const perPage = searchParams.get("perPage");
-  // const page = searchParams.get("page");
+  const perPage = searchParams.get("perPage");
+  const page = searchParams.get("page");
 
   const category = await Category.find({}, "-__v")
     // .populate("user_id", "-__v")
     // .lean()
     // .sort({ createdAt: -1 })
-    // .limit(perPage ? perPage : 5)
-    // .skip(perPage && page ? perPage * (page - 1) : 0)
+    .limit(perPage ? perPage : 20)
+    .skip(perPage && page ? perPage * (page - 1) : 0)
     .catch((err) => {
       console.log(err);
     });

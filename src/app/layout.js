@@ -4,9 +4,9 @@ import Navbar from "@/src/components/Navbar/Navbar";
 import "./globals.css";
 import Footer from "@/src/components/Main/Footer/Footer";
 import Favicon from "./favicon.ico";
-
-
-
+import { Toaster } from "sonner";
+import { BadgeInfo, CircleCheckBig, CircleX, TriangleAlert } from "lucide-react";
+import {Spinner} from "@nextui-org/react";
 export const metadata = {
   title: "Ava Sanat",
   // keywords: ['ورسان', 'چسب ورسان', 'کارخانه ورسان', "شرکت ورسان" , "چسب سیلیکونی" , "چسب یک دو سه" , "چسب آکواریوم"],
@@ -55,16 +55,38 @@ const enFont = localFont({
   variable: "--font_5",
 });
 
-
-
 export default function RootLayout({ children }) {
   return (
     <html lang="fa">
-      <body className={`${vazir_light.variable}  ${vazir_bold.variable}  ${vazir_demiBold.variable}  ${vazir_medium.variable} ${enFont.variable} rtl`}>
+      <body
+        className={`${vazir_light.variable}  ${vazir_bold.variable}  ${vazir_demiBold.variable}  ${vazir_medium.variable} ${enFont.variable} rtl`}
+      >
+        <Toaster
+          position="bottom-left"
+          visibleToasts="4"
+          dir="rtl"
+          icons={{
+            success: <CircleCheckBig />,
+            info: <BadgeInfo />,
+            warning: <TriangleAlert />,
+            error: <CircleX />,
+            loading: <Spinner className="mr-2 mt-1" color="default" size="sm"/>,
+          }}
+          toastOptions={{
+            // unstyled: true,
+            classNames: {
+              error: 'text-white vazirMedium gap-3 bg-red-500 border border-solid border-red-600',
+              success: 'text-white vazirMedium gap-3 bg-green-500 border border-solid border-green-600',
+              warning: 'text-gray-800 vazirMedium gap-3 bg-yellow-100 border border-solid border-yellow-400',
+              info: 'text-white vazirMedium gap-3 bg-blue-500 border border-solid border-blue-600',
+              loading:'text-white vazirMedium gap-3 bg-gray-500 border border-solid border-gray-600'
+            },
+          }}
+        />
         <NextUIProvider>
-          <Navbar/>
-            {children}
-            <Footer/>
+          <Navbar />
+          {children}
+          <Footer />
         </NextUIProvider>
       </body>
     </html>

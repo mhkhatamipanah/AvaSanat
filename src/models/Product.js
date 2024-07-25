@@ -2,6 +2,7 @@
 // import User from "@/models/user";
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+import Category from "@/src/models/Category";
 
 // const AutoIncrementFactory = require("mongoose-sequence");
 
@@ -11,29 +12,47 @@ const Schema = mongoose.Schema;
 
 // const timeAndDate = time_date();
 
-const CategorySchema = new Schema(
+const ProductSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
     },
-
     description: {
       type: String,
       required: true,
     },
-    file: {
-      type: Buffer,
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Category",
     },
-    roate: {
-      type: String,
+    indexMainImage: {
+      type: Number,
       required: true,
+      default: 0,
     },
+    file: [
+      {
+        thumbnail: {
+          type: Buffer,
+          required: true,
+        },
+        mainImage: {
+          type: Buffer,
+          required: true,
+        },
+        index: {
+          type: Number,
+        },
+      },
+    ],
   },
+  
   { timestamps: true }
 );
 // documentSaleSquad.plugin(AutoIncrement, { inc_field: "id_document_sale_squad" });
 
-const Category = mongoose.models.Category || mongoose.model("Category", CategorySchema);
-module.exports = Category;
+const Product =
+  mongoose.models.Product || mongoose.model("Product", ProductSchema);
+module.exports = Product;
