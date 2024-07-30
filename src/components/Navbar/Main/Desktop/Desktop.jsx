@@ -4,8 +4,10 @@ import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Sear
 import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import logo from "@/public/images/png persian.png"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import fetchCategory from "@/src/utils/Frontend/allApiLogicFront/Category/CategoryListFetch";
 function getOffsetRight(element) {
     if (element) {
         const parent = element.offsetParent;
@@ -27,15 +29,25 @@ function spanMove(parentTag) {
 
 const Desktop = () => {
 
+
+    const [Category, setCategory] = useState(null)
+    const fetchCategoryApi = async () => {
+        const data = await fetchCategory()
+        setCategory(data)
+    }
+
+    useEffect(() => {
+        fetchCategoryApi()
+    }, [])
+
     const pathname = usePathname()
+    const router = useRouter()
 
     const spanHoverEnter = (e) => {
 
 
-        if (document.getElementsByClassName("spanUnderLineHover")[0] && (e.target.tagName === "A" || e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
-            if (e.target.tagName === "A") {
-                var parentTag = e.target
-            }
+        if (document.getElementsByClassName("spanUnderLineHover")[0] && ( e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
+         
             if (e.target.tagName === "P") {
                 var parentTag = e.target.parentNode
             }
@@ -65,7 +77,7 @@ const Desktop = () => {
                         spanMove(links[0])
                         break;
                     case '/product':
-                        spanMove(links[1])
+                        spanMove(document.getElementById("product"))
                         break;
                     case '/blogs':
                         spanMove(links[2])
@@ -137,88 +149,30 @@ const Desktop = () => {
                                 <Home className={`${pathname === '/' ? 'active' : ''} text-[14px]`} />
                                 <p className={`${pathname === '/' ? 'active' : ''} text-[14px]`}>صفحه اصلی</p>
                             </Link>
-                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px] MegaMenuHover" href='/product' >
-                                <ShoppingCart className={`${pathname === '/product' ? 'active' : ''} text-[14px]`} />
-                                <span className={`${pathname === '/product' ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
+                            <div id="product" onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px] MegaMenuHover" href='/product' >
+                                <ShoppingCart className={`${pathname.includes("/product") ? 'active' : ''} text-[14px]`} />
+                                <span className={`${pathname.includes("/product") ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
 
                                 >
-                                    <div className={`absolute right-0 top-[48px] h-min max-h-[300px] w-[350px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
-                                        <section className="gap-y-2 gap-x-8 flex flex-col flex-wrap h-min max-h-[300px] w-min p-4">
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
-                                            <div className="flex items-center ">
-                                                <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                <h6 className="text-[17px] vazirMedium">تیتر</h6>
-                                                <ChevronLeft className="text-gray-600" size={18} />
-                                            </div>
+                                    <div className={`absolute right-0 top-[48px]  max-h-[300px] w-[400px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
+                                        <section className="gap-y-2 gap-x-8 flex flex-col flex-wrap max-h-[300px] p-4 min-w-0">
+                                            <Link href="/product" className="flex items-center">
+                                                <div className="bg-[#df5658] w-1 h-3 ml-2 rounded-lg"></div>
+                                                <h6 className="text-[12px] text-gray-600 vazirMedium">همه دسته بندی ها</h6>
+                                                <ChevronLeft className="text-gray-600" size={16} />
+                                            </Link>
+                                            {Category && Category.data &&
+                                                Category.data.map((e) => {
+                                                    return (
+                                                        <Link href={`/product/${e.route}`} className="flex items-center" key={e._id}>
+                                                            <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
+                                                            <h6 className="text-[17px] vazirMedium">{e.title}</h6>
+                                                            <ChevronLeft className="text-gray-600" size={18} />
+                                                        </Link>
+                                                    )
+                                                })}
+
+
                                         </section>
 
                                     </div>
@@ -229,7 +183,7 @@ const Desktop = () => {
 
 
 
-                            </Link>
+                            </div>
                             <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px]" href='/blogs'>
                                 <FileText className={`${pathname === '/blogs' ? 'active' : ''} text-[14px]`} />
 

@@ -1,6 +1,6 @@
 "use client"
-import postFile from "@/src/utils/Frontend/api/formData/PostFile"
-import getApi from "@/src/utils/Frontend/api/simpleData/getApi"
+import postFile from "@/src/utils/Frontend/sendApiToBackend/formData/PostFile"
+import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import { Input, Button, SelectItem, Select, Spinner } from "@nextui-org/react"
 import { useEffect } from "react"
 import { useState, useRef } from "react"
@@ -165,7 +165,7 @@ const CreateProduct = () => {
                         <p>hi</p>
                     }
                 />
-                {/* <Input
+                <Input
                     value={textInput}
                     onChange={(e) => { setTextInput(e.target.value) }}
                     className="labelRight"
@@ -175,7 +175,7 @@ const CreateProduct = () => {
                     endContent={
                         <p>hi</p>
                     }
-                /> */}
+                />
 
                 <div className="w-full h-full flex flex-col justify-end pb-[2px]">
 

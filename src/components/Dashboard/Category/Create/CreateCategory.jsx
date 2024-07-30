@@ -1,9 +1,8 @@
 "use client"
-import postFile from "@/src/utils/Frontend/api/formData/PostFile"
+import postFile from "@/src/utils/Frontend/sendApiToBackend/formData/PostFile"
 import { Input, Button } from "@nextui-org/react"
 import { useEffect } from "react"
 import { useState, useRef } from "react"
-import { toast } from "sonner";
 
 
 
@@ -98,7 +97,7 @@ const CreateCategory = () => {
         const formData = new FormData();
         formData.append("title", categoryInput);
         formData.append("description", textInput);
-        formData.append("roate", urlInput);
+        formData.append("route", urlInput);
 
         formData.append("file", arrayImmages[0]);
        
@@ -134,7 +133,7 @@ const CreateCategory = () => {
                     value={urlInput}
                     onChange={(e) => { setUrlInput(e.target.value) }}
                     className="labelRight"
-                    label=" Roate (بدون اسلش و فاصله)"
+                    label=" route (بدون اسلش و فاصله)"
                     placeholder="URL را وارد کنید"
                     labelPlacement="outside"
                     endContent={

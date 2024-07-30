@@ -54,7 +54,7 @@ export async function POST(req, res) {
 
     const title = formData.get("title");
     const description = formData.get("description");
-    const roate = formData.get("roate");
+    const route = formData.get("route");
  
     const file = formData.get("file");
     const bufferData = await file.arrayBuffer();
@@ -74,7 +74,7 @@ export async function POST(req, res) {
       const category = await Category.create({
         title,
         description,
-        roate,
+        route,
         file: res,
       });
       if (category) {
@@ -154,6 +154,16 @@ export async function GET(req, res) {
 
   //   return NextResponse.json(order);
   // }
+  let listCategory = searchParams.get("listCategory");
+  if (listCategory) {
+    let data = await Category.find({} , "title route _id")
+    .catch((err) => {
+      console.log(err);
+      });
+    return NextResponse.json({ data });
+  }
+  
+
   let allId = searchParams.get("allId");
   if (allId) {
     let data = await Category.find({} , "_id title")
@@ -199,21 +209,22 @@ export async function GET(req, res) {
     .catch((err) => {
       console.log(err);
     });
- 
+    let newArray=[]
     const imageData = category.map((e) => {
-      
       const imageBuffer = Buffer.from(e.file, "base64");
       // Convert buffer to base64 string
       const base64Image = imageBuffer.toString('base64');
       // Return the data along with a unique identifier or filename if necessary
-      return {
+      let object = {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
-        imageBase64: base64Image
-      };
+      imageBase64: base64Image, title: e.title , 
+      description:e.description,
+      route:e.route
+    }
+    newArray.push(object)
     });
-
     // Return the image data in JSON format
-    return NextResponse.json({ data: imageData });
+    return NextResponse.json({ data: newArray });
 
   //   fs.readdir("/public/backendImage", (err, files) => {
   //     if (err) {

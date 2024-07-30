@@ -8,16 +8,20 @@ exports.GET = GET;
 
 var _Product = _interopRequireDefault(require("@/src/models/Product"));
 
+var _Category = _interopRequireDefault(require("@/src/models/Category"));
+
 var _db = _interopRequireDefault(require("@/src/configs/db"));
 
 var _server = require("next/server");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var mongoose = require('mongoose');
+
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, title, description, category, files, i, file, filesArray, product;
+  var formData, title, description, category, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
   return regeneratorRuntime.async(function POST$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -32,6 +36,18 @@ function POST(req, res) {
           title = formData.get("title");
           description = formData.get("description");
           category = formData.get("category");
+          objectId = new mongoose.Types.ObjectId(category);
+          console.log(objectId);
+          _context2.next = 12;
+          return regeneratorRuntime.awrap(_Category["default"].findOne({
+            _id: category
+          }, "-__v")["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 12:
+          oneCategory = _context2.sent;
+          routeCategory = oneCategory.route;
           files = [];
 
           for (i = 0; i < 20; i++) {
@@ -42,8 +58,8 @@ function POST(req, res) {
             }
           }
 
-          _context2.prev = 10;
-          _context2.next = 13;
+          _context2.prev = 16;
+          _context2.next = 19;
           return regeneratorRuntime.awrap(Promise.all(files.map(function _callee(e, i) {
             var bufferData, buffer, res, res2;
             return regeneratorRuntime.async(function _callee$(_context) {
@@ -95,21 +111,22 @@ function POST(req, res) {
             });
           })));
 
-        case 13:
+        case 19:
           filesArray = _context2.sent;
-          _context2.next = 16;
+          _context2.next = 22;
           return regeneratorRuntime.awrap(_Product["default"].create({
             title: title,
             description: description,
-            category: category,
-            file: filesArray
+            category: objectId,
+            file: filesArray,
+            routeCategory: routeCategory
           }));
 
-        case 16:
+        case 22:
           product = _context2.sent;
 
           if (!product) {
-            _context2.next = 19;
+            _context2.next = 25;
             break;
           }
 
@@ -119,13 +136,13 @@ function POST(req, res) {
             status: 201
           }));
 
-        case 19:
-          _context2.next = 25;
+        case 25:
+          _context2.next = 31;
           break;
 
-        case 21:
-          _context2.prev = 21;
-          _context2.t0 = _context2["catch"](10);
+        case 27:
+          _context2.prev = 27;
+          _context2.t0 = _context2["catch"](16);
           console.log(_context2.t0);
           return _context2.abrupt("return", _server.NextResponse.json({
             message: "ارور ناشناخته"
@@ -133,25 +150,25 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 25:
-          _context2.next = 30;
+        case 31:
+          _context2.next = 36;
           break;
 
-        case 27:
-          _context2.prev = 27;
+        case 33:
+          _context2.prev = 33;
           _context2.t1 = _context2["catch"](0);
           console.error(_context2.t1); // خطاها را نمایش دهید
 
-        case 30:
+        case 36:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 27], [10, 21]]);
+  }, null, null, [[0, 33], [16, 27]]);
 }
 
 function GET(req, res) {
-  var _ref, searchParams, count, countData, perPage, page, category, imageData;
+  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, category, imageData;
 
   return regeneratorRuntime.async(function GET$(_context3) {
     while (1) {
@@ -180,15 +197,59 @@ function GET(req, res) {
         case 8:
           perPage = searchParams.get("perPage");
           page = searchParams.get("page");
-          _context3.next = 12;
-          return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v") // .populate("user_id", "-__v")
+          filterCategory = searchParams.get("filterCategory");
+
+          if (!filterCategory) {
+            _context3.next = 18;
+            break;
+          }
+
+          _context3.next = 14;
+          return regeneratorRuntime.awrap(_Product["default"].find({
+            routeCategory: filterCategory
+          }, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 14:
+          _category = _context3.sent;
+          console.log(_category[0].file);
+          _imageData = _category.map(function (ducomentProduct) {
+            var imageTransfer = ducomentProduct.file.map(function (e) {
+              if (ducomentProduct.indexMainImage === e.index) {
+                var thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+                var thumbnailBase64 = thumbnailBuffer.toString("base64");
+                return {
+                  fileName: "uploaded_image_".concat(Date.now(), ".webp"),
+                  // For reference
+                  thumbnailBase64: thumbnailBase64 // mainImageBase64: mainImageBase64,
+
+                };
+              }
+            });
+            var newArr = imageTransfer.filter(function (item) {
+              return item !== null && typeof item !== "undefined";
+            });
+            return {
+              newArr: newArr,
+              title: ducomentProduct.title,
+              description: ducomentProduct.description
+            };
+          });
+          return _context3.abrupt("return", _server.NextResponse.json({
+            data: _imageData
+          }));
+
+        case 18:
+          _context3.next = 20;
+          return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v") // .populate("category", "-__v")
           // .lean()
           // .sort({ createdAt: -1 })
           .limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 12:
+        case 20:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -204,7 +265,7 @@ function GET(req, res) {
               }
             });
             var newArr = imageTransfer.filter(function (item) {
-              return item !== null && typeof item !== 'undefined';
+              return item !== null && typeof item !== "undefined";
             });
             return {
               newArr: newArr,
@@ -216,7 +277,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 15:
+        case 23:
         case "end":
           return _context3.stop();
       }

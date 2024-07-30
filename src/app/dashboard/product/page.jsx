@@ -1,6 +1,6 @@
 // import Category from '@/src/components/Dashboard/Category/Category'
 "use client"
-import getApi from '@/src/utils/Frontend/api/simpleData/getApi';
+import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Button } from "@nextui-org/button";

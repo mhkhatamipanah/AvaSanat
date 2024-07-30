@@ -1,16 +1,7 @@
-// import time_date from "@/utils/time-date";
-// import User from "@/models/user";
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 import Category from "@/src/models/Category";
-
-// const AutoIncrementFactory = require("mongoose-sequence");
-
-// var connection = mongoose.createConnection(process.env.MONGOOSE);
-
-// const AutoIncrement = AutoIncrementFactory(connection);
-
-// const timeAndDate = time_date();
 
 const ProductSchema = new Schema(
   {
@@ -26,6 +17,10 @@ const ProductSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Category",
+    },
+    routeCategory:{
+      type: String,
+      required: true,
     },
     indexMainImage: {
       type: Number,
@@ -51,7 +46,6 @@ const ProductSchema = new Schema(
   
   { timestamps: true }
 );
-// documentSaleSquad.plugin(AutoIncrement, { inc_field: "id_document_sale_squad" });
 
 const Product =
   mongoose.models.Product || mongoose.model("Product", ProductSchema);

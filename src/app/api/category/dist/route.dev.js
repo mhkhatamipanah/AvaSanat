@@ -21,7 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, title, description, roate, file, bufferData, buffer, _res, category;
+  var formData, title, description, route, file, bufferData, buffer, _res, category;
 
   return regeneratorRuntime.async(function POST$(_context) {
     while (1) {
@@ -68,7 +68,7 @@ function POST(req, res) {
           formData = _context.sent;
           title = formData.get("title");
           description = formData.get("description");
-          roate = formData.get("roate");
+          route = formData.get("route");
           file = formData.get("file");
           _context.next = 11;
           return regeneratorRuntime.awrap(file.arrayBuffer());
@@ -91,7 +91,7 @@ function POST(req, res) {
           return regeneratorRuntime.awrap(_Category["default"].create({
             title: title,
             description: description,
-            roate: roate,
+            route: route,
             file: _res
           }));
 
@@ -141,7 +141,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, allId, data, count, countData, perPage, page, category, imageData;
+  var _ref, searchParams, listCategory, data, allId, _data, count, countData, perPage, page, category, newArray, imageData;
 
   return regeneratorRuntime.async(function GET$(_context2) {
     while (1) {
@@ -191,15 +191,15 @@ function GET(req, res) {
           //   return NextResponse.json(order);
           // }
 
-          allId = searchParams.get("allId");
+          listCategory = searchParams.get("listCategory");
 
-          if (!allId) {
+          if (!listCategory) {
             _context2.next = 8;
             break;
           }
 
           _context2.next = 6;
-          return regeneratorRuntime.awrap(_Category["default"].find({}, "_id title")["catch"](function (err) {
+          return regeneratorRuntime.awrap(_Category["default"].find({}, "title route _id")["catch"](function (err) {
             console.log(err);
           }));
 
@@ -210,25 +210,44 @@ function GET(req, res) {
           }));
 
         case 8:
-          count = searchParams.get("count");
+          allId = searchParams.get("allId");
 
-          if (!count) {
+          if (!allId) {
             _context2.next = 14;
             break;
           }
 
           _context2.next = 12;
-          return regeneratorRuntime.awrap(_Category["default"].countDocuments()["catch"](function (err) {
+          return regeneratorRuntime.awrap(_Category["default"].find({}, "_id title")["catch"](function (err) {
             console.log(err);
           }));
 
         case 12:
+          _data = _context2.sent;
+          return _context2.abrupt("return", _server.NextResponse.json({
+            data: _data
+          }));
+
+        case 14:
+          count = searchParams.get("count");
+
+          if (!count) {
+            _context2.next = 20;
+            break;
+          }
+
+          _context2.next = 18;
+          return regeneratorRuntime.awrap(_Category["default"].countDocuments()["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 18:
           countData = _context2.sent;
           return _context2.abrupt("return", _server.NextResponse.json({
             countData: countData
           }));
 
-        case 14:
+        case 20:
           // const fourOrder = searchParams.get("fourOrder");
           // if (fourOrder) {
           //   const order = await Order.find({ user_id: userData._id, status: 0 }, "-__v")
@@ -243,7 +262,7 @@ function GET(req, res) {
           // }
           perPage = searchParams.get("perPage");
           page = searchParams.get("page");
-          _context2.next = 18;
+          _context2.next = 24;
           return regeneratorRuntime.awrap(_Category["default"].find({}, "-__v") // .populate("user_id", "-__v")
           // .lean()
           // .sort({ createdAt: -1 })
@@ -251,25 +270,30 @@ function GET(req, res) {
             console.log(err);
           }));
 
-        case 18:
+        case 24:
           category = _context2.sent;
+          newArray = [];
           imageData = category.map(function (e) {
             var imageBuffer = Buffer.from(e.file, "base64"); // Convert buffer to base64 string
 
             var base64Image = imageBuffer.toString('base64'); // Return the data along with a unique identifier or filename if necessary
 
-            return {
+            var object = {
               fileName: "uploaded_image_".concat(Date.now(), ".webp"),
               // For reference
-              imageBase64: base64Image
+              imageBase64: base64Image,
+              title: e.title,
+              description: e.description,
+              route: e.route
             };
+            newArray.push(object);
           }); // Return the image data in JSON format
 
           return _context2.abrupt("return", _server.NextResponse.json({
-            data: imageData
+            data: newArray
           }));
 
-        case 21:
+        case 28:
         case "end":
           return _context2.stop();
       }

@@ -1,10 +1,10 @@
 // import Category from '@/src/components/Dashboard/Category/Category'
 "use client"
-import getApi from '@/src/utils/Frontend/api/simpleData/getApi';
+import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Button, ButtonGroup } from "@nextui-org/button";
+import { Button } from "@nextui-org/button";
 import { BadgePlus } from 'lucide-react';
 import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
 import { SelectItem, Select } from '@nextui-org/react';
@@ -74,9 +74,11 @@ const page = () => {
             {
               data.data.map((e, i) => {
                 return (
-                  <div className='bg-red-200 w-full rounded-lg' key={i}>
+                  <div className='bg-red-200 w-full rounded-lg h-full' key={i}>
 
-                    <img className='aspect-square object-cover w-full h-full rounded-lg border border-gray-300' src={`data:image/webp;base64,${e.imageBase64}`} alt="" />
+                    <img className=' aspect-square object-cover w-full h-full rounded-lg border border-gray-300' src={`data:image/webp;base64,${e.imageBase64}`} alt="" />
+                    <p>{e.title}</p>
+                    <p>{e.description}</p>
                   </div>
                 )
 
