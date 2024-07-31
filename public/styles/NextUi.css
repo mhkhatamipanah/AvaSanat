@@ -43,6 +43,12 @@ padding: 0 !important;
 }
 
 
+/* textarea */
+.textareaStyle div:nth-child(1){
+    background-color: rgb(237, 237, 237);
+    border: 1px solid rgb(205, 205, 205) !important;
+    height: 200px !important;
+}   
 
 /* select */
 .selectNextUi div button svg{

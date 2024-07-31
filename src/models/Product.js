@@ -18,6 +18,10 @@ const ProductSchema = new Schema(
       required: true,
       ref: "Category",
     },
+    routeProduct:{
+      type: String,
+      required: true,
+    },
     routeCategory:{
       type: String,
       required: true,

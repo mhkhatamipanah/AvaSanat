@@ -16,12 +16,12 @@ var _server = require("next/server");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, title, description, category, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
+  var formData, title, description, category, urlProduct, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
   return regeneratorRuntime.async(function POST$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -36,8 +36,8 @@ function POST(req, res) {
           title = formData.get("title");
           description = formData.get("description");
           category = formData.get("category");
+          urlProduct = formData.get("urlProduct");
           objectId = new mongoose.Types.ObjectId(category);
-          console.log(objectId);
           _context2.next = 12;
           return regeneratorRuntime.awrap(_Category["default"].findOne({
             _id: category
@@ -119,7 +119,8 @@ function POST(req, res) {
             description: description,
             category: objectId,
             file: filesArray,
-            routeCategory: routeCategory
+            routeCategory: routeCategory,
+            routeProduct: urlProduct
           }));
 
         case 22:
@@ -168,7 +169,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, category, imageData;
+  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, detailProduct, oneProduct, _imageData2, productObject, category, imageData;
 
   return regeneratorRuntime.async(function GET$(_context3) {
     while (1) {
@@ -200,7 +201,7 @@ function GET(req, res) {
           filterCategory = searchParams.get("filterCategory");
 
           if (!filterCategory) {
-            _context3.next = 18;
+            _context3.next = 17;
             break;
           }
 
@@ -213,7 +214,6 @@ function GET(req, res) {
 
         case 14:
           _category = _context3.sent;
-          console.log(_category[0].file);
           _imageData = _category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
               if (ducomentProduct.indexMainImage === e.index) {
@@ -233,15 +233,56 @@ function GET(req, res) {
             return {
               newArr: newArr,
               title: ducomentProduct.title,
-              description: ducomentProduct.description
+              description: ducomentProduct.description,
+              route: ducomentProduct.routeProduct
             };
           });
           return _context3.abrupt("return", _server.NextResponse.json({
             data: _imageData
           }));
 
-        case 18:
-          _context3.next = 20;
+        case 17:
+          // detailProduct
+          detailProduct = searchParams.get("detailProduct");
+
+          if (!detailProduct) {
+            _context3.next = 26;
+            break;
+          }
+
+          _context3.next = 21;
+          return regeneratorRuntime.awrap(_Product["default"].findOne({
+            routeProduct: detailProduct
+          }, "-__v -createdAt -updatedAt")["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 21:
+          oneProduct = _context3.sent;
+          _imageData2 = oneProduct.file.map(function (e) {
+            if (oneProduct.indexMainImage === e.index) {
+              var thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+              var thumbnailBase64 = thumbnailBuffer.toString("base64");
+              return {
+                fileName: "uploaded_image_".concat(Date.now(), ".webp"),
+                // For reference
+                thumbnailBase64: thumbnailBase64 // mainImageBase64: mainImageBase64,
+
+              };
+            }
+          });
+          productObject = oneProduct.toObject();
+          delete productObject.file; // const newArr = imageTransfer.filter(
+          //   (item) => item !== null && typeof item !== "undefined"
+          // );
+
+          return _context3.abrupt("return", _server.NextResponse.json({
+            data: productObject,
+            file: _imageData2
+          }));
+
+        case 26:
+          _context3.next = 28;
           return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v") // .populate("category", "-__v")
           // .lean()
           // .sort({ createdAt: -1 })
@@ -249,7 +290,7 @@ function GET(req, res) {
             console.log(err);
           }));
 
-        case 20:
+        case 28:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -277,7 +318,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 23:
+        case 31:
         case "end":
           return _context3.stop();
       }

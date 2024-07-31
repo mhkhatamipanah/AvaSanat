@@ -69,27 +69,27 @@ const Desktop = () => {
     }
     const spanHoverLeave = (e) => {
         if (document.getElementsByClassName("spanUnderLineHover")[0]) {
-            const navbarContainer = document.getElementsByClassName("NavbarContainer")[0]
+            const navbarContainer = document.querySelectorAll(".NavBarHover")
             if (navbarContainer) {
-                const links = navbarContainer.querySelectorAll('a');
+                // const links = navbarContainer.querySelectorAll('a');
                 switch (pathname) {
                     case '/':
-                        spanMove(links[0])
-                        break;
-                    case '/product':
-                        spanMove(document.getElementById("product"))
+                        spanMove(navbarContainer[0])
                         break;
                     case '/blogs':
-                        spanMove(links[2])
+                        spanMove(navbarContainer[2])
                         break;
                     case '/about-us':
-                        spanMove(links[3])
+                        spanMove(navbarContainer[3])
                         break;
                     case '/contact-us':
-                        spanMove(links[4])
+                        spanMove(navbarContainer[4])
                         break;
 
                     default:
+                        if (pathname.includes('/product')) {
+                            spanMove(document.getElementById("product"));
+                        }
                         console.log('Unknown fruit!');
                 }
             }
@@ -145,11 +145,11 @@ const Desktop = () => {
                         <ul className='relative flex justify-start items-center gap-5 w-full h-full NavbarContainer'>
                             <span className="absolute h-[3px] rounded-md w-0 bg-red-400 bottom-0 transition-all spanUnderLineHover"></span>
 
-                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
+                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/' className="NavBarHover h-full flex justify-center items-center gap-[6px] px-[2px]">
                                 <Home className={`${pathname === '/' ? 'active' : ''} text-[14px]`} />
                                 <p className={`${pathname === '/' ? 'active' : ''} text-[14px]`}>صفحه اصلی</p>
                             </Link>
-                            <div id="product" onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px] MegaMenuHover" href='/product' >
+                            <div id="product" onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="NavBarHover h-full flex justify-center items-center gap-[6px] px-[2px] MegaMenuHover" href='/product' >
                                 <ShoppingCart className={`${pathname.includes("/product") ? 'active' : ''} text-[14px]`} />
                                 <span className={`${pathname.includes("/product") ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
 
@@ -184,17 +184,17 @@ const Desktop = () => {
 
 
                             </div>
-                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="h-full flex justify-center items-center gap-[6px] px-[2px]" href='/blogs'>
+                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} className="NavBarHover h-full flex justify-center items-center gap-[6px] px-[2px]" href='/blogs'>
                                 <FileText className={`${pathname === '/blogs' ? 'active' : ''} text-[14px]`} />
 
                                 <p className={`${pathname === '/blogs' ? 'active' : ''} text-[14px]`}>مقالات</p>
                             </Link>
-                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/about-us' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
+                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/about-us' className="NavBarHover h-full flex justify-center items-center gap-[6px] px-[2px]">
                                 <ContactRound className={`${pathname === '/about-us' ? 'active' : ''} text-[14px]`} />
 
                                 <p className={`${pathname === '/about-us' ? 'active' : ''} text-[14px]`} >درباره ما</p>
                             </Link>
-                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/contact-us' className="h-full flex justify-center items-center gap-[6px] px-[2px]">
+                            <Link onMouseLeave={spanHoverLeave} onMouseMoveCapture={spanHoverEnter} href='/contact-us' className="NavBarHover h-full flex justify-center items-center gap-[6px] px-[2px]">
                                 <Vote className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} />
 
                                 <p className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} >تماس با ما </p>

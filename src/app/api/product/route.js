@@ -2,7 +2,7 @@ import Product from "@/src/models/Product";
 import Category from "@/src/models/Category";
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const sharp = require("sharp");
 
@@ -15,8 +15,9 @@ export async function POST(req, res) {
     const title = formData.get("title");
     const description = formData.get("description");
     const category = formData.get("category");
-    const objectId =new  mongoose.Types.ObjectId(category);
-    console.log(objectId)
+    const urlProduct = formData.get("urlProduct");
+
+    const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
         console.log(err);
@@ -60,9 +61,10 @@ export async function POST(req, res) {
       const product = await Product.create({
         title,
         description,
-        category:objectId,
+        category: objectId,
         file: filesArray,
         routeCategory,
+        routeProduct: urlProduct,
       });
       if (product) {
         return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
@@ -94,18 +96,20 @@ export async function GET(req, res) {
 
   const filterCategory = searchParams.get("filterCategory");
   if (filterCategory) {
-    const category = await Product.find({routeCategory:filterCategory}, "-__v")
+    const category = await Product.find(
+      { routeCategory: filterCategory },
+      "-__v"
+    )
       .limit(perPage ? perPage : 20)
       .skip(perPage && page ? perPage * (page - 1) : 0)
       .catch((err) => {
         console.log(err);
       });
-      console.log(category[0].file)
     const imageData = category.map((ducomentProduct) => {
       const imageTransfer = ducomentProduct.file.map((e) => {
         if (ducomentProduct.indexMainImage === e.index) {
           const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-          
+
           const thumbnailBase64 = thumbnailBuffer.toString("base64");
 
           return {
@@ -122,9 +126,67 @@ export async function GET(req, res) {
         newArr,
         title: ducomentProduct.title,
         description: ducomentProduct.description,
+        route: ducomentProduct.routeProduct,
       };
     });
     return NextResponse.json({ data: imageData });
+  }
+
+  // detailProduct
+
+  const detailProduct = searchParams.get("detailProduct");
+  if (detailProduct) {
+    const oneProduct = await Product.findOne(
+      { routeProduct: detailProduct },
+      "-__v -createdAt -updatedAt"
+    )
+    .catch((err) => {
+      console.log(err);
+    });
+    const imageData = oneProduct.file.map((e) => {
+      if (oneProduct.indexMainImage === e.index) {
+        const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+
+        const thumbnailBase64 = thumbnailBuffer.toString("base64");
+
+        return {
+          fileName: `uploaded_image_${Date.now()}.webp`, // For reference
+          thumbnailBase64: thumbnailBase64,
+          // mainImageBase64: mainImageBase64,
+        };
+      }
+    });
+    const productObject = oneProduct.toObject(); 
+    delete productObject.file;
+    
+    // const newArr = imageTransfer.filter(
+    //   (item) => item !== null && typeof item !== "undefined"
+    // );
+    return NextResponse.json({ data: productObject , file:imageData });
+  
+
+    // const imageData = oneProduct.map((ducomentProduct) => {
+    //   const imageTransfer = ducomentProduct.file.map((e) => {
+    //     if (ducomentProduct.indexMainImage === e.index) {
+    //       const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+
+    //       const thumbnailBase64 = thumbnailBuffer.toString("base64");
+
+    //       return {
+    //         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
+    //         thumbnailBase64: thumbnailBase64,
+    //         // mainImageBase64: mainImageBase64,
+    //       };
+    //     }
+    //   });
+    //   const newArr = imageTransfer.filter(
+    //     (item) => item !== null && typeof item !== "undefined"
+    //   );
+    //   return {
+    //     newArr,
+    //     ducomentProduct
+    //   };
+    // });
   }
 
   const category = await Product.find({}, "-__v")

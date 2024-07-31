@@ -112,7 +112,8 @@ const CreateProduct = () => {
 
     const [titleInput, setTitleInput] = useState("");
     const [textInput, setTextInput] = useState("");
-
+    const [urlInput, setUrlInput] = useState("");
+    
     const [arrayImmages, setArrayImmages] = useState([])
     const [preview, setPreview] = useState([]);
 
@@ -143,7 +144,8 @@ const CreateProduct = () => {
         formData.append("title", titleInput);
         formData.append("description", textInput);
         formData.append("category", categoryInput);
-
+        formData.append("urlProduct", urlInput);
+        
         arrayImmages.forEach((file, index) => {
             formData.append(`file${index}`, file);
         });
@@ -153,7 +155,7 @@ const CreateProduct = () => {
 
     return (
         <>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-10">
+            <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-4 mb-10">
                 <Input
                     value={titleInput}
                     onChange={(e) => { setTitleInput(e.target.value) }}
@@ -171,6 +173,17 @@ const CreateProduct = () => {
                     className="labelRight"
                     label="توضیح کوتاه"
                     placeholder="توضیح کوتاه را وارد کنید"
+                    labelPlacement="outside"
+                    endContent={
+                        <p>hi</p>
+                    }
+                />
+                      <Input
+                    value={urlInput}
+                    onChange={(e) => { setUrlInput(e.target.value) }}
+                    className="labelRight"
+                    label=" route (بدون اسلش و فاصله)"
+                    placeholder="URL را وارد کنید"
                     labelPlacement="outside"
                     endContent={
                         <p>hi</p>
