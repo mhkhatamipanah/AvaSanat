@@ -16,3 +16,11 @@ fill:#d1d1d1;
 /* .grid_wrapper{
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 } */
+
+
+/* .imageLanding{
+    background: url("../../public/images/5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-clip: center;
+} */

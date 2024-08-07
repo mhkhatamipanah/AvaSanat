@@ -3,16 +3,19 @@ import Image from 'next/image'
 import img1 from '@/public/images/blogs/original.jpg'
 import { ArrowLeft, Calendar, TimerIcon } from 'lucide-react'
 import Link from 'next/link'
+import Title from '../../Title/Title'
 const Blogs = () => {
     return (
         <>
-            <section className=' flex justify-center w-full mb-20   '>
+            <section className=' flex justify-center w-full mb-20 mt-10  '>
                 <div className='max-w-[1500px]'>
+                    <Title text={"مقالات"} size={28} />
+
                     <div className='flex justify-between items-center px-4 vazirDemibold my-3'>
                         <div>
                             <p className='text-xl'>
 
-                            آخرین مقالات
+                                آخرین مقالات
                             </p>
                         </div>
 

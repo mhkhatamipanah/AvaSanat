@@ -98,7 +98,7 @@ const ContactUs = () => {
                   ثبت پیام
                 </Button>
               </div>
-              <div className='flex gap-2 items-center'>
+              <div className='flex gap-2 items-center col-span-2'>
                 <BadgeInfo className='text-gray-700' />
                 <p className='text-gray-600 text-sm'> در طول روز فقط 2 بار میتوانید پیام خود را ثبت کنید</p>
               </div>

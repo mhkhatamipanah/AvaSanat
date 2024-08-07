@@ -26,7 +26,7 @@ const Page = ({ params }) => {
     getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData)
     // getApi("/api/category", setData)
   }, [
-    page, perPage
+    // page, perPage
     //  , rerender
   ])
 
@@ -38,7 +38,6 @@ const Page = ({ params }) => {
 
 
           {data && data.data && data.data.map((e, i) => {
-            console.log(e)
             return (<Link href={`/product/${categoryUrl}/${e.route}`} key={`${i}354`} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80">
               <div className=" mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg h-60">
                 <img className='object-cover w-full h-full' src={`data:image/webp;base64,${e.newArr[0].thumbnailBase64}`} alt="profile-picture" />

@@ -41,13 +41,11 @@ const Desktop = () => {
     }, [])
 
     const pathname = usePathname()
-    const router = useRouter()
 
     const spanHoverEnter = (e) => {
 
 
         if (document.getElementsByClassName("spanUnderLineHover")[0] && ( e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
-         
             if (e.target.tagName === "P") {
                 var parentTag = e.target.parentNode
             }
@@ -55,13 +53,17 @@ const Desktop = () => {
                 var parentTag = e.target.parentNode
             }
             if (e.target.tagName === "svg") {
-                if (e.target.parentNode.tagName === "SPAN") {
+                if (e.target.parentNode.tagName === "SPAN"  ) {
                     var parentTag = e.target.parentNode.parentNode
-                } else {
+                }
+                if(e.target.parentNode.tagName === "DIV"){
                     var parentTag = e.target.parentNode
                 }
             }
-            spanMove(parentTag)
+            if(parentTag){
+                spanMove(parentTag)
+
+            }
 
 
 
@@ -107,7 +109,7 @@ const Desktop = () => {
     return (
         <>
 
-            <nav className='vazirLight sticky w-full shadow-md'>
+            <nav className='vazirLight sticky w-full shadow-md z-50'>
                 <section className="w-full flex justify-center items-center px-7 bg-white text-white h-16 ">
                     <div className='w-full flex justify-between max-w-[1500px]'>
 
@@ -154,7 +156,7 @@ const Desktop = () => {
                                 <span className={`${pathname.includes("/product") ? 'active' : ''} h-full text-[14px] flex justify-center items-center gap-1 `}
 
                                 >
-                                    <div className={`absolute right-0 top-[48px]  max-h-[300px] w-[400px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
+                                    <div className={`absolute right-0 top-[48px]  max-h-[300px] w-[500px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
                                         <section className="gap-y-2 gap-x-8 flex flex-col flex-wrap max-h-[300px] p-4 min-w-0">
                                             <Link href="/product" className="flex items-center">
                                                 <div className="bg-[#df5658] w-1 h-3 ml-2 rounded-lg"></div>
