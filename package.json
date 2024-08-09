@@ -12,6 +12,7 @@
     "@nextui-org/react": "^2.4.1",
     "buffer": "^6.0.3",
     "framer-motion": "^11.2.10",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.394.0",
     "mongoose": "^8.5.1",

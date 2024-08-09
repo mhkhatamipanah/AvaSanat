@@ -4,7 +4,9 @@ import Image from 'next/image'
 import Title from '../../Title/Title'
 import { Button } from "@nextui-org/button";
 import Link from 'next/link';
-
+import icon1 from "@/public/images/icon/1.png"
+import icon2 from "@/public/images/icon/2.png"
+import icon3 from "@/public/images/icon/3.png"
 
 const AboutUs = () => {
   return (
@@ -14,18 +16,49 @@ const AboutUs = () => {
           <Title text={" درباره ما"} size={28} />
 
           <section className='grid grid-cols-9 w-full  lg:gap-16 mt-3  '>
-            <div className='col-span-9 lg:col-span-4 w-full my-2 lg:my-8 overflow-hidden'>
-              <section className='flex  gap-6'>
-                <div >
-                  <span className='block w-3 rounded-xl bg-[var(--color-2)] h-24'></span>
-
-                </div>
+            <div className='col-span-9 lg:col-span-4 w-full my-2 justify-center flex flex-col overflow-hidden'>
+              <section className='flex gap-6'>
                 <div>
-                  <h3 className='text-xl md:text-2xl lg:text-3xl iranSansDemibold'>
-                    با افتخار آماده همراهی شما هستیم
+                  <h3 className='text-xl md:text-2xl lg:text-3xl iranSansDemibold  text-center'>
+                    {/* <span className="border-b-red-400  border-b-4 border-t-0 border-l-0 border-r-0"> */}
+                      خدمات و سرویس های ما
+                    {/* </span> */}
                   </h3>
-                  <p className='text-gray-500 md:text-md lg:text-[16px] mt-8'>برای ارائه بهترین خدمات و محصولات، تمام تلاش خود را به کار گرفته ایم...
+                  <p className='text-gray-500 md:text-md lg:text-[16px] mt-8 text-center'>برای ارائه بهترین خدمات و محصولات، تمام تلاش خود را به کار گرفته ایم...
                   </p>
+                  <div class="container flex px-5 mx-auto">
+                    <div class="flex flex-wrap text-center justify-center">
+                      <div class="p-4 ">
+                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div class="flex justify-center">
+                            <Image src={icon3} class="w-32 mb-3" />
+                          </div>
+                          <h2 class="title-font font-regular text-md text-gray-800">قطعات باکیفیت</h2>
+                        </div>
+                      </div>
+
+                      <div class="p-4 ">
+                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div class="flex justify-center">
+                            <Image src={icon1} class="w-32 mb-3" />
+                          </div>
+                          <h2 class="title-font font-regular text-md text-gray-800">قیمت رقابتی</h2>
+                        </div>
+                      </div>
+
+
+
+                      <div class="p-4 ">
+                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div class="flex justify-center">
+                            <Image src={icon2} class="w-32 mb-3" />
+                          </div>
+                          <h2 class="title-font font-regular text-md text-gray-800">مشاوره از خرید تا نصب</h2>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
 
               </section>
@@ -34,14 +67,14 @@ const AboutUs = () => {
 
 
               </p>
-              <div className='flex gap-3'>
+              {/* <div className='flex gap-3'>
                 <Link href={"/contact-us"}>
-                  <Button className='bg-[#df1c4c] text-white' >ثبت پیام</Button>
+                  <Button className='bg-[#fe405a] text-white' >ثبت پیام</Button>
                 </Link>
                 <Link href={"/about-us"}>
-                  <Button variant="bordered" className='border border-solid border-[#df1c4c]' >درباره ما </Button>
+                  <Button variant="bordered" className='border border-solid border-[#fe405a]' >درباره ما </Button>
                 </Link>
-              </div>
+              </div> */}
 
             </div>
             <div className='h-full col-span-9 lg:col-span-5 w-full relative flex flex-col justify-center'>

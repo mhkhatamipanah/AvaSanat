@@ -13,7 +13,7 @@ export default function PaginationProvider({ countData, perPage }) {
   }
   return (
     <>
-      <div className="w-full flex justify-center py-2">
+      <div className="w-full flex justify-center py-2 my-2">
 
         <Pagination showControls className="ltr" total={pages} page={1}
          onChange={handleChange} 

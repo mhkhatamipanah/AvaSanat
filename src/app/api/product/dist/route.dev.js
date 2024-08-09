@@ -234,7 +234,9 @@ function GET(req, res) {
               newArr: newArr,
               title: ducomentProduct.title,
               description: ducomentProduct.description,
-              route: ducomentProduct.routeProduct
+              route: ducomentProduct.routeProduct,
+              id: ducomentProduct._id,
+              indexMainImage: ducomentProduct.indexMainImage
             };
           });
           return _context3.abrupt("return", _server.NextResponse.json({

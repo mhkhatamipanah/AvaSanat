@@ -1,13 +1,14 @@
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Badge } from "@nextui-org/react";
 import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Search, ShoppingBag, ShoppingCart, Vote } from 'lucide-react';
 import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation'
+
 import logo from "@/public/images/png persian.png"
 import { useEffect, useState } from "react";
 import fetchCategory from "@/src/utils/Frontend/allApiLogicFront/Category/CategoryListFetch";
+import { getCookie } from "@/src/utils/Cookie";
 function getOffsetRight(element) {
     if (element) {
         const parent = element.offsetParent;
@@ -45,7 +46,7 @@ const Desktop = () => {
     const spanHoverEnter = (e) => {
 
 
-        if (document.getElementsByClassName("spanUnderLineHover")[0] && ( e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
+        if (document.getElementsByClassName("spanUnderLineHover")[0] && (e.target.tagName === "P" || e.target.tagName === "svg" || e.target.tagName === "SPAN")) {
             if (e.target.tagName === "P") {
                 var parentTag = e.target.parentNode
             }
@@ -53,14 +54,14 @@ const Desktop = () => {
                 var parentTag = e.target.parentNode
             }
             if (e.target.tagName === "svg") {
-                if (e.target.parentNode.tagName === "SPAN"  ) {
+                if (e.target.parentNode.tagName === "SPAN") {
                     var parentTag = e.target.parentNode.parentNode
                 }
-                if(e.target.parentNode.tagName === "DIV"){
+                if (e.target.parentNode.tagName === "DIV") {
                     var parentTag = e.target.parentNode
                 }
             }
-            if(parentTag){
+            if (parentTag) {
                 spanMove(parentTag)
 
             }
@@ -104,7 +105,11 @@ const Desktop = () => {
         spanHoverLeave()
     }, [pathname])
 
-
+    if (getCookie("Avasanat")) {
+        var cookieData = getCookie("Avasanat")
+    } else {
+        var cookieData = null
+    }
 
     return (
         <>
@@ -158,7 +163,7 @@ const Desktop = () => {
                                 >
                                     <div className={`absolute right-0 top-[48px]  max-h-[300px] w-[500px] bg-white shadow-md border border-gray-200 border-solid rounded-md z-50 Menu !transition-all text-black`}  >
                                         <section className="gap-y-2 gap-x-8 flex flex-col flex-wrap max-h-[300px] p-4 min-w-0">
-                                            <Link href="/product" className="flex items-center">
+                                            <Link href="/product" className="flex items-center mb-">
                                                 <div className="bg-[#df5658] w-1 h-3 ml-2 rounded-lg"></div>
                                                 <h6 className="text-[12px] text-gray-600 vazirMedium">همه دسته بندی ها</h6>
                                                 <ChevronLeft className="text-gray-600" size={16} />
@@ -168,7 +173,7 @@ const Desktop = () => {
                                                     return (
                                                         <Link href={`/product/${e.route}`} className="flex items-center" key={e._id}>
                                                             <div className="bg-[#df5658] w-1 h-4 ml-2 rounded-lg"></div>
-                                                            <h6 className="text-[17px] vazirMedium">{e.title}</h6>
+                                                            <h6 className="text-[15px] vazirMedium">{e.title}</h6>
                                                             <ChevronLeft className="text-gray-600" size={18} />
                                                         </Link>
                                                     )
@@ -202,17 +207,29 @@ const Desktop = () => {
                                 <p className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} >تماس با ما </p>
                             </Link>
                         </ul>
-                        <Button className='text-md bg-[var(--color-1)] text-white rounded-md ' variant="shadow">
-                            <ShoppingBag size={28} />
-                            <p className="text-[14px]">
-                                پیش فاکتور
+                        {cookieData ?
+                            <div>
 
-                            </p>
+                                <Badge style={{ border: "1px solid #fe6d67", backgroundColor: "#ffc5cb", color: "black", paddingTop: "3px" }} content={Object.entries(JSON.parse(getCookie("Avasanat"))).length} size="lg" color="warning">
+                                    <Link href={"/invoice"} className='text-md bg-[var(--color-1)] text-white rounded-md w-[140px] h-[40px] flex items-center justify-center gap-1' variant="shadow">
+                                        <ShoppingBag size={28} />
+                                        <p className="text-[14px]">
+                                            پیش فاکتور
+                                        </p>
+                                    </Link>
+                                </Badge>
+                            </div>
+                            :
+                            <div>
+                                <Link href={"/invoice"} className='text-md bg-[var(--color-1)] text-white rounded-md w-[140px] h-[40px] flex items-center justify-center gap-1' variant="shadow">
+                                    <ShoppingBag size={28} />
+                                    <p className="text-[14px]">
+                                        پیش فاکتور
+                                    </p>
+                                </Link>
+                            </div>
 
-
-
-                        </Button>
-
+                        }
                     </div>
 
                 </section>

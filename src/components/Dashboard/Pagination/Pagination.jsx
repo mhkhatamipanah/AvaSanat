@@ -11,7 +11,7 @@ export default function PaginationComponent({ countData, perPage, page, setPage 
   }
   return (
     <>
-      <div className="w-full flex justify-center py-2">
+      <div className="w-full flex justify-center py-2 mb-5">
 
         <Pagination showControls className="ltr" total={pages} page={page} onChange={handleChange} />
       </div>

@@ -3,7 +3,7 @@ import React from 'react'
 const AllBlogs = () => {
     return (
         <>
-            <section className=' flex justify-center w-full my-20   '>
+            <section className=' flex justify-center w-full my-20 min-h-screen   '>
 
                 <div className='w-full grid grid-cols-5 gap-3 max-w-[1500px]'>
 

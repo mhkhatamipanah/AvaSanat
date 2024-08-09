@@ -127,6 +127,8 @@ export async function GET(req, res) {
         title: ducomentProduct.title,
         description: ducomentProduct.description,
         route: ducomentProduct.routeProduct,
+        id:ducomentProduct._id,
+        indexMainImage:ducomentProduct.indexMainImage
       };
     });
     return NextResponse.json({ data: imageData });

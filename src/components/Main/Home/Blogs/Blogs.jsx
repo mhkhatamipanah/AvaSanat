@@ -28,7 +28,10 @@ const Blogs = () => {
                     </div>
                     <div className=' grid grid-cols-3 gap-3'>
                         <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
-                            <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover rounded-md" alt="" />
+                            <div className='overflow-hidden cursor-pointer rounded-md'>
+                                <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="" />
+                            </div>
+
 
                             <div className="p-4">
 
@@ -42,7 +45,9 @@ const Blogs = () => {
                             </div>
                         </div>
                         <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
-                            <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover rounded-md" alt="" />
+                             <div className='overflow-hidden cursor-pointer rounded-md'>
+                                <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="" />
+                            </div>
                             <div className="p-4">
 
                                 <h3 className="text-xl font-medium text-gray-900 vazirDemibold oneLineShow ">تیتر مقاله اگر زیاد اینجا نوشته شود سه نقطه نمایش داده خواهد شد</h3>
@@ -55,7 +60,9 @@ const Blogs = () => {
                             </div>
                         </div>
                         <div className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
-                            <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover rounded-md" alt="" />
+                             <div className='overflow-hidden cursor-pointer rounded-md'>
+                                <Image width={700} height={500} src={img1} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="" />
+                            </div>
                             <div className="p-4">
 
                                 <h3 className="text-xl font-medium text-gray-900 vazirDemibold oneLineShow">تیتر مقاله </h3>

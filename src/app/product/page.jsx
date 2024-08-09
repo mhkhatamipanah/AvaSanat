@@ -29,11 +29,11 @@ const Page =  () => {
 
   return (
     <>
-      <section className=' flex justify-center w-full my-20'>
+      <section className=' flex justify-center w-full my-20 min-h-screen'>
         <div className='max-w-[1500px] grid grid-cols-4 gap-3 justify-center'>
           {data && data.data && data.data.map((e, i) => {
 
-            return (<Link href={`/product/${e.route}`} key={`${i}354`} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80">
+            return (<Link href={`/product/${e.route}`} key={`${i}354`} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80 h-min">
               <div className=" mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg h-60">
                 <img className='object-cover w-full h-full' src={`data:image/webp;base64,${e.imageBase64}`} alt="profile-picture" />
               </div>
