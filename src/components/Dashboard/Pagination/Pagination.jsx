@@ -5,7 +5,6 @@ export default function PaginationComponent({ countData, perPage, page, setPage 
   const countOfData = countData ? Object.values(countData)[0] : 1
   const pages = Math.ceil(countOfData / perPage);
   const handleChange = (page) => {
-    // setLoading(true)
     setPage(page)
 
   }
