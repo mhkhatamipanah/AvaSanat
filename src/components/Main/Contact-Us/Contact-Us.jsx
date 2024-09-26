@@ -1,10 +1,11 @@
 "use client"
-import { BadgeInfo, Instagram, MapPin, PhoneCall } from 'lucide-react'
+import { BadgeInfo, CaseUpper, Instagram, MapPin, Phone, PhoneCall, SpellCheck } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import img1 from "@/public/images/1.png"
 import { Input, Textarea, Button } from "@nextui-org/react";
 import { toast } from 'sonner'
+import { ApiActions } from '@/src/utils/Frontend/ApiActions'
 
 const ContactUs = () => {
   const [isSendOTP, setIsSendOTP] = useState(false)
@@ -21,11 +22,11 @@ const ContactUs = () => {
         return;
       }
     }
-    // checkCode()
+    sendOtpHandler()
   }
 
   function gobackOTP(e) {
-    if (e.keyCode === 13) checkCode()
+    if (e.keyCode === 13) sendOtpHandler()
     if (e.keyCode === 8) {
       let num = null
       for (let i = 0; i < 6; i++) {
@@ -37,6 +38,56 @@ const ContactUs = () => {
         }
       }
     }
+  }
+
+  const [title, setTitle] = useState("")
+  const [phone, setPhone] = useState("")
+  const [description, setDescription] = useState("")
+
+  const { sendOtp, checkOtp } = ApiActions()
+  const sendOtpHandler = async () => {
+
+    if (isSendOTP) {
+      // check otp
+
+      let code = '';
+
+      for (let i = 0; i < 6; i++) {
+        code += document.querySelectorAll('.otp-input')[i].value;
+      }
+      if (code.length !== 6) {
+        toast.error("لطفا کل کد را وارد کنید")
+        return;
+      }
+      if (!/^\d+$/.test(code)) {
+        toast.error("لطفا عدد وارد کنید")
+        return;
+      }
+      console.log(code);
+      const data = { phone, code, title, description }
+      checkOtp(data)
+    } else {
+      // send Otp
+
+      if (!phone.trim()) {
+        toast.error("لطفا شماره تلفن را وارد کنید")
+        return
+      }
+      const data = { phone }
+      const sendOtpApi = await sendOtp(data)
+      if (sendOtpApi) {
+        setIsSendOTP(true)
+        toast.info("کد یکبار مصرف را وارد کنید")
+
+      } else {
+        toast.error("مشکلی پیش آمده")
+
+      }
+
+
+    }
+
+
   }
   return (
     <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-6 mx-auto vazirMedium mb-20'>
@@ -50,29 +101,35 @@ const ContactUs = () => {
 
               </div>
               <Input
-                // value={categoryInput}
-                // onChange={(e) => { setCategoryInput(e.target.value) }}
+                value={title}
+                onChange={(e) => { setTitle(e.target.value) }}
                 className="labelRight"
                 label="موضوع"
                 placeholder="موضوع را وارد کنید"
                 labelPlacement="outside"
                 endContent={
-                  <p>hi</p>
+                  <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                 }
               />
               <Input
-                // value={categoryInput}/
-                // onChange={(e) => { setCategoryInput(e.target.value) }}
+
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value)
+                }}
                 className="labelRight"
                 label="شماره تلفن"
                 placeholder="شماره تلفن را وارد کنید"
                 labelPlacement="outside"
                 endContent={
-                  <p>hi</p>
+                  <Phone className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                 }
               />
               <Textarea
 
+
+                value={description}
+                onChange={(e) => { setDescription(e.target.value) }}
                 label="توضیحات"
                 placeholder="پیام خود را وارد کنید"
                 className=" col-span-2 textareaStyle"
@@ -92,9 +149,7 @@ const ContactUs = () => {
               }
 
               <div className='col-span-2 w-full flex justify-center'>
-                <Button onClick={() => { 
-                  toast.info("کد یکبار مصرف را وارد کنید")
-                  setIsSendOTP(true) }} className='bg-[#d94038] text-white w-1/2'>
+                <Button onClick={sendOtpHandler} className='bg-[#d94038] text-white w-1/2'>
                   ثبت پیام
                 </Button>
               </div>

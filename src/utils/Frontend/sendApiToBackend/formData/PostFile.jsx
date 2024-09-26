@@ -1,4 +1,4 @@
-// import { toast } from "sonner";
+import { toast } from "sonner";
 
 // const sendRequest = (url, formData, router = false) => {
 //   return new Promise(async (resolve, reject) => {
@@ -51,40 +51,40 @@
 
 
 
-// // const postFile = async (
-// //     url,
-// //     data,
-// //     router = false
-// //     //  setloading
-// // ) => {
-// //     try {
-// //         const res = await fetch(url, {
-// //             method: "POST",
-// //             // headers: { "Content-Type": "application/json" },
-// //             body: data,
-// //         });
+const postFile = async (
+    url,
+    data,
+    router = false
+    //  setloading
+) => {
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            // headers: { "Content-Type": "application/json" },
+            body: data,
+        });
 
-// //         if (res.redirected && router) {
-// //             router.push(res.url);
-// //             resolve({ routePush: 1 });
-// //             return;
-// //         }
-// //         const result = await res.json();
-// //         if (res.status === 200 || res.status === 201) {
-// //             // resolve({ result, res });
-// //             console.log(result)
-// //         } else {
-// //             // reject(result.message);
-// //         }
-// //     } catch (error) {
-// //         console.log("error", error);
-// //         reject("ارور در درخواست");
-// //     }
-// // }
+        if (res.redirected && router) {
+            router.push(res.url);
+            resolve({ routePush: 1 });
+            return;
+        }
+        const result = await res.json();
+        if (res.status === 200 || res.status === 201) {
+            // resolve({ result, res });
+            console.log(result)
+        } else {
+            // reject(result.message);
+        }
+    } catch (error) {
+        console.log("error", error);
+        reject("ارور در درخواست");
+    }
+}
 
 
 
-// export default postFile;
+export default postFile;
 
 
 const sendRequest = (url, formData, router = false) => {

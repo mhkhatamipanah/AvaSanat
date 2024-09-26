@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.1",
+    "axios": "^1.7.7",
     "buffer": "^6.0.3",
     "framer-motion": "^11.2.10",
     "js-cookie": "^3.0.5",
@@ -21,7 +22,8 @@
     "react-dom": "^18",
     "sharp": "^0.33.4",
     "sonner": "^1.5.0",
-    "sweetalert2": "^11.12.2"
+    "sweetalert2": "^11.12.2",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",

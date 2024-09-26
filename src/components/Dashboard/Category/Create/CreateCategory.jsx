@@ -1,6 +1,7 @@
 "use client"
 import postFile from "@/src/utils/Frontend/sendApiToBackend/formData/PostFile"
 import { Input, Button } from "@nextui-org/react"
+import { CaseUpper, SpellCheck, Text } from "lucide-react"
 import { useEffect } from "react"
 import { useState, useRef } from "react"
 
@@ -115,7 +116,7 @@ const CreateCategory = () => {
                     placeholder="دسته بندی را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <SpellCheck className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
                 <Input
@@ -126,7 +127,7 @@ const CreateCategory = () => {
                     placeholder="توضیح کوتاه را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
                       <Input
@@ -137,7 +138,7 @@ const CreateCategory = () => {
                     placeholder="URL را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <Text className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
               

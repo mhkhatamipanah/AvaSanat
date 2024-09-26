@@ -26,34 +26,34 @@ const AboutUs = () => {
                   </h3>
                   <p className='text-gray-500 md:text-md lg:text-[16px] mt-8 text-center'>برای ارائه بهترین خدمات و محصولات، تمام تلاش خود را به کار گرفته ایم...
                   </p>
-                  <div class="container flex px-5 mx-auto">
-                    <div class="flex flex-wrap text-center justify-center">
-                      <div class="p-4 ">
-                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
-                          <div class="flex justify-center">
-                            <Image src={icon3} class="w-32 mb-3" />
+                  <div className="container flex px-5 mx-auto">
+                    <div className="flex flex-wrap text-center justify-center">
+                      <div className="p-4 ">
+                        <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div className="flex justify-center">
+                            <Image src={icon3} className="w-32 mb-3" />
                           </div>
-                          <h2 class="title-font font-regular text-md text-gray-800">قطعات باکیفیت</h2>
+                          <h2 className="title-font font-regular text-md text-gray-800">قطعات باکیفیت</h2>
                         </div>
                       </div>
 
-                      <div class="p-4 ">
-                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
-                          <div class="flex justify-center">
-                            <Image src={icon1} class="w-32 mb-3" />
+                      <div className="p-4 ">
+                        <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div className="flex justify-center">
+                            <Image src={icon1} className="w-32 mb-3" />
                           </div>
-                          <h2 class="title-font font-regular text-md text-gray-800">قیمت رقابتی</h2>
+                          <h2 className="title-font font-regular text-md text-gray-800">قیمت رقابتی</h2>
                         </div>
                       </div>
 
 
 
-                      <div class="p-4 ">
-                        <div class="px-4 py-6 transform transition duration-500 hover:scale-110">
-                          <div class="flex justify-center">
-                            <Image src={icon2} class="w-32 mb-3" />
+                      <div className="p-4 ">
+                        <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
+                          <div className="flex justify-center">
+                            <Image src={icon2} className="w-32 mb-3" />
                           </div>
-                          <h2 class="title-font font-regular text-md text-gray-800">مشاوره از خرید تا نصب</h2>
+                          <h2 className="title-font font-regular text-md text-gray-800">مشاوره از خرید تا نصب</h2>
                         </div>
                       </div>
 

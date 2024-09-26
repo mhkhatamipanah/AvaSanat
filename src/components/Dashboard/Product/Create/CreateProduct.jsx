@@ -2,6 +2,7 @@
 import postFile from "@/src/utils/Frontend/sendApiToBackend/formData/PostFile"
 import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import { Input, Button, SelectItem, Select, Spinner } from "@nextui-org/react"
+import { CaseUpper, SpellCheck, Text } from "lucide-react"
 import { useEffect } from "react"
 import { useState, useRef } from "react"
 
@@ -113,7 +114,7 @@ const CreateProduct = () => {
     const [titleInput, setTitleInput] = useState("");
     const [textInput, setTextInput] = useState("");
     const [urlInput, setUrlInput] = useState("");
-    
+
     const [arrayImmages, setArrayImmages] = useState([])
     const [preview, setPreview] = useState([]);
 
@@ -145,7 +146,7 @@ const CreateProduct = () => {
         formData.append("description", textInput);
         formData.append("category", categoryInput);
         formData.append("urlProduct", urlInput);
-        
+
         arrayImmages.forEach((file, index) => {
             formData.append(`file${index}`, file);
         });
@@ -164,7 +165,7 @@ const CreateProduct = () => {
                     placeholder="دسته بندی را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <SpellCheck className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
                 <Input
@@ -175,10 +176,10 @@ const CreateProduct = () => {
                     placeholder="توضیح کوتاه را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
-                      <Input
+                <Input
                     value={urlInput}
                     onChange={(e) => { setUrlInput(e.target.value) }}
                     className="labelRight"
@@ -186,7 +187,7 @@ const CreateProduct = () => {
                     placeholder="URL را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <p>hi</p>
+                        <Text className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
 

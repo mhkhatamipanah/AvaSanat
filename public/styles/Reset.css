@@ -91,12 +91,25 @@ body{
   direction: ltr !important;
 }
 .oneLineShow{
-  display: -webkit-box;
+  /* display: -webkit-box; */
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap; /* برای محدود کردن به یک خط */
+  text-align: center;  /* ترازبندی افقی */
+  line-height: normal; /* تنظیم ارتفاع خط در صورت نیاز */
 }
+.oneLineShow p {
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
 .twoLineShow{
     display: -webkit-box;
     -webkit-line-clamp: 2;
