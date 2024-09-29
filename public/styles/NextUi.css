@@ -1,83 +1,124 @@
-.inputNextUi div div{
-    min-height: 35px !important;
-    height: 45px !important;
+.inputNextUi div div {
+  min-height: 35px !important;
+  height: 45px !important;
 }
-.inputNextUi{
-    border-radius: 7px !important;
+.inputNextUi {
+  border-radius: 7px !important;
 }
-.inputNextUi div{
-    border-radius: 7px !important;
+.inputNextUi div {
+  border-radius: 7px !important;
 }
-.inputNextUi div div{
-    border-radius: 7px !important;
+.inputNextUi div div {
+  border-radius: 7px !important;
 }
 
+/* Input Label NextUi */
+.labelInputNextUi label {
+  right: 0 !important;
+  left: none !important;
+}
 
+.labelInputNextUi svg[role="presentation"] {
+  right: auto !important;
+  left: 10px !important;
+}
+
+.labelInputNextUi span {
+  text-align: right !important;
+}
+
+.labelInputNextUi div div:first-child {
+  border: 2px solid #cfcfcf;
+}
+.labelInputNextUi div div div {
+  border: none !important;
+}
 
 /* Tabs */
-.TabContainerNextUI div{
-    height: 100%;
+.TabContainerNextUI div {
+  height: 100%;
 }
 
-.TabNextUI2 span{
-    height: 3px !important;
+.TabNextUI2 span {
+  height: 3px !important;
 }
-
 
 /* label */
-.labelRight div div label {
-    right: 0 !important;
-    left: none !important;
+.borderInput .labelRight div div label {
+  right: 0 !important;
+  left: none !important;
+}
+.group[data-filled-within="true"] .group-data-\[filled-within\=true\]\:left-0 {
+  left: none !important;
+  right: 0 !important;
 }
 .labelRight div div div {
-padding: 0 10px !important;
-border-radius: 10px;
+  padding: 0 10px !important;
+  border-radius: 10px;
 }
 .labelRight div div {
-    background-color: rgb(237, 237, 237);
-    border: 1px solid rgb(205, 205, 205) !important;
-padding: 0 !important;
+  background-color: rgb(237, 237, 237);
+  border: 1px solid rgb(205, 205, 205) !important;
+  padding: 0 !important;
 }
 .labelRight div div div {
-    border:  none !important;
+  border: none !important;
 }
-
 
 /* textarea */
-.textareaStyle div:nth-child(1){
-    background-color: rgb(237, 237, 237);
-    border: 1px solid rgb(205, 205, 205) !important;
-    height: 200px !important;
-}   
+.textareaStyle div:nth-child(1) {
+  background-color: rgb(237, 237, 237);
+  height: 200px !important;
+  border: 2px solid #cfcfcf;
+
+}
+.textAreaNextUi div:nth-child(1) {
+  border: 2px solid #cfcfcf;
+}
 
 /* select */
-.selectNextUi div button svg{
-    left: 0.75rem !important;
-    right: auto !important;
-
+.selectNextUi div button svg {
+  left: 0.75rem !important;
+  right: auto !important;
 }
-.selectNextUi div button{
-    min-height: 0 !important;
-    height: 40px !important;
-    background-color: rgb(237, 237, 237);
-    border: 1px solid rgb(205, 205, 205) !important;
+.selectNextUi div button {
+  min-height: 0 !important;
+  height: 40px !important;
+  background-color: rgb(237, 237, 237);
+  border: 1px solid rgb(205, 205, 205) !important;
 }
-.selectNextUi div button div span{
-    text-align: right;
-    height: 35px;
+.selectNextUi div button div span {
+  text-align: right;
+  height: 35px;
 }
-.spanSize div button div span{
-    height: 22px;
-    font-size: 12px;
+.spanSize div button div span {
+  height: 22px;
+  font-size: 12px;
 }
 .group[data-filled="true"] .group-data-\[filled\=true\]\:scale-85 {
-    --tw-scale-x: 1 !important;
-    --tw-scale-y: 1 !important;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  }
+  --tw-scale-x: 1 !important;
+  --tw-scale-y: 1 !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 
-  .group[data-filled="true"] .group-data-\[filled\=true\]\:-translate-y-\[calc\(50\%_\+_theme\(fontSize\.small\)\/2_-_6px_-_theme\(borderWidth\.medium\)\)\] {
-    --tw-translate-y: calc(calc(180% + var(--nextui-font-size-small) / 2 - 6px - var(--nextui-border-width-medium)) * -1) !important;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-    
-  }
+.group[data-filled="true"]
+  .group-data-\[filled\=true\]\:-translate-y-\[calc\(50\%_\+_theme\(fontSize\.small\)\/2_-_6px_-_theme\(borderWidth\.medium\)\)\] {
+  --tw-translate-y: calc(
+    calc(
+        180% + var(--nextui-font-size-small) / 2 - 6px -
+          var(--nextui-border-width-medium)
+      ) * -1
+  ) !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+/* modal */
+.exitPlaceIcon > button {
+  left: 10 !important;
+  top: 14px !important;
+  right: calc(100% - 45px) !important;
+}

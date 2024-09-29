@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Spinner, Input, Button } from "@nextui-org/react";
-import { CircleFadingPlus, Maximize, Minimize, Search } from "lucide-react";
+import {
+  CircleFadingPlus,
+  Maximize,
+  Minimize,
+  MoveUp,
+  Search,
+  UploadCloudIcon,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 import img1 from "@/public/images/no-resualt.png";
 import PaginationComponent from "../Pagination/PaginationComponents";
-
 
 const TableComponents = ({
   fetchData,
@@ -17,10 +23,6 @@ const TableComponents = ({
   urlAddIcon,
   isHead = true,
   rerender,
-  isFullScreen = false,
-  idSectionForFullScreen,
-  isMaximize,
-  setIsMaximize,
   openFunc = false,
   idGroup,
 }) => {
@@ -82,7 +84,7 @@ const TableComponents = ({
       <>
         <section className="overflow-hidden flex flex-col lg:min-w-[500px]">
           {isHead ? (
-            <div className="flex justify-between items-center mb-3 px-2 gap-6">
+            <div className="flex justify-between items-center mb-3 px-2 pl-0 gap-6">
               <div className="flex gap-2 items-center">
                 <p className="vazirMedium text-[16px]"> {title}</p>
                 <p className="vazirMedium text-[13px]">
@@ -132,73 +134,6 @@ const TableComponents = ({
                     <option value="12">12</option>
                   </select>
                 )}
-                {data?.length > 0 &&
-                  isFullScreen &&
-                  (isMaximize == idSectionForFullScreen ? (
-                    <Minimize
-                      className="cursor-pointer"
-                      onClick={() => {
-                        // حذف کلاس از سایر سکشن‌ها
-                        for (let i = 1; i <= 4; i++) {
-                          const otherSection = document.getElementById(
-                            `section-${i}`
-                          );
-                          if (otherSection) {
-                            // حذف کلاس از سایر سکشن‌ها
-                            otherSection.classList.remove(
-                              "col-span-1",
-                              "xl:col-span-2"
-                            );
-                          }
-                        }
-
-                        const container = document.getElementById("container");
-                        if (container) {
-                          // سکشن‌ها را به ترتیب به کانتینر اضافه می‌کنیم
-                          for (let i = 1; i <= 4; i++) {
-                            const section = document.getElementById(
-                              `section-${i}`
-                            );
-                            if (section) {
-                              container.append(section); // اضافه کردن سکشن به انتهای کانتینر
-                            }
-                          }
-                        }
-                        setIsMaximize(false);
-                      }}
-                    />
-                  ) : (
-                    <Maximize
-                      onClick={() => {
-                        const section = document.getElementById(
-                          `section-${idSectionForFullScreen}`
-                        );
-
-                        // اضافه کردن کلاس‌ها بدون تغییر کلاس‌های دیگر
-                        section.classList.add("col-span-1", "xl:col-span-2");
-
-                        // حذف کلاس از سایر سکشن‌ها
-                        for (let i = 1; i <= 4; i++) {
-                          const otherSection = document.getElementById(
-                            `section-${i}`
-                          );
-                          if (otherSection && i !== idSectionForFullScreen) {
-                            // حذف کلاس از سایر سکشن‌ها
-                            otherSection.classList.remove(
-                              "col-span-1",
-                              "xl:col-span-2"
-                            );
-                          }
-                        }
-                        setIsMaximize(idSectionForFullScreen);
-                        const container = document.getElementById("container");
-                        if (container) {
-                          container.prepend(section); // اضافه کردن سکشن به عنوان اولین فرزند
-                        }
-                      }}
-                      className="cursor-pointer"
-                    />
-                  ))}
               </div>
             </div>
           ) : null}
@@ -210,7 +145,7 @@ const TableComponents = ({
               onChange={(e) => {
                 setTextSearch(e.target.value);
               }}
-              className="labelInputNextUi borderInput marginControl mb-4 md:mb-8"
+              className="labelInputNextUi borderInput marginControl  mb-4"
               type="text"
               placeholder=" جست و جو..."
               // isRequired={true}

@@ -7,7 +7,7 @@ import { useState, useRef } from "react"
 
 
 
-const CreateCategory = () => {
+const   CreateCategory = () => {
 
     useEffect(() => {
         const handleDragOver = (e) => {
@@ -144,7 +144,7 @@ const CreateCategory = () => {
               
 
 
-                <div className="flex items-center justify-center w-full col-span-4 ">
+                <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-3 2xl:col-span-4  ">
                     <label ref={wrapperRef}
                         onDragEnter={onDragEnter}
                         onDragLeave={onDragLeave}

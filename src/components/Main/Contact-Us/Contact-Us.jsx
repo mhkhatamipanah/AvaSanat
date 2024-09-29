@@ -63,9 +63,29 @@ const ContactUs = () => {
         toast.error("لطفا عدد وارد کنید")
         return;
       }
-      console.log(code);
+      if (!title.trim()) {
+        toast.error("لطفا تیتر را وارد کنید")
+        return
+      }
+      if (!description.trim()) {
+        toast.error("لطفا توضیحات را وارد کنید")
+        return
+      }
       const data = { phone, code, title, description }
-      checkOtp(data)
+      const res = await checkOtp(data);
+
+      if (res) {
+        setTitle("")
+        setPhone("")
+        setDescription("")
+        setIsSendOTP(false)
+        for (let i = 0; i < 6; i++) {
+          document.querySelectorAll('.otp-input')[i].value = ""
+        }
+      }
+
+
+
     } else {
       // send Otp
 
@@ -73,21 +93,13 @@ const ContactUs = () => {
         toast.error("لطفا شماره تلفن را وارد کنید")
         return
       }
+
       const data = { phone }
-      const sendOtpApi = await sendOtp(data)
-      if (sendOtpApi) {
+      const res = sendOtp(data)
+      if (res) {
         setIsSendOTP(true)
-        toast.info("کد یکبار مصرف را وارد کنید")
-
-      } else {
-        toast.error("مشکلی پیش آمده")
-
       }
-
-
     }
-
-
   }
   return (
     <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-6 mx-auto vazirMedium mb-20'>

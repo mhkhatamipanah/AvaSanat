@@ -15,81 +15,101 @@ const page = () => {
   const [countData, setCountData] = useState(null)
   const [perPage, setPerPage] = useState(12)
   const [page, setPage] = useState(1)
-  
+
   useEffect(() => {
     let data = {
-        perPage: perPage,
-        page: page,
-        // ...(sendOrRecevied ? { sendOrRecevied } : {}),
+      perPage: perPage,
+      page: page,
+      // ...(sendOrRecevied ? { sendOrRecevied } : {}),
     };
-    let count ={
-      count : true
+    let count = {
+      count: true
     }
-    getApi(`/api/category?${(new URLSearchParams(data)).toString()}`, setData )
-    getApi(`/api/category?${(new URLSearchParams(count)).toString()}`, setCountData )
+    getApi(`/api/category?${(new URLSearchParams(data)).toString()}`, setData)
+    getApi(`/api/category?${(new URLSearchParams(count)).toString()}`, setCountData)
     // getApi("/api/category", setData)
   }, [
-    page,perPage
+    page, perPage
     //  , rerender
   ])
 
   return (
     <>
-      <div className='flex justify-between items-center'>
+      <div
+        className="p-2 lg:p-3 grid grid-cols-1 justify-center w-full gap-4"
+        id="container"
+      >
+        <section
+          id="section-1"
+          className={`w-full flex flex-col h-full bg-[#ffffff] rounded-lg boxShadow p-4 min-h-[600px]`}
+        >
 
-        <Link href="/dashboard/category/create">
-          <Button className='bg-green-700 text-white'>
-            دسته بندی جدید
-            <BadgePlus />
-          </Button>
 
-        </Link>
-        <div className='w-28'>
-          <Select
-            value={perPage}
-            onSelectionChange={(e) => {
-              const values = e.values();
-              setPerPage(values.next().value)
-            }}
-            variant={"bordered"}
-            placeholder="تعداد نمایش"
-            className="max-w-xs selectNextUi spanSize"
-          >
-            <SelectItem value={12} key={12}>
-              12
-            </SelectItem>
-            <SelectItem value={18} key={18}>
-              18
-            </SelectItem>
-            <SelectItem value={24} key={24}>
-              24
-            </SelectItem>
-          </Select>
-        </div>
-      </div>
-      {/* <Category/> */}
-      {data && data.data &&
-        <>
-          <div className='grid grid-cols-5 gap-4 py-2'>
-            {
-              data.data.map((e, i) => {
-                return (
-                  <div className='bg-red-200 w-full rounded-lg h-full' key={i}>
+          <div className='flex justify-between items-center mb-3 px-3'>
 
-                    <img className=' aspect-square object-cover w-full h-full rounded-lg border border-gray-300' src={`data:image/webp;base64,${e.imageBase64}`} alt="" />
-                    <p>{e.title}</p>
-                    <p>{e.description}</p>
-                  </div>
-                )
+            <Link href="/dashboard/category/create">
+              <Button className='bg-green-700 text-white'>
+                دسته بندی جدید
+                <BadgePlus />
+              </Button>
 
-              })
-            }
+            </Link>
+            <div className='w-24'>
+              <Select
+                value={perPage}
+                onSelectionChange={(e) => {
+                  const values = e.values();
+                  setPerPage(values.next().value)
+                }}
+                variant={"bordered"}
+                placeholder=" نمایش"
+                className="max-w-xs selectNextUi spanSize"
+              >
+                <SelectItem value={12} key={12}>
+                  12
+                </SelectItem>
+                <SelectItem value={18} key={18}>
+                  18
+                </SelectItem>
+                <SelectItem value={24} key={24}>
+                  24
+                </SelectItem>
+              </Select>
+            </div>
           </div>
-          <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
-        </>
-      }
+          {/* <Category/> */}
+          {data && data.data &&
+            <>
+              <div className='grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-2'>
+                {
+                  data.data.map((e, i) => {
+                    return (
+                      <div className=' w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
+                        <div className='w-full aspect-square overflow-hidden rounded-lg'>
+                          <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400' src={`data:image/webp;base64,${e.imageBase64}`} alt="" />
+
+                        </div>
+                        <div className='oneLineShow'>
+                          <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
+
+                        </div>
+                        <div className='twoLineShow'>
+                          <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.description}</p>
+
+                        </div>
+                      </div>
+                    )
+
+                  })
+                }
+              </div>
+              <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
+            </>
+          }
 
 
+        </section>
+      </div>
     </>
   )
 }

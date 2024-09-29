@@ -56,8 +56,8 @@ const ProviderSideBar = ({getChildren}) => {
        <SidebarItem
         icon={<MailOpen  />}
         text={" تماس با ما"}
-        link={"/dashboard/contactUs"}
-        active={pathname.includes("/dashboard/contactUs")}
+        link={"/dashboard/contact-us"}
+        active={pathname.includes("/dashboard/contact-us")}
 
       />
   

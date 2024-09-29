@@ -156,7 +156,7 @@ const CreateProduct = () => {
 
     return (
         <>
-            <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-4 mb-10">
+            <div className="grid gap-4 gap-y-10 md:grid-cols-2 2xl:grid-cols-4 mb-10">
                 <Input
                     value={titleInput}
                     onChange={(e) => { setTitleInput(e.target.value) }}
@@ -201,7 +201,7 @@ const CreateProduct = () => {
                         }}
                         variant="faded"
                         label="دسته بندی را انتخاب کنید"
-                        className="max-w-xs selectNextUi w-full"
+                        className="selectNextUi w-full"
                     >
                         {category && category.data && category.data.map((e) => {
                             return (
@@ -225,7 +225,7 @@ const CreateProduct = () => {
                     </Select>
                 </div>
 
-                <div className="flex items-center justify-center w-full col-span-4 ">
+                <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-3 2xl:col-span-4  ">
                     <label ref={wrapperRef}
                         onDragEnter={onDragEnter}
                         onDragLeave={onDragLeave}

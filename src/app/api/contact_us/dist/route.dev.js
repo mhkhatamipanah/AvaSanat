@@ -139,7 +139,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, countData, perPage, page, category;
+  var _ref, searchParams, countData, perPage, page, search, category;
 
   return regeneratorRuntime.async(function GET$(_context2) {
     while (1) {
@@ -188,22 +188,24 @@ function GET(req, res) {
 
         case 4:
           countData = _context2.sent;
-          perPage = searchParams.get("perPage");
+          perPage = searchParams.get("per_page");
           page = searchParams.get("page");
-          _context2.next = 9;
-          return regeneratorRuntime.awrap(_MessageModel["default"].find({}, "-__v") // .sort({ createdAt: -1 })
-          .limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
+          search = searchParams.get("search");
+          _context2.next = 10;
+          return regeneratorRuntime.awrap(_MessageModel["default"].find({}, "-__v").sort({
+            createdAt: -1
+          }).limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 9:
+        case 10:
           category = _context2.sent;
           return _context2.abrupt("return", _server.NextResponse.json({
             results: category,
             total_items: countData
           }));
 
-        case 11:
+        case 12:
         case "end":
           return _context2.stop();
       }
