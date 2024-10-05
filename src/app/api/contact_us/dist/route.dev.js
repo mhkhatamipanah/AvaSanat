@@ -139,7 +139,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, countData, perPage, page, search, category;
+  var _ref, searchParams, perPage, page, search, query, countData, category;
 
   return regeneratorRuntime.async(function GET$(_context2) {
     while (1) {
@@ -181,31 +181,49 @@ function GET(req, res) {
           //   return NextResponse.json(order);
           // }
 
-          _context2.next = 4;
-          return regeneratorRuntime.awrap(_MessageModel["default"].countDocuments()["catch"](function (err) {
-            console.log(err);
-          }));
-
-        case 4:
-          countData = _context2.sent;
           perPage = searchParams.get("per_page");
           page = searchParams.get("page");
           search = searchParams.get("search");
-          _context2.next = 10;
-          return regeneratorRuntime.awrap(_MessageModel["default"].find({}, "-__v").sort({
+          query = {};
+
+          if (search && search.trim() !== "") {
+            query = {
+              $or: [{
+                title: {
+                  $regex: search,
+                  $options: "i"
+                }
+              }, {
+                description: {
+                  $regex: search,
+                  $options: "i"
+                }
+              }]
+            };
+          }
+
+          _context2.next = 9;
+          return regeneratorRuntime.awrap(_MessageModel["default"].countDocuments(query)["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 9:
+          countData = _context2.sent;
+          _context2.next = 12;
+          return regeneratorRuntime.awrap(_MessageModel["default"].find(query, "-__v").sort({
             createdAt: -1
           }).limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 10:
+        case 12:
           category = _context2.sent;
           return _context2.abrupt("return", _server.NextResponse.json({
             results: category,
             total_items: countData
           }));
 
-        case 12:
+        case 14:
         case "end":
           return _context2.stop();
       }

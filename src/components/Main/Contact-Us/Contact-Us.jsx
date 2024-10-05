@@ -71,7 +71,7 @@ const ContactUs = () => {
         toast.error("لطفا توضیحات را وارد کنید")
         return
       }
-      const data = { phone, code, title, description }
+      const data =JSON.stringify( { phone, code, title, description })
       const res = await checkOtp(data);
 
       if (res) {
@@ -92,9 +92,15 @@ const ContactUs = () => {
       if (!phone.trim()) {
         toast.error("لطفا شماره تلفن را وارد کنید")
         return
+      } 
+      console.log(phone.length)
+      if (phone.length !== 11) {
+        toast.error("لطفا 11 رقم تلفن را وارد کنید")
+        return
       }
 
-      const data = { phone }
+      const data =  JSON.stringify({ phone })
+      
       const res = sendOtp(data)
       if (res) {
         setIsSendOTP(true)

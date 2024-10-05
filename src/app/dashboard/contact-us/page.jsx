@@ -38,7 +38,7 @@ const page = () => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
 
-  // ModalDelete User
+  // ModalDelete 
 
   const [isOpen, setIsOpen] = useState(false);
   const onModalOpenChange = () => {

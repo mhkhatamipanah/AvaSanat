@@ -16,12 +16,18 @@ var _server = require("next/server");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var mongoose = require("mongoose");
 
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, title, description, category, urlProduct, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
+  var formData, feature, featureData, specifications, specificationsData, title, description, category, indexMainImage, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
   return regeneratorRuntime.async(function POST$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -33,19 +39,23 @@ function POST(req, res) {
 
         case 4:
           formData = _context2.sent;
+          feature = formData.get("feature");
+          featureData = JSON.parse(feature);
+          specifications = formData.get("specifications");
+          specificationsData = JSON.parse(specifications);
           title = formData.get("title");
           description = formData.get("description");
           category = formData.get("category");
-          urlProduct = formData.get("urlProduct");
+          indexMainImage = formData.get("indexMainImage");
           objectId = new mongoose.Types.ObjectId(category);
-          _context2.next = 12;
+          _context2.next = 16;
           return regeneratorRuntime.awrap(_Category["default"].findOne({
             _id: category
           }, "-__v")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 12:
+        case 16:
           oneCategory = _context2.sent;
           routeCategory = oneCategory.route;
           files = [];
@@ -58,8 +68,8 @@ function POST(req, res) {
             }
           }
 
-          _context2.prev = 16;
-          _context2.next = 19;
+          _context2.prev = 20;
+          _context2.next = 23;
           return regeneratorRuntime.awrap(Promise.all(files.map(function _callee(e, i) {
             var bufferData, buffer, res, res2;
             return regeneratorRuntime.async(function _callee$(_context) {
@@ -111,23 +121,26 @@ function POST(req, res) {
             });
           })));
 
-        case 19:
+        case 23:
           filesArray = _context2.sent;
-          _context2.next = 22;
-          return regeneratorRuntime.awrap(_Product["default"].create({
+          _context2.next = 26;
+          return regeneratorRuntime.awrap(_Product["default"].create(_objectSpread({
             title: title,
             description: description,
             category: objectId,
             file: filesArray,
             routeCategory: routeCategory,
-            routeProduct: urlProduct
-          }));
+            feature: featureData,
+            specifications: specificationsData
+          }, indexMainImage && {
+            indexMainImage: indexMainImage
+          })));
 
-        case 22:
+        case 26:
           product = _context2.sent;
 
           if (!product) {
-            _context2.next = 25;
+            _context2.next = 29;
             break;
           }
 
@@ -137,13 +150,13 @@ function POST(req, res) {
             status: 201
           }));
 
-        case 25:
-          _context2.next = 31;
+        case 29:
+          _context2.next = 35;
           break;
 
-        case 27:
-          _context2.prev = 27;
-          _context2.t0 = _context2["catch"](16);
+        case 31:
+          _context2.prev = 31;
+          _context2.t0 = _context2["catch"](20);
           console.log(_context2.t0);
           return _context2.abrupt("return", _server.NextResponse.json({
             message: "ارور ناشناخته"
@@ -151,21 +164,21 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 31:
-          _context2.next = 36;
+        case 35:
+          _context2.next = 40;
           break;
 
-        case 33:
-          _context2.prev = 33;
+        case 37:
+          _context2.prev = 37;
           _context2.t1 = _context2["catch"](0);
           console.error(_context2.t1); // خطاها را نمایش دهید
 
-        case 36:
+        case 40:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 33], [16, 27]]);
+  }, null, null, [[0, 37], [20, 31]]);
 }
 
 function GET(req, res) {
@@ -234,8 +247,7 @@ function GET(req, res) {
               newArr: newArr,
               title: ducomentProduct.title,
               description: ducomentProduct.description,
-              route: ducomentProduct.routeProduct,
-              id: ducomentProduct._id,
+              id: ducomentProduct.id_Product,
               indexMainImage: ducomentProduct.indexMainImage
             };
           });
@@ -248,13 +260,13 @@ function GET(req, res) {
           detailProduct = searchParams.get("detailProduct");
 
           if (!detailProduct) {
-            _context3.next = 26;
+            _context3.next = 25;
             break;
           }
 
           _context3.next = 21;
           return regeneratorRuntime.awrap(_Product["default"].findOne({
-            routeProduct: detailProduct
+            id_Product: detailProduct
           }, "-__v -createdAt -updatedAt")["catch"](function (err) {
             console.log(err);
           }));
@@ -274,25 +286,18 @@ function GET(req, res) {
             }
           });
           productObject = oneProduct.toObject();
-          delete productObject.file; // const newArr = imageTransfer.filter(
-          //   (item) => item !== null && typeof item !== "undefined"
-          // );
-
           return _context3.abrupt("return", _server.NextResponse.json({
             data: productObject,
             file: _imageData2
           }));
 
-        case 26:
-          _context3.next = 28;
-          return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v") // .populate("category", "-__v")
-          // .lean()
-          // .sort({ createdAt: -1 })
-          .limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
+        case 25:
+          _context3.next = 27;
+          return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 28:
+        case 27:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -313,14 +318,15 @@ function GET(req, res) {
             return {
               newArr: newArr,
               title: ducomentProduct.title,
-              description: ducomentProduct.description
+              description: ducomentProduct.description,
+              id: ducomentProduct.id_Product
             };
           });
           return _context3.abrupt("return", _server.NextResponse.json({
             data: imageData
           }));
 
-        case 31:
+        case 30:
         case "end":
           return _context3.stop();
       }

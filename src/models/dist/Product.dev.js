@@ -7,6 +7,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
+
+var AutoIncrementFactory = require("mongoose-sequence");
+
+var _require = require("../utils/Frontend/ApiActions"),
+    MONGOOSE = _require.MONGOOSE;
+
+var connection = mongoose.createConnection(MONGOOSE);
+var AutoIncrement = AutoIncrementFactory(connection);
 var ProductSchema = new Schema({
   title: {
     type: String,
@@ -20,10 +28,6 @@ var ProductSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Category"
-  },
-  routeProduct: {
-    type: String,
-    required: true
   },
   routeCategory: {
     type: String,
@@ -46,9 +50,18 @@ var ProductSchema = new Schema({
     index: {
       type: Number
     }
-  }]
+  }],
+  feature: {
+    type: Array
+  },
+  specifications: {
+    type: Array
+  }
 }, {
   timestamps: true
+});
+ProductSchema.plugin(AutoIncrement, {
+  inc_field: "id_Product"
 });
 var Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 module.exports = Product;

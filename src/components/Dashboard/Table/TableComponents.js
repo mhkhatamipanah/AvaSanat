@@ -65,9 +65,7 @@ const TableComponents = ({
       };
       const data = await fetchData(obj);
       if (data) {
-        if (!countData) {
-          setCountData(data.total_items);
-        }
+        setCountData(data.total_items);
         setData(data.results);
         setLoading(false);
       }

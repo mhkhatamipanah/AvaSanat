@@ -25,18 +25,17 @@ const params = (obj) => {
 
 //** POST_METHOD **  */
 
-// Post
+// 1- Post
 const PostMethod = async (url, data) => {
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: data,
   });
 
   return res;
 };
 
-// Promise
+// 2- Promise Post
 const postPromise = (url, data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -54,13 +53,12 @@ const postPromise = (url, data) => {
   });
 };
 
-// PostApi
+// 3- PostApi
 const postApi = (url, data) => {
   try {
     toast.promise(postPromise(url, data), {
       loading: "در حال پردازش اطلاعات...",
       success: (data) => {
-        
         // بعدا برداشته شود
         if (data.otp) {
           toast.info(data.otp);
@@ -78,6 +76,96 @@ const postApi = (url, data) => {
     return false;
   }
 };
+
+// 1- Edit
+const EditMethod = async (url, data) => {
+  const res = await fetch(url, {
+    method: "PUT",
+    body: data,
+  });
+
+  return res;
+};
+// 2- Promise Edit
+const editPromise = (url, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await EditMethod(url, data);
+      const result = await res.json();
+      if (res.status === 200 || res.status === 201) {
+        resolve(result);
+      } else {
+        reject(result.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+      reject("ارور در درخواست");
+    }
+  });
+};
+
+// 3- EditApi
+const editApi = (url, data) => {
+  try {
+    toast.promise(editPromise(url, data), {
+      loading: "در حال پردازش اطلاعات...",
+      success: (data) => {
+        return `${data.message}`;
+      },
+      error: (e) => {
+        console.log(e);
+        return `${e}`;
+      },
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+const deleteMethod = async (url) => {
+  const res = await fetch(url, { method: "Delete" });
+  return res;
+};
+// Promise Delete
+const deletePromise = (url) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await deleteMethod(url);
+      const result = await res.json();
+      if (res.status === 200 || res.status === 201) {
+        resolve(result);
+      } else {
+        reject(result.message);
+      }
+    } catch (error) {
+      console.log("error", error);
+      reject("ارور در درخواست");
+    }
+  });
+};
+
+// deleteApi
+const deleteApi = (url) => {
+  try {
+    toast.promise(deletePromise(url), {
+      loading: "در حال پردازش اطلاعات...",
+      success: (data) => {
+        return `${data.message}`;
+      },
+      error: (e) => {
+        console.log(e);
+        return `${e}`;
+      },
+    });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
 
 // OTP
 const sendOtp = (data) => {
@@ -157,6 +245,53 @@ const edit_ContactUs = async (id, data) => {
     return false;
   }
 };
+
+//Product
+
+const create_Product = async (url, data) => {
+  return postApi(url, data);
+};
+const edit_Product = async (url, data) => {
+  return editApi(url, data);
+};
+
+const delete_Product = async (id) => {
+  return deleteApi(`/api/product/${id}`);
+};
+const get_OneProduct = async (id) => {
+  try {
+    const res = await fetch(`/api/product/${id}`);
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+
+const get_CategoryProduct = async (data) => {
+  try {
+    const res = await fetch(
+      `/api/category?${new URLSearchParams(data).toString()}`
+    );
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+const delete_Image_Product = async (id , id_image) => {
+  return deleteApi(`/api/product/${id}/${id_image}`);
+};
 export const ApiActions = () => {
   return {
     // Otp ContactUs
@@ -168,5 +303,13 @@ export const ApiActions = () => {
     get_OneContactUs,
     edit_ContactUs,
     delete_ContactUs,
+
+    // Product
+    create_Product,
+    get_OneProduct,
+    delete_Product,
+    edit_Product,
+    get_CategoryProduct,
+    delete_Image_Product,
   };
 };

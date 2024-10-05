@@ -12,11 +12,17 @@ export async function POST(req, res) {
 
     const formData = await req.formData();
 
+    const feature = formData.get("feature");
+    const featureData = JSON.parse(feature);
+
+    const specifications = formData.get("specifications");
+    const specificationsData = JSON.parse(specifications);
+    
     const title = formData.get("title");
     const description = formData.get("description");
     const category = formData.get("category");
-    const urlProduct = formData.get("urlProduct");
-
+    const indexMainImage = formData.get("indexMainImage");
+    
     const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
@@ -24,6 +30,7 @@ export async function POST(req, res) {
       }
     );
     const routeCategory = oneCategory.route;
+
     const files = [];
     for (let i = 0; i < 20; i++) {
       const file = formData.get(`file${i}`);
@@ -64,7 +71,10 @@ export async function POST(req, res) {
         category: objectId,
         file: filesArray,
         routeCategory,
-        routeProduct: urlProduct,
+        feature: featureData,
+        specifications:specificationsData ,
+        ...(indexMainImage && { indexMainImage }),
+
       });
       if (product) {
         return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
@@ -126,9 +136,8 @@ export async function GET(req, res) {
         newArr,
         title: ducomentProduct.title,
         description: ducomentProduct.description,
-        route: ducomentProduct.routeProduct,
-        id:ducomentProduct._id,
-        indexMainImage:ducomentProduct.indexMainImage
+        id: ducomentProduct.id_Product,
+        indexMainImage: ducomentProduct.indexMainImage,
       };
     });
     return NextResponse.json({ data: imageData });
@@ -139,10 +148,9 @@ export async function GET(req, res) {
   const detailProduct = searchParams.get("detailProduct");
   if (detailProduct) {
     const oneProduct = await Product.findOne(
-      { routeProduct: detailProduct },
+      { id_Product: detailProduct },
       "-__v -createdAt -updatedAt"
-    )
-    .catch((err) => {
+    ).catch((err) => {
       console.log(err);
     });
     const imageData = oneProduct.file.map((e) => {
@@ -158,43 +166,13 @@ export async function GET(req, res) {
         };
       }
     });
-    const productObject = oneProduct.toObject(); 
-    delete productObject.file;
-    
-    // const newArr = imageTransfer.filter(
-    //   (item) => item !== null && typeof item !== "undefined"
-    // );
-    return NextResponse.json({ data: productObject , file:imageData });
-  
+    const productObject = oneProduct.toObject();
 
-    // const imageData = oneProduct.map((ducomentProduct) => {
-    //   const imageTransfer = ducomentProduct.file.map((e) => {
-    //     if (ducomentProduct.indexMainImage === e.index) {
-    //       const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-
-    //       const thumbnailBase64 = thumbnailBuffer.toString("base64");
-
-    //       return {
-    //         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
-    //         thumbnailBase64: thumbnailBase64,
-    //         // mainImageBase64: mainImageBase64,
-    //       };
-    //     }
-    //   });
-    //   const newArr = imageTransfer.filter(
-    //     (item) => item !== null && typeof item !== "undefined"
-    //   );
-    //   return {
-    //     newArr,
-    //     ducomentProduct
-    //   };
-    // });
+    return NextResponse.json({ data: productObject, file: imageData });
   }
 
   const category = await Product.find({}, "-__v")
-    // .populate("category", "-__v")
-    // .lean()
-    // .sort({ createdAt: -1 })
+
     .limit(perPage ? perPage : 20)
     .skip(perPage && page ? perPage * (page - 1) : 0)
     .catch((err) => {
@@ -222,6 +200,8 @@ export async function GET(req, res) {
       newArr,
       title: ducomentProduct.title,
       description: ducomentProduct.description,
+      id: ducomentProduct.id_Product,
+
     };
   });
   return NextResponse.json({ data: imageData });

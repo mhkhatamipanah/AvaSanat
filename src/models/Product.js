@@ -3,6 +3,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 import Category from "@/src/models/Category";
 
+const AutoIncrementFactory = require("mongoose-sequence");
+
+const { MONGOOSE } = require("../utils/Frontend/ApiActions");
+
+var connection = mongoose.createConnection(MONGOOSE);
+
+const AutoIncrement = AutoIncrementFactory(connection);
+
 const ProductSchema = new Schema(
   {
     title: {
@@ -18,10 +26,7 @@ const ProductSchema = new Schema(
       required: true,
       ref: "Category",
     },
-    routeProduct:{
-      type: String,
-      required: true,
-    },
+
     routeCategory:{
       type: String,
       required: true,
@@ -46,11 +51,19 @@ const ProductSchema = new Schema(
         },
       },
     ],
+    feature: {
+      type: Array, 
+    },
+    specifications: {
+      type: Array, 
+    },
+    
   },
   
   { timestamps: true }
 );
 
+ProductSchema.plugin(AutoIncrement, { inc_field: "id_Product" });
 const Product =
   mongoose.models.Product || mongoose.model("Product", ProductSchema);
 module.exports = Product;

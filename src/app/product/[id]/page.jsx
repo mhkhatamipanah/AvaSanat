@@ -40,12 +40,12 @@ const Page = ({ params }) => {
 
 
           {data && data.data && data.data.map((e, i) => {
-            return (<div key={`${i}354`} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80 h-min">
-              <Link href={`/product/${categoryUrl}/${e.route}`} className=" mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg h-60">
+            return (<div key={i} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80 h-min">
+              <Link href={`/product/${categoryUrl}/${e.id}`} className=" mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg h-60">
                 <img className='object-cover w-full h-full' src={`data:image/webp;base64,${e.newArr[0].thumbnailBase64}`} alt="profile-picture" />
               </Link>
               <div className="p-6 text-center pb-3">
-                <Link href={`/product/${categoryUrl}/${e.route}`} >
+                <Link href={`/product/${categoryUrl}/${e.id}`} >
 
                   <p className="block mb-2 vazirDemibold text-xl antialiased leading-snug tracking-normal text-blue-gray-900 ">
                     {e.title}

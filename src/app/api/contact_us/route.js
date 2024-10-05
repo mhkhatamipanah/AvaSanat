@@ -140,14 +140,27 @@ export async function GET(req, res) {
   //   return NextResponse.json(order);
   // }
 
-  let countData = await MessageModel.countDocuments().catch((err) => {
-    console.log(err);
-  });
+ 
   const perPage = searchParams.get("per_page");
   const page = searchParams.get("page");
   const search = searchParams.get("search");
-  
-  const category = await MessageModel.find({}, "-__v")
+
+  let query = {};
+
+  if (search && search.trim() !== "") {
+    query = {
+      $or: [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ],
+    };
+  }
+
+  let countData = await MessageModel.countDocuments(query).catch((err) => {
+    console.log(err);
+  });
+
+  const category = await MessageModel.find(query, "-__v")
 
     .sort({ createdAt: -1 })
     .limit(perPage ? perPage : 20)
