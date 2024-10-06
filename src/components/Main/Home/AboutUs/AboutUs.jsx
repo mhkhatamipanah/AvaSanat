@@ -2,8 +2,7 @@ import React from 'react'
 import img1 from "@/public/images/3.png"
 import Image from 'next/image'
 import Title from '../../Title/Title'
-import { Button } from "@nextui-org/button";
-import Link from 'next/link';
+
 import icon1 from "@/public/images/icon/1.png"
 import icon2 from "@/public/images/icon/2.png"
 import icon3 from "@/public/images/icon/3.png"
@@ -12,8 +11,8 @@ const AboutUs = () => {
   return (
     <>
       <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-6 mx-auto vazirMedium mb-20'>
-        <section className='w-full flex flex-col items-center mt-2 lg:mt-8'>
-          <Title text={" درباره ما"} size={28} />
+        <section className='w-full flex flex-col items-center mt-2 lg:mt-8 w'>
+          <Title text={" درباره ما"} size={32} />
 
           <section className='grid grid-cols-9 w-full  lg:gap-16 mt-3  '>
             <div className='col-span-9 lg:col-span-4 w-full my-2 justify-center flex flex-col overflow-hidden'>

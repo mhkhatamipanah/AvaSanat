@@ -1,13 +1,17 @@
-// import Category from '@/src/components/Dashboard/Category/Category'
 "use client"
-import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import Link from 'next/link';
+// NextUI
 import { Button } from "@nextui-org/button";
-import { BadgePlus } from 'lucide-react';
-import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
 import { SelectItem, Select } from '@nextui-org/react';
+// Icon
+import { BadgePlus, Pencil, Trash } from 'lucide-react';
+// Components
+import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
+import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
+// Api
+import { ApiActions } from '@/src/utils/Frontend/ApiActions';
+import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 
 const page = () => {
 
@@ -16,25 +20,62 @@ const page = () => {
   const [perPage, setPerPage] = useState(12)
   const [page, setPage] = useState(1)
 
+
+
+
+  // ModalDelete
+  const { delete_Category } = ApiActions()
+
+  const [idDelete, setIdDelete] = useState(null);
+  const [rerender, setRerender] = useState(false);
+  const toggleRerender = () => {
+    setRerender(!rerender)
+  }
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onModalOpenChange = () => {
+    setIsOpen(false);
+  };
+
+  const deleteEventHandler = async () => {
+    await delete_Category(idDelete).then((res => {
+      console.log(res)
+      if (res) {
+        toggleRerender()
+      }
+    }))
+
+
+  };
+
   useEffect(() => {
     let data = {
       perPage: perPage,
       page: page,
-      // ...(sendOrRecevied ? { sendOrRecevied } : {}),
     };
     let count = {
       count: true
     }
     getApi(`/api/category?${(new URLSearchParams(data)).toString()}`, setData)
     getApi(`/api/category?${(new URLSearchParams(count)).toString()}`, setCountData)
-    // getApi("/api/category", setData)
-  }, [
-    page, perPage
-    //  , rerender
-  ])
+  }, [page, perPage, rerender])
+
+
+
 
   return (
     <>
+      <ModalDelete
+        title={title}
+        text={text}
+        idDelete={idDelete}
+        isModalOpen={isOpen}
+        showId={false}
+        onModalOpenChange={onModalOpenChange}
+        deleteEventHandler={deleteEventHandler}
+      />
       <div
         className="p-2 lg:p-3 grid grid-cols-1 justify-center w-full gap-4"
         id="container"
@@ -84,18 +125,49 @@ const page = () => {
                 {
                   data.data.map((e, i) => {
                     return (
-                      <div className=' w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
-                        <div className='w-full aspect-square overflow-hidden rounded-lg'>
-                          <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400' src={`data:image/webp;base64,${e.imageBase64}`} alt="" />
+                      <div className='relative w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
+                        <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
 
+                          <Link href={`/dashboard/category/create?id=${e.id}`}>
+                            <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                              {e?.imageBase64 ? `data:image/webp;base64,${e?.imageBase64}` : "/images/placeholder.jpg"} alt="" />
+                          </Link>
                         </div>
+
                         <div className='oneLineShow'>
                           <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
-
                         </div>
                         <div className='twoLineShow'>
                           <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.description}</p>
+                        </div>
 
+                        <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
+
+                          <div className="flex gap-2">
+                            <Link href={`/dashboard/category/create?id=${e.id}`}>
+                              <Button
+                                className="px-0 min-w-8 h-8 bg-blue-50 shadow border border-solid border-blue-100 hover:!bg-blue-200"
+                                variant="light"
+                                color="primary"
+                              >
+                                <Pencil className="w-4" size={16} />
+                              </Button>
+                            </Link>
+
+                            <Button
+                              onClick={() => {
+                                setIdDelete(e.id)
+                                setTitle("دسته بندی")
+                                setText(`دسته بندی ${e.title}`)
+                                setIsOpen(true)
+                              }}
+                              className="px-0 min-w-8 h-8 bg-red-50 shadow border border-solid border-red-100 hover:!bg-red-200"
+                              color="danger"
+                              variant="light"
+                            >
+                              <Trash className="w-4" size={16} />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     )

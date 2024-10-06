@@ -192,7 +192,8 @@ function GET(req, res) {
               imageBase64: base64Image,
               title: e.title,
               description: e.description,
-              route: e.route
+              route: e.route,
+              id: e.id_Category
             };
             newArray.push(object);
           }); // Return the image data in JSON format

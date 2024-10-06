@@ -682,6 +682,98 @@ var delete_Image_Product = function delete_Image_Product(id, id_image) {
       }
     }
   });
+}; // Category
+
+
+var get_OneCategory = function get_OneCategory(id) {
+  var res, result;
+  return regeneratorRuntime.async(function get_OneCategory$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          _context18.prev = 0;
+          _context18.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/category/".concat(id)));
+
+        case 3:
+          res = _context18.sent;
+
+          if (!(res.status === 200)) {
+            _context18.next = 11;
+            break;
+          }
+
+          _context18.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context18.sent;
+          return _context18.abrupt("return", result);
+
+        case 11:
+          return _context18.abrupt("return", false);
+
+        case 12:
+          _context18.next = 18;
+          break;
+
+        case 14:
+          _context18.prev = 14;
+          _context18.t0 = _context18["catch"](0);
+          console.log("error", _context18.t0);
+          return _context18.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context18.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+};
+
+var create_Category = function create_Category(url, data) {
+  return regeneratorRuntime.async(function create_Category$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          return _context19.abrupt("return", postApi(url, data));
+
+        case 1:
+        case "end":
+          return _context19.stop();
+      }
+    }
+  });
+};
+
+var edit_Category = function edit_Category(url, data) {
+  return regeneratorRuntime.async(function edit_Category$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          return _context20.abrupt("return", editApi(url, data));
+
+        case 1:
+        case "end":
+          return _context20.stop();
+      }
+    }
+  });
+};
+
+var delete_Category = function delete_Category(id) {
+  return regeneratorRuntime.async(function delete_Category$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
+        case 0:
+          return _context21.abrupt("return", deleteApi("/api/category/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context21.stop();
+      }
+    }
+  });
 };
 
 var ApiActions = function ApiActions() {
@@ -700,7 +792,12 @@ var ApiActions = function ApiActions() {
     delete_Product: delete_Product,
     edit_Product: edit_Product,
     get_CategoryProduct: get_CategoryProduct,
-    delete_Image_Product: delete_Image_Product
+    delete_Image_Product: delete_Image_Product,
+    // Category
+    get_OneCategory: get_OneCategory,
+    create_Category: create_Category,
+    edit_Category: edit_Category,
+    delete_Category: delete_Category
   };
 };
 

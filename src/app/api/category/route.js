@@ -102,7 +102,8 @@ export async function GET(req, res) {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
       imageBase64: base64Image, title: e.title , 
       description:e.description,
-      route:e.route
+      route:e.route,
+      id:e.id_Category
     }
     newArray.push(object)
     });

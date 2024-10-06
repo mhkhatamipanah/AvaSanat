@@ -293,6 +293,33 @@ const get_CategoryProduct = async (data) => {
 const delete_Image_Product = async (id , id_image) => {
   return deleteApi(`/api/product/${id}/${id_image}`);
 };
+
+// Category
+const get_OneCategory = async (id) => {
+  try {
+    const res = await fetch(`/api/category/${id}`);
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+const create_Category = async (url, data) => {
+  return postApi(url, data);
+};
+const edit_Category = async (url, data) => {
+  return editApi(url, data);
+};
+const delete_Category = async (id ) => {
+  return deleteApi(`/api/category/${id}`);
+};
+
+
 export const ApiActions = () => {
   return {
     // Otp ContactUs
@@ -312,5 +339,11 @@ export const ApiActions = () => {
     edit_Product,
     get_CategoryProduct,
     delete_Image_Product,
+
+    // Category
+    get_OneCategory,
+    create_Category,
+    edit_Category,
+    delete_Category,
   };
 };

@@ -1,11 +1,11 @@
 "use client"
 
-import PaginationComponent from "@/src/components/Dashboard/Pagination/Pagination"
+// import PaginationComponent from "@/src/components/Dashboard/Pagination/Pagination"
 import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
-import { addToCart, setCookie } from "@/src/utils/Cookie"
+import { addToCart } from "@/src/utils/Cookie"
 
 const Page = ({ params }) => {
 

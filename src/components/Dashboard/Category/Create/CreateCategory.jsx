@@ -1,13 +1,14 @@
 "use client"
-import postFile from "@/src/utils/Frontend/sendApiToBackend/formData/PostFile"
+import { useState, useRef, useEffect } from "react"
+import { useSearchParams, useRouter } from "next/navigation";
+
 import { Input, Button } from "@nextui-org/react"
 import { CaseUpper, SpellCheck, Text } from "lucide-react"
-import { useEffect } from "react"
-import { useState, useRef } from "react"
+
+import { ApiActions } from "@/src/utils/Frontend/ApiActions";
 
 
-
-const   CreateCategory = () => {
+const CreateCategory = () => {
 
     useEffect(() => {
         const handleDragOver = (e) => {
@@ -45,42 +46,27 @@ const   CreateCategory = () => {
 
             const reader = new FileReader();
             reader.onloadend = () => {
-    
+
                 setPreview(reader.result);
-    
+
                 setArrayImmages([file]);
-    
+                setPreviewBase64(null)
+
             };
-    
+
             reader.readAsDataURL(file);
         }
     };
 
-    //     const onFileDrop = (e) => {
-    // console.log(2)
-
-    //         const newFile = e.target.files[0];
-    //         if (newFile) {
-    //             const updatedList = [...fileList, newFile];
-    //             setFileList(updatedList);
-    //             props.onFileChange(updatedList);
-    //         }
-    //     }
-
-    // const fileRemove = (file) => {
-    //     const updatedList = [...fileList];
-    //     updatedList.splice(fileList.indexOf(file), 1);
-    //     setFileList(updatedList);
-    //     props.onFileChange(updatedList);
-    // }
 
     const [arrayImmages, setArrayImmages] = useState([])
     const [preview, setPreview] = useState(null);
 
     const [categoryInput, setCategoryInput] = useState("");
-    const [textInput, setTextInput] = useState("");
+    const [description, setDescription] = useState("");
     const [urlInput, setUrlInput] = useState("");
-    
+
+    const [previewBase64, setPreviewBase64] = useState("");
 
 
     const handleImageChange = (e) => {
@@ -89,22 +75,63 @@ const   CreateCategory = () => {
         reader.onloadend = () => {
             setPreview(reader.result);
             setArrayImmages([file]);
+            setPreviewBase64(null)
         };
         reader.readAsDataURL(file);
 
     };
-    const createCategory = () => {
+    const searchParams = useSearchParams();
+
+    const idCategory = searchParams.get("id");
+    
+    const { create_Category  , edit_Category} = ApiActions()
+
+    const createNewCategory = () => {
 
         const formData = new FormData();
         formData.append("title", categoryInput);
-        formData.append("description", textInput);
+        formData.append("description", description);
         formData.append("route", urlInput);
 
         formData.append("file", arrayImmages[0]);
-       
-        postFile("/api/category", formData)
+        
+        if(idCategory){
+            
+            edit_Category(`/api/category/${idCategory}`, formData).then((res) => {
+                console.log(res)
+                if (res) {
+                    // changeRoute
+                }
+            })
+        }else{
+            create_Category("/api/category", formData).then((res) => {
+                console.log(res)
+                if (res) {
+                    // changeRoute
+                }
+            })
+        }
+     
     }
 
+
+
+
+    const { get_OneCategory } = ApiActions()
+
+    useEffect(() => {
+        get_OneCategory(idCategory).then((res => {
+            if (res?.success) {
+                const data = res.results
+                const { title, description, route, } = data
+                setCategoryInput(title)
+                setDescription(description)
+                setUrlInput(route)
+                setPreviewBase64(res.images)
+                setPreview(null)
+            }
+        }))
+    }, [])
     return (
         <>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-10">
@@ -120,8 +147,8 @@ const   CreateCategory = () => {
                     }
                 />
                 <Input
-                    value={textInput}
-                    onChange={(e) => { setTextInput(e.target.value) }}
+                    value={description}
+                    onChange={(e) => { setDescription(e.target.value) }}
                     className="labelRight"
                     label="توضیح کوتاه"
                     placeholder="توضیح کوتاه را وارد کنید"
@@ -130,7 +157,7 @@ const   CreateCategory = () => {
                         <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
-                      <Input
+                <Input
                     value={urlInput}
                     onChange={(e) => { setUrlInput(e.target.value) }}
                     className="labelRight"
@@ -141,7 +168,7 @@ const   CreateCategory = () => {
                         <Text className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }
                 />
-              
+
 
 
                 <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-3 2xl:col-span-4  ">
@@ -164,14 +191,20 @@ const   CreateCategory = () => {
                     <div className="mt-4 " >
                         <img src={preview} alt="Preview" className="max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
                     </div>
-
+                }
+                {previewBase64 &&
+                    <div className="mt-4 " >
+                        <img src={`data:image/webp;base64,${previewBase64}`} alt="previewBase64" className="max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
+                    </div>
                 }
 
 
+
             </div>
-            <Button onClick={createCategory} color="primary">
-                Button
+            <Button onClick={createNewCategory} className={`${idCategory ? "bg-blue-600" : "bg-green-700"}  text-white`}>
+                {idCategory ? "ادیت" : "ساخت"} دسته بندی 
             </Button>
+         
         </>
 
     )

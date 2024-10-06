@@ -9,7 +9,7 @@ const Blogs = () => {
         <>
             <section className=' flex justify-center w-full mb-20 mt-10  '>
                 <div className='max-w-[1500px]'>
-                    <Title text={"مقالات"} size={28} />
+                    <Title text={"مقالات"} size={32} />
 
                     <div className='flex justify-between items-center px-4 vazirDemibold my-3'>
                         <div>
