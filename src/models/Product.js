@@ -63,6 +63,7 @@ const ProductSchema = new Schema(
   { timestamps: true }
 );
 
+
 ProductSchema.plugin(AutoIncrement, { inc_field: "id_Product" });
 const Product =
   mongoose.models.Product || mongoose.model("Product", ProductSchema);

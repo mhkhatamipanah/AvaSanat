@@ -38,7 +38,7 @@ const SpecificationsValue = ({ inputs, setInputs, data }) => {
                     value={data.title}
                     onChange={handleTitleChange} // استفاده از تابع جدید
                 />
-                <div className="flex gap-2 justify-end absolute left-1 -top-3 z-[999]">
+                <div className="flex gap-2 justify-end absolute left-1 -top-3 z-[5]">
                     <Button
                         className="px-0 min-w-8 h-8 bg-red-50 shadow border border-solid border-red-100 hover:!bg-red-200 cursor-pointer"
                         onClick={() => removeElement(data.id)} // استفاده از تابع حذف

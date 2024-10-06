@@ -81,6 +81,7 @@ const CreateProduct = () => {
     const [preview, setPreview] = useState([]);
     const [previewBase64, setPreviewBase64] = useState([]);
     const [mainImage, setMainImage] = useState(null)
+    const [indexLastImage, setIndexLastImage] = useState(null)
 
     const handleImageChange = (e) => {
         const files = e.target.files;
@@ -105,6 +106,56 @@ const CreateProduct = () => {
         }
     };
 
+
+
+
+
+    // ModalDelete
+    const { delete_Image_Product } = ApiActions()
+
+    const [idDelete, setIdDelete] = useState(null);
+    const [rerender, setRerender] = useState(false);
+    const toggleRerender = () => {
+        setRerender(!rerender)
+    }
+    const [title, setTitle] = useState("");
+    const [text, setText] = useState("");
+
+    const [isOpen, setIsOpen] = useState(false);
+    const onModalOpenChange = () => {
+        setIsOpen(false);
+    };
+
+    const deleteEventHandler = async () => {
+        if (idDelete >= previewBase64.length) {
+            console.log("front delete just")
+
+            let indexToDelete = idDelete - previewBase64.length;
+            // کپی از آرایه‌ها
+            let updatedArrayImmages = [...arrayImmages];
+            let updatedPreview = [...preview];
+
+            // حذف عنصر از آرایه‌ها
+            updatedArrayImmages.splice(indexToDelete, 1);
+            updatedPreview.splice(indexToDelete, 1);
+
+            // تنظیم حالت‌ها با آرایه‌های جدید
+            setArrayImmages(updatedArrayImmages);
+            setPreview(updatedPreview);
+        }
+        else {
+            await delete_Image_Product(idProduct, idDelete).then((res => {
+                console.log(res)
+                if (res) {
+                    toggleRerender()
+                }
+            }))
+
+        }
+
+
+    };
+
     const searchParams = useSearchParams();
 
     const idProduct = searchParams.get("id");
@@ -125,7 +176,6 @@ const CreateProduct = () => {
                             const { title, description, specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
-
                             setPreviewBase64(res.images)
                             setInputs(feature)
                             setMainImage(indexMainImage)
@@ -141,7 +191,7 @@ const CreateProduct = () => {
 
 
 
-    }, [])
+    }, [rerender])
 
 
     const { create_Product, edit_Product } = ApiActions()
@@ -172,7 +222,7 @@ const CreateProduct = () => {
         const jsonProductData = JSON.stringify(productData);
 
         let newSpecifications = inputsSpecifications.map(item => {
-            let { id, ...rest } = item;  // از ساختار اسپرد استفاده می‌کنیم تا فیلد id حذف شود
+            let { id, ...rest } = item;
             return rest;
         });
 
@@ -189,7 +239,7 @@ const CreateProduct = () => {
         arrayImmages.forEach((file, index) => {
             formData.append(`file${index}`, file);
         });
-        if (mainImage) {
+        if (mainImage || mainImage === 0) {
             formData.append("indexMainImage", mainImage);
 
         }
@@ -251,38 +301,6 @@ const CreateProduct = () => {
 
 
 
-
-    // ModalDelete
-    const { delete_Image_Product } = ApiActions()
-
-    const [idDelete, setIdDelete] = useState(null);
-    const [rerender, setRerender] = useState(false);
-    const toggleRerender = () => {
-        setRerender(!rerender)
-    }
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
-
-    const [isOpen, setIsOpen] = useState(false);
-    const onModalOpenChange = () => {
-        setIsOpen(false);
-    };
-
-    const deleteEventHandler = async () => {
-        if (idProduct) {
-            await delete_Image_Product(idProduct, idDelete).then((res => {
-                if (res) {
-                    toggleRerender()
-                }
-            }))
-        } else {
-            console.log(arrayImmages)
-            console.log(preview)
-
-        }
-
-
-    };
     return (
         <>
             <ModalDelete
@@ -379,16 +397,16 @@ const CreateProduct = () => {
                         return (
                             <div className="relative my-4 group" key={i}>
                                 <img src={e} alt="Preview" className={
-                                    `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + previewBase64.length ? "p-1 !border-blue-600" : ""}`} />
+                                    `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
 
                                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                                     <div className="flex gap-2">
                                         <span
                                             className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                             onClick={() => {
-                                                setIdDelete(e.id)
-                                                setTitle("محصول")
-                                                setText(`محصول ${e.title}`)
+                                                setIdDelete(i + previewBase64.length)
+                                                setTitle("عکس محصول")
+                                                setText(`عکس محصول`)
                                                 setIsOpen(true)
                                             }}
                                         >
@@ -397,7 +415,7 @@ const CreateProduct = () => {
                                         <span
                                             className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                             onClick={() => {
-                                                setMainImage(i + previewBase64.length)
+                                                setMainImage(i + indexLastImage + 1)
 
                                             }}
                                         >
@@ -413,17 +431,20 @@ const CreateProduct = () => {
 
                 {previewBase64 && previewBase64.length !== 0 &&
                     previewBase64.map((e, i) => {
+                        if (e.index > indexLastImage) {
+                            setIndexLastImage(e.index)
+                        }
                         return (
                             <div className="relative my-4 group" key={i}>
-                                <img className={`max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i ? "p-1 !border-blue-600" : ""}`} src={`data:image/webp;base64,${e?.thumbnailBase64}`} alt="" />
+                                <img className={`max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === e.index ? "p-1 !border-blue-600" : ""}`} src={`data:image/webp;base64,${e?.thumbnailBase64}`} alt="" />
                                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                                     <div className="flex gap-2">
                                         <span
                                             className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                             onClick={() => {
-                                                setIdDelete(e.id)
-                                                setTitle("محصول")
-                                                setText(`محصول ${e.title}`)
+                                                setIdDelete(i)
+                                                setTitle("عکس محصول")
+                                                setText(`عکس محصول `)
                                                 setIsOpen(true)
                                             }}
                                         >
@@ -432,7 +453,7 @@ const CreateProduct = () => {
                                         <span
                                             className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                             onClick={() => {
-                                                setMainImage(i)
+                                                setMainImage(e.index)
 
                                             }}
                                         >

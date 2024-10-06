@@ -4,22 +4,31 @@ import Product from "@/src/models/Product";
 
 export async function DELETE(req, { params }) {
   try {
-    connectDB()
+    connectDB();
     const id = params.id;
-    const id_image = params.id;
-
-    return NextResponse.json(
-      { message: "عکس محصول با موفقیت حذف شد", success: true, id_image, id },
-      { status: 200 }
-    );
-
-    const DeleteProduct = await Product.findOneAndDelete({
+    const id_image = params.id_image;
+    const findProduct = await Product.findOne({
       id_Product: id,
     }).catch((err) => {
       console.log(err);
     });
 
-    if (DeleteProduct) {
+    let updatedArrayImmages = [...findProduct.file];
+
+    // حذف عنصر از آرایه‌ها
+    updatedArrayImmages.splice(id_image, 1);
+
+    const updateProduct = await Product.findOneAndUpdate(
+      {
+        id_Product: id,
+      },
+      {
+        file: updatedArrayImmages,
+      }
+    ).catch((err) => {
+      console.log(err);
+    });
+    if (updateProduct) {
       return NextResponse.json(
         { message: "محصول با موفقیت حذف شد", success: true },
         { status: 200 }

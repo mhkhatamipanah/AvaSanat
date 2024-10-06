@@ -134,6 +134,7 @@ const deletePromise = (url) => {
     try {
       const res = await deleteMethod(url);
       const result = await res.json();
+      console.log(result)
       if (res.status === 200 || res.status === 201) {
         resolve(result);
       } else {

@@ -19,11 +19,12 @@ export async function GET(req, { params }) {
     const imageTransfer = findOneProduct[0].file.map((e) => {
       const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
       const thumbnailBase64 = thumbnailBuffer.toString("base64");
-
+      console.log(e.index)
       return {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
         thumbnailBase64: thumbnailBase64,
         // mainImageBase64: mainImageBase64,
+        index: e.index
       };
     });
 
@@ -76,7 +77,11 @@ export async function PUT(req, { params }) {
         console.log(err);
       }
     );
-    let countBeforeImage = oneProduct?.file.length;
+    const maxIndex = oneProduct?.file.reduce((max, e) => {
+      return e.index > max ? e.index : max;
+    }, -Infinity);
+    
+    console.log(maxIndex);
 
     const files = [];
     for (let i = 0; i < 20; i++) {
@@ -113,7 +118,7 @@ export async function PUT(req, { params }) {
           return {
             thumbnail: res,
             mainImage: res2,
-            index: i + countBeforeImage,
+            index: i + maxIndex + 1,
           };
         })
       );

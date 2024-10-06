@@ -265,6 +265,7 @@ var deletePromise = function deletePromise(url) {
 
           case 6:
             result = _context6.sent;
+            console.log(result);
 
             if (res.status === 200 || res.status === 201) {
               resolve(result);
@@ -272,21 +273,21 @@ var deletePromise = function deletePromise(url) {
               reject(result.message);
             }
 
-            _context6.next = 14;
+            _context6.next = 15;
             break;
 
-          case 10:
-            _context6.prev = 10;
+          case 11:
+            _context6.prev = 11;
             _context6.t0 = _context6["catch"](0);
             console.log("error", _context6.t0);
             reject("ارور در درخواست");
 
-          case 14:
+          case 15:
           case "end":
             return _context6.stop();
         }
       }
-    }, null, null, [[0, 10]]);
+    }, null, null, [[0, 11]]);
   });
 }; // deleteApi
 
