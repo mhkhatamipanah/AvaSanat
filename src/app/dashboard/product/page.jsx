@@ -45,6 +45,7 @@ const page = () => {
 
   const deleteEventHandler = async () => {
     await delete_Product(idDelete).then((res => {
+      console.log(res)
       if (res) {
         toggleRerender()
       }

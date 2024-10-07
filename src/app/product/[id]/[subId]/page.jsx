@@ -1,9 +1,17 @@
 "use client"
-import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
+
+// react
 import { useEffect, useState } from "react"
+// nextui
 import { Breadcrumbs, BreadcrumbItem, Button } from "@nextui-org/react";
-import { ChevronLeft } from "lucide-react";
+// icon
+import { ChevronLeft, PlusCircle, Trash } from "lucide-react";
+// component
 import RadioBTN from "./RadioBTN";
+import TabComponent from "./Tabs";
+// api
+import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
+import Link from "next/link";
 const Page = ({ params }) => {
 
   const { subId } = params
@@ -11,6 +19,8 @@ const Page = ({ params }) => {
   const [data, setData] = useState([])
   const [perPage, setPerPage] = useState(12)
   const [page, setPage] = useState(1)
+
+  const [countInvoice, setCountInvoice] = useState(null)
 
   useEffect(() => {
     let data = {
@@ -47,22 +57,13 @@ const Page = ({ params }) => {
 
               </div>
               <div className="w-full col-span-4 p-3">
-                <div className=" mb-2 p-3">
-                  <Breadcrumbs separator={<ChevronLeft size={20} />} className="">
-                    <BreadcrumbItem className="!hover:text-[#da4f4c]">Home</BreadcrumbItem>
-                    <BreadcrumbItem className="!hover:text-[#da4f4c]">Music</BreadcrumbItem>
-                    <BreadcrumbItem className="!hover:text-[#da4f4c]">Artist</BreadcrumbItem>
-                    <BreadcrumbItem className="!hover:text-[#da4f4c]">Album</BreadcrumbItem>
-                    <BreadcrumbItem className="!hover:text-[#da4f4c]">Song</BreadcrumbItem>
-                  </Breadcrumbs>
-                </div>
-                <div className="border border-b my-3"></div>
 
-                <h1 className="vazirDemibold text-2xl">
+
+                <h1 className="vazirDemibold text-2xl mt-6">
                   {data.data.title}
                 </h1>
                 <h3 className="vazirMedium text-lg text-gray-700 mt-2">
-                  {data.data.description}
+                  {data.data.subtitle}
                 </h3>
                 <div className="border border-b my-3"></div>
                 <p className="vazirMedium text-md text-gray-700">
@@ -70,17 +71,17 @@ const Page = ({ params }) => {
                 </p>
 
                 <div className="vazirLight">
-                  دسته بندی : فیوز
+                  دسته بندی : <Link href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
                 </div>
                 <div className="vazirLight">
-                  برند : اندا
+                  برند : {data.data.brand}
                 </div>
                 <div className="border border-b my-3"></div>
                 {(data && data.data.feature && data.data.feature.map((e, i) => {
                   return (
                     <div className="vazirLight" key={i}>
                       <p>انتخاب {e.title} : </p>
-                        <RadioBTN data={e.values} />
+                      <RadioBTN data={e.values} />
                     </div>
                   )
                 }))}
@@ -88,16 +89,54 @@ const Page = ({ params }) => {
 
                 <div className="border border-b my-3"></div>
 
-                <Button className=" bg-green-700 vazirMedium text-white">
-                  افزودن به سبد خرید
+                {countInvoice ? <div className="mt-3 flex items-center">
+                  <Button
+                    onClick={() => {
+                      setCountInvoice(countInvoice - 1)
+                    }}
+                    className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
+                    variant="light"
+                    color="primary"
+                  >
+                    <Trash className="w-5 text-red-600" size={24} />
+                  </Button>
+                  <div className="w-10 h-10 flex justify-center items-center">
+
+                    <p className="vazirMedium">
+                      {countInvoice}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => {
+                      setCountInvoice(countInvoice + 1)
+                    }}
+                    className="px-0 min-w-10 h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
+                    variant="light"
+                    color="primary"
+                  >
+                    <PlusCircle className="w-5 text-green-600" size={24} />
+                  </Button>
+                </div> : <Button
+                  onClick={() => {
+                    setCountInvoice(countInvoice + 1)
+                  }}
+
+                  className=" bg-green-700 vazirMedium text-white">
+                  افزودن به  پیش فاکتور
                 </Button>
+                }
+
+
               </div>
-              {/* page : {subId} */}
+
             </section>
           }
-          <section>
-            tabs
-          </section>
+          {data && data.data && <section className="mt-6">
+            <TabComponent
+              description={data.data.description}
+              specifications={data.data.specifications} />
+          </section>}
+
         </div>
 
       </section>

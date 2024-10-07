@@ -57,6 +57,8 @@
   border-radius: 10px;
 }
 .labelRight div div {
+  z-index: 1 !important;
+
   background-color: rgb(237, 237, 237);
   border: 1px solid rgb(205, 205, 205) !important;
   padding: 0 !important;

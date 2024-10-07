@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import { ApiActions } from "@/src/utils/Frontend/ApiActions"
 
 // NextUI
-import { Input, Button, SelectItem, Select, Spinner } from "@nextui-org/react"
+import { Input, Button, SelectItem, Select, Spinner, Textarea } from "@nextui-org/react"
 // Icon
 import { CaseUpper, CircleFadingPlus, FileCheck, SpellCheck, Trash2Icon, } from "lucide-react"
 
@@ -41,6 +41,7 @@ const CreateProduct = () => {
 
     const [categoryValue, setCategoryValue] = useState(null)
     const [categoryInput, setCategoryInput] = useState("")
+    const [brand, setBrand] = useState("")
 
 
 
@@ -76,6 +77,7 @@ const CreateProduct = () => {
     };
     const [titleInput, setTitleInput] = useState("");
     const [description, setDescription] = useState("");
+    const [subtitle, setSubtitle] = useState("");
 
     const [arrayImmages, setArrayImmages] = useState([])
     const [preview, setPreview] = useState([]);
@@ -128,7 +130,6 @@ const CreateProduct = () => {
 
     const deleteEventHandler = async () => {
         if (idDelete >= previewBase64.length) {
-            console.log("front delete just")
 
             let indexToDelete = idDelete - previewBase64.length;
             // کپی از آرایه‌ها
@@ -173,9 +174,11 @@ const CreateProduct = () => {
                     get_OneProduct(idProduct).then((res => {
                         if (res?.success) {
                             const data = res.results
-                            const { title, description, specifications, feature, category, indexMainImage } = data[0]
+                            const { title, description, subtitle, specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
+                            setSubtitle(subtitle)
+
                             setPreviewBase64(res.images)
                             setInputs(feature)
                             setMainImage(indexMainImage)
@@ -203,6 +206,12 @@ const CreateProduct = () => {
         }
         let categoryInputValue = categoryInput.values().next().value;
 
+        if (!brand) {
+            toast.error(" برند را وارد کنید")
+            return
+        }
+        let brandValue = brand.values().next().value;
+        
         if (!titleInput) {
             toast.error(" تیتر را وارد کنید")
             return
@@ -234,6 +243,10 @@ const CreateProduct = () => {
 
         formData.append("title", titleInput);
         formData.append("description", description);
+        formData.append("subtitle", subtitle);
+        formData.append("brand", brandValue);
+        
+
         formData.append("category", categoryInputValue);
 
         arrayImmages.forEach((file, index) => {
@@ -325,8 +338,8 @@ const CreateProduct = () => {
                     }
                 />
                 <Input
-                    value={description}
-                    onChange={(e) => { setDescription(e.target.value) }}
+                    value={subtitle}
+                    onChange={(e) => { setSubtitle(e.target.value) }}
                     className="labelRight"
                     label="توضیح کوتاه"
                     placeholder="توضیح کوتاه را وارد کنید"
@@ -369,6 +382,34 @@ const CreateProduct = () => {
                         }
                     </Select>
                 </div>
+                <div className="w-full h-full flex flex-col justify-end pb-[2px]">
+
+                    <Select
+                        value={brand}
+                        onSelectionChange={(e) => {
+                            setBrand(e);
+                        }}
+                        variant="faded"
+                        label=" برند را انتخاب کنید"
+                        className="selectNextUi w-full"
+                    >
+                        <SelectItem className="vazirMedium" value={"Enda"} key={"Enda"}>
+                            Enda
+                        </SelectItem>
+                        <SelectItem className="vazirMedium" value={"Siemens"} key={"Siemens"}>
+                            Siemens
+                        </SelectItem>
+                        <SelectItem className="vazirMedium" value={"Eaton"} key={"Eaton"}>
+                            Eaton
+                        </SelectItem>
+                        <SelectItem className="vazirMedium" value={"Schrack"} key={"Schrack"}>
+                            Schrack
+                        </SelectItem>
+                        <SelectItem className="vazirMedium" value={"GMT CNT"} key={"GMT CNT"}>
+                            GMT CNT
+                        </SelectItem>
+                    </Select>
+                </div>
 
                 <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-2 2xl:col-span-4  ">
                     <label ref={wrapperRef}
@@ -390,6 +431,7 @@ const CreateProduct = () => {
 
 
             </div>
+
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
 
                 {preview && preview.length !== 0 &&
@@ -497,7 +539,19 @@ const CreateProduct = () => {
                 />
             ))}
 
-
+            <div className="grid grid-cols-1 md:grid-cols-2">
+                <Textarea
+                    value={description}
+                    onChange={(e) => {
+                        setDescription(e.target.value);
+                    }}
+                    id="textarea"
+                    // isRequired={true}
+                    label="توضیح تکمیلی"
+                    placeholder="توضیح تکمیلی را وارد کنید..."
+                    className="w-full mb-6 textAreaNextUi"
+                />
+            </div>
             <Button onClick={createNewProduct} className={`${idProduct ? "bg-blue-600" : "bg-green-700"}  text-white`}>
                 {idProduct ? "ادیت" : "ساخت"} محصول جدید
             </Button>

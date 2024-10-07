@@ -19,7 +19,6 @@ export async function GET(req, { params }) {
     const imageTransfer = findOneProduct[0].file.map((e) => {
       const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
       const thumbnailBase64 = thumbnailBuffer.toString("base64");
-      console.log(e.index)
       return {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
         thumbnailBase64: thumbnailBase64,
@@ -59,6 +58,9 @@ export async function PUT(req, { params }) {
 
     const title = formData.get("title");
     const description = formData.get("description");
+    const subtitle = formData.get("subtitle");
+    const brand = formData.get("brand");
+
     const category = formData.get("category");
     const changeImage = formData.get("changeImage");
     const indexMainImage = formData.get("indexMainImage");
@@ -71,6 +73,8 @@ export async function PUT(req, { params }) {
       }
     );
     const routeCategory = oneCategory.route;
+    const titleCategory = oneCategory.title;
+
 
     const oneProduct = await Product.findOne({ id_Product: id }, "-__v").catch(
       (err) => {
@@ -129,12 +133,16 @@ export async function PUT(req, { params }) {
         { id_Product: id },
         {
           ...(title && { title }),
+          ...(subtitle && { subtitle }),
           ...(description && { description }),
+          ...(brand && { brand }),
+          
           ...(objectId && { category: objectId }),
           ...(changeImage && { file: mergeImage }),
 
           ...(routeCategory && { routeCategory }),
-
+          ...(titleCategory && { titleCategory }),
+          
           ...(indexMainImage && { indexMainImage }),
           
           ...(featureData && { feature: featureData }),

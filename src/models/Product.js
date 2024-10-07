@@ -17,6 +17,14 @@ const ProductSchema = new Schema(
       type: String,
       required: true,
     },
+    subtitle: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -28,6 +36,10 @@ const ProductSchema = new Schema(
     },
 
     routeCategory:{
+      type: String,
+      required: true,
+    },
+    titleCategory:{
       type: String,
       required: true,
     },

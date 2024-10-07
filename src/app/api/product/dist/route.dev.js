@@ -27,7 +27,7 @@ var mongoose = require("mongoose");
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, feature, featureData, specifications, specificationsData, title, description, category, indexMainImage, objectId, oneCategory, routeCategory, files, i, file, filesArray, product;
+  var formData, feature, featureData, specifications, specificationsData, title, description, subtitle, brand, category, indexMainImage, objectId, oneCategory, routeCategory, titleCategory, files, i, file, filesArray, product;
   return regeneratorRuntime.async(function POST$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -45,19 +45,22 @@ function POST(req, res) {
           specificationsData = JSON.parse(specifications);
           title = formData.get("title");
           description = formData.get("description");
+          subtitle = formData.get("subtitle");
+          brand = formData.get("brand");
           category = formData.get("category");
           indexMainImage = formData.get("indexMainImage");
           objectId = new mongoose.Types.ObjectId(category);
-          _context2.next = 16;
+          _context2.next = 18;
           return regeneratorRuntime.awrap(_Category["default"].findOne({
             _id: category
           }, "-__v")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 16:
+        case 18:
           oneCategory = _context2.sent;
           routeCategory = oneCategory.route;
+          titleCategory = oneCategory.title;
           files = [];
 
           for (i = 0; i < 20; i++) {
@@ -68,8 +71,8 @@ function POST(req, res) {
             }
           }
 
-          _context2.prev = 20;
-          _context2.next = 23;
+          _context2.prev = 23;
+          _context2.next = 26;
           return regeneratorRuntime.awrap(Promise.all(files.map(function _callee(e, i) {
             var bufferData, buffer, res, res2;
             return regeneratorRuntime.async(function _callee$(_context) {
@@ -121,26 +124,29 @@ function POST(req, res) {
             });
           })));
 
-        case 23:
+        case 26:
           filesArray = _context2.sent;
-          _context2.next = 26;
+          _context2.next = 29;
           return regeneratorRuntime.awrap(_Product["default"].create(_objectSpread({
             title: title,
+            subtitle: subtitle,
             description: description,
+            brand: brand,
             category: objectId,
             file: filesArray,
             routeCategory: routeCategory,
+            titleCategory: titleCategory,
             feature: featureData,
             specifications: specificationsData
           }, indexMainImage && {
             indexMainImage: indexMainImage
           })));
 
-        case 26:
+        case 29:
           product = _context2.sent;
 
           if (!product) {
-            _context2.next = 29;
+            _context2.next = 32;
             break;
           }
 
@@ -150,13 +156,13 @@ function POST(req, res) {
             status: 201
           }));
 
-        case 29:
-          _context2.next = 35;
+        case 32:
+          _context2.next = 38;
           break;
 
-        case 31:
-          _context2.prev = 31;
-          _context2.t0 = _context2["catch"](20);
+        case 34:
+          _context2.prev = 34;
+          _context2.t0 = _context2["catch"](23);
           console.log(_context2.t0);
           return _context2.abrupt("return", _server.NextResponse.json({
             message: "ارور ناشناخته"
@@ -164,21 +170,21 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 35:
-          _context2.next = 40;
+        case 38:
+          _context2.next = 43;
           break;
 
-        case 37:
-          _context2.prev = 37;
+        case 40:
+          _context2.prev = 40;
           _context2.t1 = _context2["catch"](0);
           console.error(_context2.t1); // خطاها را نمایش دهید
 
-        case 40:
+        case 43:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 37], [20, 31]]);
+  }, null, null, [[0, 40], [23, 34]]);
 }
 
 function GET(req, res) {
@@ -319,7 +325,10 @@ function GET(req, res) {
               newArr: newArr,
               title: ducomentProduct.title,
               description: ducomentProduct.description,
-              id: ducomentProduct.id_Product
+              id: ducomentProduct.id_Product,
+              subtitle: ducomentProduct.subtitle,
+              brand: ducomentProduct.brand,
+              titleCategory: ducomentProduct.titleCategory
             };
           });
           return _context3.abrupt("return", _server.NextResponse.json({

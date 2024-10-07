@@ -20,6 +20,9 @@ export async function POST(req, res) {
     
     const title = formData.get("title");
     const description = formData.get("description");
+    const subtitle = formData.get("subtitle");
+    const brand = formData.get("brand");
+    
     const category = formData.get("category");
     const indexMainImage = formData.get("indexMainImage");
     
@@ -30,7 +33,8 @@ export async function POST(req, res) {
       }
     );
     const routeCategory = oneCategory.route;
-
+    const titleCategory = oneCategory.title;
+    
     const files = [];
     for (let i = 0; i < 20; i++) {
       const file = formData.get(`file${i}`);
@@ -67,10 +71,13 @@ export async function POST(req, res) {
       );
       const product = await Product.create({
         title,
+        subtitle,
         description,
+        brand,
         category: objectId,
         file: filesArray,
         routeCategory,
+        titleCategory,
         feature: featureData,
         specifications:specificationsData ,
         ...(indexMainImage && { indexMainImage }),
@@ -201,7 +208,10 @@ export async function GET(req, res) {
       title: ducomentProduct.title,
       description: ducomentProduct.description,
       id: ducomentProduct.id_Product,
-
+      subtitle: ducomentProduct.subtitle,
+      brand: ducomentProduct.brand,
+      titleCategory: ducomentProduct.titleCategory,
+      
     };
   });
   return NextResponse.json({ data: imageData });

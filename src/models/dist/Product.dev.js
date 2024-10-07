@@ -20,6 +20,14 @@ var ProductSchema = new Schema({
     type: String,
     required: true
   },
+  subtitle: {
+    type: String,
+    required: true
+  },
+  brand: {
+    type: String,
+    required: true
+  },
   description: {
     type: String,
     required: true
@@ -30,6 +38,10 @@ var ProductSchema = new Schema({
     ref: "Category"
   },
   routeCategory: {
+    type: String,
+    required: true
+  },
+  titleCategory: {
     type: String,
     required: true
   },
