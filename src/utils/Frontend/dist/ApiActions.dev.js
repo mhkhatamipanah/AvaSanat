@@ -774,6 +774,22 @@ var delete_Category = function delete_Category(id) {
       }
     }
   });
+}; // Invoice
+
+
+var create_Invoice = function create_Invoice(url, data) {
+  return regeneratorRuntime.async(function create_Invoice$(_context22) {
+    while (1) {
+      switch (_context22.prev = _context22.next) {
+        case 0:
+          return _context22.abrupt("return", postPromise(url, data));
+
+        case 1:
+        case "end":
+          return _context22.stop();
+      }
+    }
+  });
 };
 
 var ApiActions = function ApiActions() {
@@ -797,7 +813,9 @@ var ApiActions = function ApiActions() {
     get_OneCategory: get_OneCategory,
     create_Category: create_Category,
     edit_Category: edit_Category,
-    delete_Category: delete_Category
+    delete_Category: delete_Category,
+    // Invoice
+    create_Invoice: create_Invoice
   };
 };
 

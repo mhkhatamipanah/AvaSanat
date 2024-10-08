@@ -1,14 +1,20 @@
 
-import { Button, Input, Badge } from "@nextui-org/react";
-import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Search, ShoppingBag, ShoppingCart, Vote } from 'lucide-react';
-import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
 import Link from 'next/link';
+import Image from "next/image";
 import { usePathname } from 'next/navigation';
+import { Input } from "@nextui-org/react";
+
+
+// icon
+import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Search, ShoppingCart, Vote } from 'lucide-react';
+// component
+import InvoiceBTN from "./InvoiceBTN";
+import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
 
 import logo from "@/public/images/png persian.png"
-import { useEffect, useState } from "react";
+
 import fetchCategory from "@/src/utils/Frontend/allApiLogicFront/Category/CategoryListFetch";
-import { getCookie } from "@/src/utils/Cookie";
 function getOffsetRight(element) {
     if (element) {
         const parent = element.offsetParent;
@@ -30,6 +36,7 @@ function spanMove(parentTag) {
 
 const Desktop = () => {
 
+    const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
 
     const [Category, setCategory] = useState(null)
     const fetchCategoryApi = async () => {
@@ -105,11 +112,7 @@ const Desktop = () => {
         spanHoverLeave()
     }, [pathname])
 
-    if (getCookie("Avasanat")) {
-        var cookieData = getCookie("Avasanat")
-    } else {
-        var cookieData = null
-    }
+
 
     return (
         <>
@@ -207,29 +210,7 @@ const Desktop = () => {
                                 <p className={`${pathname === '/contact-us' ? 'active' : ''} text-[14px]`} >تماس با ما </p>
                             </Link>
                         </ul>
-                        {cookieData ?
-                            <div>
-
-                                <Badge style={{ border: "1px solid #fe6d67", backgroundColor: "#ffc5cb", color: "black", paddingTop: "3px" }} content={Object.entries(JSON.parse(getCookie("Avasanat"))).length} size="lg" color="warning">
-                                    <Link href={"/invoice"} className='text-md bg-[var(--color-1)] text-white rounded-md w-[140px] h-[40px] flex items-center justify-center gap-1' variant="shadow">
-                                        <ShoppingBag size={28} />
-                                        <p className="text-[14px]">
-                                            پیش فاکتور
-                                        </p>
-                                    </Link>
-                                </Badge>
-                            </div>
-                            :
-                            <div>
-                                <Link href={"/invoice"} className='text-md bg-[var(--color-1)] text-white rounded-md w-[140px] h-[40px] flex items-center justify-center gap-1' variant="shadow">
-                                    <ShoppingBag size={28} />
-                                    <p className="text-[14px]">
-                                        پیش فاکتور
-                                    </p>
-                                </Link>
-                            </div>
-
-                        }
+                        <InvoiceBTN updateInvoice={updateInvoice} setUpdateInvoice={setUpdateInvoice} />
                     </div>
 
                 </section>

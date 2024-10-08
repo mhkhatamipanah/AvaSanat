@@ -78,6 +78,10 @@
   border: 2px solid #cfcfcf;
 }
 
+.heightTextArea  div:nth-child(1){
+  height: 150px !important;
+
+}
 /* select */
 .selectNextUi div button svg {
   left: 0.75rem !important;

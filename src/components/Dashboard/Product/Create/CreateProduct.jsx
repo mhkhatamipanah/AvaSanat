@@ -174,7 +174,7 @@ const CreateProduct = () => {
                     get_OneProduct(idProduct).then((res => {
                         if (res?.success) {
                             const data = res.results
-                            const { title, description, subtitle, specifications, feature, category, indexMainImage } = data[0]
+                            const { title, description, subtitle, brand ,  specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
                             setSubtitle(subtitle)
@@ -185,6 +185,7 @@ const CreateProduct = () => {
 
                             setInputsSpecifications(specifications)
                             setCategoryInput(new Set([category]))
+                            setBrand(new Set([brand]))
                         }
                     }))
                 }

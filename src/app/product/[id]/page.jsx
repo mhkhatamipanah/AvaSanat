@@ -1,17 +1,21 @@
 "use client"
 
-// import PaginationComponent from "@/src/components/Dashboard/Pagination/Pagination"
+
 import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
-import { addToCart } from "@/src/utils/Cookie"
+import ButtonInvoice from "./ButtonInvoice"
 
 const Page = ({ params }) => {
 
   const { id } = params
   const pathname = usePathname()
   const categoryUrl = pathname.split("/")[2]
+
+
+  
+
 
   const [data, setData] = useState([])
   const [perPage, setPerPage] = useState(12)
@@ -31,7 +35,7 @@ const Page = ({ params }) => {
     //  , rerender
   ])
 
-  
+
   return (
     <>
       <section className=' flex justify-center w-full my-20 min-h-screen'>
@@ -42,7 +46,7 @@ const Page = ({ params }) => {
           {data && data.data && data.data.map((e, i) => {
             return (<div key={i} className=" flex flex-col text-gray-700 bg-white shadow-lg border-2 border-gray-200 bg-clip-border rounded-xl w-80 h-min">
               <Link href={`/product/${categoryUrl}/${e.id}`} className=" mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg h-60">
-                <img className='object-cover w-full h-full' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"}alt="profile-picture" />
+                <img className='object-cover w-full h-full' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
               </Link>
               <div className="p-6 text-center pb-3">
                 <Link href={`/product/${categoryUrl}/${e.id}`} >
@@ -54,10 +58,11 @@ const Page = ({ params }) => {
                     {e.description}
                   </p>
                 </Link>
-                <button type="button" onClick={() => {
-                  console.log({ id:e.id , title: e.title, description: e.description })
-                  addToCart(e.id, JSON.stringify({ id:e._id , title: e.title, description: e.description }));
-                }} className="w-full text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-sm px-5 py-2.5 me-2 mb-2 rounded-br-2xl rounded-tl-2xl">افزودن به پیش فاکتور</button>
+
+
+              
+      
+                <ButtonInvoice id={e.id} />
 
 
               </div>

@@ -1,26 +1,44 @@
 "use client"
 
 // react
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 // nextui
-import { Breadcrumbs, BreadcrumbItem, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 // icon
-import { ChevronLeft, PlusCircle, Trash } from "lucide-react";
+import { MinusCircle, PlusCircle, Trash } from "lucide-react";
 // component
 import RadioBTN from "./RadioBTN";
 import TabComponent from "./Tabs";
 // api
+import { addToCart, decreaseItemCount, removeFromCart, getItemCount } from "@/src/utils/Cookie"
+
 import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import Link from "next/link";
+
+
+import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
+import CarouselSlider from "./CarouselSlider";
+
 const Page = ({ params }) => {
+  const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
+  const rerenderBTN_Invoice = () => {
+    setUpdateInvoice(!updateInvoice)
+  }
 
   const { subId } = params
+
+  const [countInvoice, setCountInvoice] = useState(null)
+
+
+  useEffect(() => {
+    const count = getItemCount(subId)
+    setCountInvoice(count)
+  }, [])
 
   const [data, setData] = useState([])
   const [perPage, setPerPage] = useState(12)
   const [page, setPage] = useState(1)
 
-  const [countInvoice, setCountInvoice] = useState(null)
 
   useEffect(() => {
     let data = {
@@ -36,6 +54,18 @@ const Page = ({ params }) => {
     page, perPage
     //  , rerender
   ])
+
+
+  const [selectedValues, setSelectedValues] = useState({});
+
+  // تابع برای دریافت مقدار از RadioBTN
+  const handleRadioChange = (title, value) => {
+    setSelectedValues(prev => ({
+      ...prev,
+      [title]: value
+    }));
+  };
+
   return (
     <>
       <section className=' flex justify-center w-full mb-20  min-h-screen '>
@@ -80,8 +110,8 @@ const Page = ({ params }) => {
                 {(data && data.data.feature && data.data.feature.map((e, i) => {
                   return (
                     <div className="vazirLight" key={i}>
-                      <p>انتخاب {e.title} : </p>
-                      <RadioBTN data={e.values} />
+
+                      <RadioBTN title={e.title} data={e.values} onChange={(value) => handleRadioChange(e.title, value)} />
                     </div>
                   )
                 }))}
@@ -90,16 +120,35 @@ const Page = ({ params }) => {
                 <div className="border border-b my-3"></div>
 
                 {countInvoice ? <div className="mt-3 flex items-center">
-                  <Button
-                    onClick={() => {
-                      setCountInvoice(countInvoice - 1)
-                    }}
-                    className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
-                    variant="light"
-                    color="primary"
-                  >
-                    <Trash className="w-5 text-red-600" size={24} />
-                  </Button>
+                  {countInvoice == 1 ?
+                    <Button
+                      onClick={() => {
+
+                        removeFromCart(data.data.id_Product)
+                        setCountInvoice(countInvoice - 1)
+                        rerenderBTN_Invoice()
+                      }}
+                      className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
+                      variant="light"
+                      color="primary"
+                    >
+                      <Trash className="w-5 text-red-600" size={24} />
+                    </Button>
+                    :
+                    <Button
+                      onClick={() => {
+                        decreaseItemCount(data.data.id_Product)
+                        setCountInvoice(countInvoice - 1)
+                        rerenderBTN_Invoice()
+                      }}
+                      className="px-0 min-w-10 h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
+                      variant="light"
+                      color="primary"
+                    >
+                      <MinusCircle className="w-5 text-gray-600" size={24} />
+                    </Button>
+                  }
+
                   <div className="w-10 h-10 flex justify-center items-center">
 
                     <p className="vazirMedium">
@@ -108,7 +157,9 @@ const Page = ({ params }) => {
                   </div>
                   <Button
                     onClick={() => {
+                      addToCart(data.data.id_Product, JSON.stringify({ id: data.data.id_Product, feature: selectedValues }))
                       setCountInvoice(countInvoice + 1)
+                      rerenderBTN_Invoice()
                     }}
                     className="px-0 min-w-10 h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
                     variant="light"
@@ -116,18 +167,24 @@ const Page = ({ params }) => {
                   >
                     <PlusCircle className="w-5 text-green-600" size={24} />
                   </Button>
-                </div> : <Button
-                  onClick={() => {
-                    setCountInvoice(countInvoice + 1)
-                  }}
+                </div> :
+                  <Button
+                    onClick={() => {
+                      addToCart(data.data.id_Product, JSON.stringify({ id: data.data.id_Product, feature: selectedValues }))
+                      setCountInvoice(countInvoice + 1)
+                      rerenderBTN_Invoice()
+                    }}
 
-                  className=" bg-green-700 vazirMedium text-white">
-                  افزودن به  پیش فاکتور
-                </Button>
+                    className=" bg-green-700 vazirMedium text-white">
+                    افزودن به  پیش فاکتور
+                  </Button>
                 }
 
 
               </div>
+              {/* <button onClick={() => {
+                console.log("Selected radio values:", selectedValues);
+              }}> click</button> */}
 
             </section>
           }
@@ -137,6 +194,10 @@ const Page = ({ params }) => {
               specifications={data.data.specifications} />
           </section>}
 
+
+          <section>
+           {data && data.data && <CarouselSlider id={subId} routeCategory={data.data.routeCategory} />}
+          </section>
         </div>
 
       </section>

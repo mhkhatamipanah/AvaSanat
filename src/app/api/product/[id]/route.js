@@ -11,6 +11,47 @@ export async function GET(req, { params }) {
 
     const id = params.id;
 
+    const { searchParams } = new URL(req.url);
+    let related = searchParams.get("related");
+
+    if (related) {
+      let routeCategory = searchParams.get("routeCategory");
+
+      const category = await Product.find({ routeCategory }, "-__v")
+        .limit(10)
+        .catch((err) => {
+          console.log(err);
+        });
+
+      const imageData = category.map((ducomentProduct) => {
+        const imageTransfer = ducomentProduct.file.map((e) => {
+          if (ducomentProduct.indexMainImage === e.index) {
+            const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+
+            const thumbnailBase64 = thumbnailBuffer.toString("base64");
+
+            return {
+              fileName: `uploaded_image_${Date.now()}.webp`, // For reference
+              thumbnailBase64: thumbnailBase64,
+              // mainImageBase64: mainImageBase64,
+            };
+          }
+        });
+        const newArr = imageTransfer.filter(
+          (item) => item !== null && typeof item !== "undefined"
+        );
+
+        return {
+          newArr,
+          title: ducomentProduct.title,
+          subtitle: ducomentProduct.subtitle,
+          id: ducomentProduct.id_Product,
+          routeCategory: ducomentProduct.routeCategory,
+        };
+      });
+      return NextResponse.json({ data: imageData });
+    }
+
     const findOneProduct = await Product.find({ id_Product: id }, "-__v").catch(
       (err) => {
         console.log(err);
@@ -23,10 +64,9 @@ export async function GET(req, { params }) {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
         thumbnailBase64: thumbnailBase64,
         // mainImageBase64: mainImageBase64,
-        index: e.index
+        index: e.index,
       };
     });
-
 
     if (findOneProduct) {
       return NextResponse.json({
@@ -64,7 +104,6 @@ export async function PUT(req, { params }) {
     const category = formData.get("category");
     const changeImage = formData.get("changeImage");
     const indexMainImage = formData.get("indexMainImage");
- 
 
     const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
@@ -75,7 +114,6 @@ export async function PUT(req, { params }) {
     const routeCategory = oneCategory.route;
     const titleCategory = oneCategory.title;
 
-
     const oneProduct = await Product.findOne({ id_Product: id }, "-__v").catch(
       (err) => {
         console.log(err);
@@ -84,7 +122,7 @@ export async function PUT(req, { params }) {
     const maxIndex = oneProduct?.file.reduce((max, e) => {
       return e.index > max ? e.index : max;
     }, -Infinity);
-    
+
     console.log(maxIndex);
 
     const files = [];
@@ -94,7 +132,6 @@ export async function PUT(req, { params }) {
         files.push(file);
       }
     }
- 
 
     try {
       const filesArray = await Promise.all(
@@ -136,15 +173,15 @@ export async function PUT(req, { params }) {
           ...(subtitle && { subtitle }),
           ...(description && { description }),
           ...(brand && { brand }),
-          
+
           ...(objectId && { category: objectId }),
           ...(changeImage && { file: mergeImage }),
 
           ...(routeCategory && { routeCategory }),
           ...(titleCategory && { titleCategory }),
-          
+
           ...(indexMainImage && { indexMainImage }),
-          
+
           ...(featureData && { feature: featureData }),
           ...(specificationsData && { specifications: specificationsData }),
         }
@@ -161,17 +198,21 @@ export async function PUT(req, { params }) {
   }
 }
 
-
 export async function DELETE(req, { params }) {
   const id = params.id;
 
-  const DeleteProduct = await Product.findOneAndDelete({ id_Product: id }).catch((err) => {
+  const DeleteProduct = await Product.findOneAndDelete({
+    id_Product: id,
+  }).catch((err) => {
     console.log(err);
   });
 
   if (DeleteProduct) {
-    return NextResponse.json({ message: "محصول با موفقیت حذف شد" , success:true } , {status:200});
+    return NextResponse.json(
+      { message: "محصول با موفقیت حذف شد", success: true },
+      { status: 200 }
+    );
   } else {
-    return NextResponse.json({ message: "محصول حدف نشد" }, {status:400});
+    return NextResponse.json({ message: "محصول حدف نشد" }, { status: 400 });
   }
 }

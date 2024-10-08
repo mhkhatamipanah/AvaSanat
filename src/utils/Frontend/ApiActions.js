@@ -134,7 +134,7 @@ const deletePromise = (url) => {
     try {
       const res = await deleteMethod(url);
       const result = await res.json();
-      console.log(result)
+      console.log(result);
       if (res.status === 200 || res.status === 201) {
         resolve(result);
       } else {
@@ -166,7 +166,6 @@ const deleteApi = (url) => {
     return false;
   }
 };
-
 
 // OTP
 const sendOtp = (data) => {
@@ -290,7 +289,7 @@ const get_CategoryProduct = async (data) => {
     return false;
   }
 };
-const delete_Image_Product = async (id , id_image) => {
+const delete_Image_Product = async (id, id_image) => {
   return deleteApi(`/api/product/${id}/${id_image}`);
 };
 
@@ -315,11 +314,14 @@ const create_Category = async (url, data) => {
 const edit_Category = async (url, data) => {
   return editApi(url, data);
 };
-const delete_Category = async (id ) => {
+const delete_Category = async (id) => {
   return deleteApi(`/api/category/${id}`);
 };
 
-
+// Invoice
+const create_Invoice = async (url, data) => {
+  return postPromise(url, data);
+};
 export const ApiActions = () => {
   return {
     // Otp ContactUs
@@ -345,5 +347,8 @@ export const ApiActions = () => {
     create_Category,
     edit_Category,
     delete_Category,
+
+    // Invoice
+    create_Invoice,
   };
 };

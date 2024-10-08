@@ -8,6 +8,9 @@ exports.addToCart = addToCart;
 exports.removeFromCart = removeFromCart;
 exports.setCookie = setCookie;
 exports.clearCart = clearCart;
+exports.decreaseItemCount = decreaseItemCount;
+exports.getTotalUniqueItems = getTotalUniqueItems;
+exports.getItemCount = getItemCount;
 
 var _jsCookie = _interopRequireDefault(require("js-cookie"));
 
@@ -102,6 +105,26 @@ function clearCart() {
   setCookie("Avasanat", JSON.stringify({}));
 }
 
+function decreaseItemCount(productId) {
+  var cart = getCookie("Avasanat");
+
+  if (cart) {
+    cart = JSON.parse(cart); // چک کردن وجود محصول در سبد خرید
+
+    if (cart[productId]) {
+      // اگر تعداد بیشتر از 1 بود، یک عدد کم کن
+      if (cart[productId].count > 1) {
+        cart[productId].count--;
+      } else {
+        // در غیر این صورت محصول را کاملاً حذف کن
+        delete cart[productId];
+      }
+
+      setCookie("Avasanat", JSON.stringify(cart));
+    }
+  }
+}
+
 function updateLocalStorageItemCount() {
   var cart = _jsCookie["default"].get("Avasanat");
 
@@ -115,4 +138,16 @@ function updateLocalStorageItemCount() {
   }
 
   localStorage.setItem('itemCount', totalItems);
+}
+
+function getTotalUniqueItems() {
+  var cart = getCookie("Avasanat");
+
+  if (cart) {
+    var parsedCart = JSON.parse(cart); // تعداد کل آیتم‌های مختلف (محصولات یکتا)
+
+    return Object.keys(parsedCart).length;
+  }
+
+  return 0;
 }
