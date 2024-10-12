@@ -11,7 +11,7 @@ var _db = _interopRequireDefault(require("@/src/configs/db"));
 
 var _server = require("next/server");
 
-var _MessageModel = _interopRequireDefault(require("@/src/models/MessageModel"));
+var _Invoice = _interopRequireDefault(require("@/src/models/Invoice"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -20,7 +20,7 @@ var isInteger = function isInteger(str) {
 };
 
 function POST(req, res) {
-  var body, phone, code, title, description, otp, date, now, newMessage;
+  var body, phone, code, invoice, description, otp, date, now, newMessage;
   return regeneratorRuntime.async(function POST$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -31,7 +31,7 @@ function POST(req, res) {
 
         case 3:
           body = _context.sent;
-          phone = body.phone, code = body.code, title = body.title, description = body.description;
+          phone = body.phone, code = body.code, invoice = body.invoice, description = body.description;
 
           if (!(!phone.trim() || phone.trim().length !== 11)) {
             _context.next = 7;
@@ -96,9 +96,9 @@ function POST(req, res) {
 
         case 18:
           _context.next = 20;
-          return regeneratorRuntime.awrap(_MessageModel["default"].create({
+          return regeneratorRuntime.awrap(_Invoice["default"].create({
             phone: phone,
-            title: title,
+            invoice: invoice,
             description: description
           }));
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { SelectItem, Select } from '@nextui-org/react';
+import { SelectItem, Select, Spinner } from '@nextui-org/react';
 import { Button } from "@nextui-org/button";
 
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
@@ -12,6 +12,8 @@ import { BadgePlus, Pencil, Trash } from 'lucide-react';
 import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
 import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
 import { ApiActions } from '@/src/utils/Frontend/ApiActions';
+import Image from 'next/image';
+import img1 from "@/public/images/no-resualt.png";
 
 
 
@@ -20,6 +22,7 @@ const page = () => {
 
 
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
   const [countData, setCountData] = useState(null)
   const [perPage, setPerPage] = useState(12)
   const [page, setPage] = useState(1)
@@ -57,14 +60,101 @@ const page = () => {
     let data = {
       perPage: perPage,
       page: page,
-      // ...(sendOrRecevied ? { sendOrRecevied } : {}),
     };
     let count = {
       count: true
     }
-    getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData)
+    getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
     getApi(`/api/product?${(new URLSearchParams(count)).toString()}`, setCountData)
   }, [page, perPage, rerender])
+
+
+
+
+  const LoadingState = () => (
+    <div className="w-full h-[600px] flex justify-center items-center">
+      <Spinner />
+    </div>
+  )
+  const renderEmptyState = () => (
+    <div className="h-full w-full flex justify-center items-center">
+      <div className="flex flex-col gap-3 justify-center items-center mb-16">
+        <Image
+          className="w-full he-full max-w-[250px] max-h-[250px]"
+          width={500}
+          height={500}
+          src={img1}
+        />
+        <p> چیزی جهت نمایش وجود ندارد</p>
+      </div>
+    </div>
+  );
+
+  const renderProduct = () => (
+    <>
+      {data && data.data &&
+        <>
+          <div className='grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-2'>
+            {
+              data.data.map((e, i) => {
+
+                return (
+                  <div className='relative w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
+                    <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
+
+                      <Link href={`/dashboard/product/create?id=${e.id}`}>
+                        <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                          {e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="" />
+                      </Link>
+                    </div>
+
+                    <div className='oneLineShow'>
+                      <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
+                    </div>
+                    <div className='twoLineShow'>
+                      <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.description}</p>
+                    </div>
+
+                    <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
+
+                      <div className="flex gap-2">
+                        <Link href={`/dashboard/product/create?id=${e.id}`}>
+                          <Button
+                            className="px-0 min-w-8 h-8 bg-blue-50 shadow border border-solid border-blue-100 hover:!bg-blue-200"
+                            variant="light"
+                            color="primary"
+                          >
+                            <Pencil className="w-4" size={16} />
+                          </Button>
+                        </Link>
+
+                        <Button
+                          onClick={() => {
+                            setIdDelete(e.id)
+                            setTitle("محصول")
+                            setText(`محصول ${e.title}`)
+                            setIsOpen(true)
+                          }}
+                          className="px-0 min-w-8 h-8 bg-red-50 shadow border border-solid border-red-100 hover:!bg-red-200"
+                          color="danger"
+                          variant="light"
+                        >
+                          <Trash className="w-4" size={16} />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )
+
+              })
+            }
+          </div>
+          <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
+        </>
+      }
+    </>
+  )
+
   return (
     <>
       <ModalDelete
@@ -118,67 +208,11 @@ const page = () => {
               </Select>
             </div>
           </div>
-          {/* <Category/> */}
-          {data && data.data &&
-            <>
-              <div className='grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-2'>
-                {
-                  data.data.map((e, i) => {
 
-                    return (
-                      <div className='relative w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
-                        <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
-
-                          <Link href={`/dashboard/product/create?id=${e.id}`}>
-                            <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
-                              {e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="" />
-                          </Link>
-                        </div>
-
-                        <div className='oneLineShow'>
-                          <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
-                        </div>
-                        <div className='twoLineShow'>
-                          <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.description}</p>
-                        </div>
-
-                        <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
-
-                          <div className="flex gap-2">
-                            <Link href={`/dashboard/product/create?id=${e.id}`}>
-                              <Button
-                                className="px-0 min-w-8 h-8 bg-blue-50 shadow border border-solid border-blue-100 hover:!bg-blue-200"
-                                variant="light"
-                                color="primary"
-                              >
-                                <Pencil className="w-4" size={16} />
-                              </Button>
-                            </Link>
-
-                            <Button
-                              onClick={() => {
-                                setIdDelete(e.id)
-                                setTitle("محصول")
-                                setText(`محصول ${e.title}`)
-                                setIsOpen(true)
-                              }}
-                              className="px-0 min-w-8 h-8 bg-red-50 shadow border border-solid border-red-100 hover:!bg-red-200"
-                              color="danger"
-                              variant="light"
-                            >
-                              <Trash className="w-4" size={16} />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    )
-
-                  })
-                }
-              </div>
-              <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
-            </>
+          {loading ? LoadingState() :
+            data?.data?.length === 0 ? renderEmptyState() : renderProduct()
           }
+
 
         </section>
       </div>

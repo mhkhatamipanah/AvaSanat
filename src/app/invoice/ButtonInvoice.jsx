@@ -4,7 +4,7 @@ import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvi
 import { Button } from '@nextui-org/react';
 import { MinusCircle, PlusCircle, Trash } from 'lucide-react';
 
-const ButtonInvoice = ({ id, invoiceContainer }) => {
+const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedItems}) => {
     const [countInvoice, setCountInvoice] = useState(null)
 
 
@@ -21,6 +21,10 @@ const ButtonInvoice = ({ id, invoiceContainer }) => {
     const rerenderBTN_Invoice = () => {
         setUpdateInvoice(!updateInvoice)
     }
+      // تابع حذف
+  const removeItemById = (id) => {
+    setSelectedItems(() => selectedProduct.filter(item => item.id !== id));
+  };
     return (
         <>
             {countInvoice &&
@@ -34,6 +38,8 @@ const ButtonInvoice = ({ id, invoiceContainer }) => {
                                 if (document.getElementById(`invoiceContainer-${invoiceContainer}` )) {
                                     document.getElementById(`invoiceContainer-${invoiceContainer}`).style.display = "none"
                                 }
+                                removeItemById(id)
+
                             }}
                             className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
                             variant="light"

@@ -310,7 +310,7 @@ var deleteApi = function deleteApi(url) {
     console.log(e);
     return false;
   }
-}; // OTP
+}; // OTP Countact us
 
 
 var sendOtp = function sendOtp(data) {
@@ -333,52 +333,75 @@ var checkOtp = function checkOtp(data) {
       }
     }
   });
+}; // OTP Invoice
+
+
+var sendOtpInvoice = function sendOtpInvoice(data) {
+  var result = postApi("/api/invoice/send/", data);
+  return result;
+};
+
+var checkOtpInvoice = function checkOtpInvoice(data) {
+  var result;
+  return regeneratorRuntime.async(function checkOtpInvoice$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          result = postApi("/api/invoice/check/", data);
+          return _context8.abrupt("return", result);
+
+        case 2:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  });
 }; // ***/ DASHBOARD /* ///
 // ContactUs
 
 
 var get_ContactUs = function get_ContactUs(data) {
   var queryString, res, result;
-  return regeneratorRuntime.async(function get_ContactUs$(_context8) {
+  return regeneratorRuntime.async(function get_ContactUs$(_context9) {
     while (1) {
-      switch (_context8.prev = _context8.next) {
+      switch (_context9.prev = _context9.next) {
         case 0:
-          _context8.prev = 0;
+          _context9.prev = 0;
           queryString = params(data);
-          _context8.next = 4;
+          _context9.next = 4;
           return regeneratorRuntime.awrap(fetch("/api/contact_us".concat(queryString)));
 
         case 4:
-          res = _context8.sent;
+          res = _context9.sent;
 
           if (!(res.status === 200)) {
-            _context8.next = 12;
+            _context9.next = 12;
             break;
           }
 
-          _context8.next = 8;
+          _context9.next = 8;
           return regeneratorRuntime.awrap(res.json());
 
         case 8:
-          result = _context8.sent;
-          return _context8.abrupt("return", result);
+          result = _context9.sent;
+          return _context9.abrupt("return", result);
 
         case 12:
-          return _context8.abrupt("return", false);
+          return _context9.abrupt("return", false);
 
         case 13:
-          _context8.next = 19;
+          _context9.next = 19;
           break;
 
         case 15:
-          _context8.prev = 15;
-          _context8.t0 = _context8["catch"](0);
-          console.log("error", _context8.t0);
-          return _context8.abrupt("return", false);
+          _context9.prev = 15;
+          _context9.t0 = _context9["catch"](0);
+          console.log("error", _context9.t0);
+          return _context9.abrupt("return", false);
 
         case 19:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
     }
   }, null, null, [[0, 15]]);
@@ -386,67 +409,19 @@ var get_ContactUs = function get_ContactUs(data) {
 
 var get_OneContactUs = function get_OneContactUs(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_OneContactUs$(_context9) {
-    while (1) {
-      switch (_context9.prev = _context9.next) {
-        case 0:
-          _context9.prev = 0;
-          _context9.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id)));
-
-        case 3:
-          res = _context9.sent;
-
-          if (!(res.status === 200)) {
-            _context9.next = 11;
-            break;
-          }
-
-          _context9.next = 7;
-          return regeneratorRuntime.awrap(res.json());
-
-        case 7:
-          result = _context9.sent;
-          return _context9.abrupt("return", result);
-
-        case 11:
-          return _context9.abrupt("return", false);
-
-        case 12:
-          _context9.next = 18;
-          break;
-
-        case 14:
-          _context9.prev = 14;
-          _context9.t0 = _context9["catch"](0);
-          console.log("error", _context9.t0);
-          return _context9.abrupt("return", false);
-
-        case 18:
-        case "end":
-          return _context9.stop();
-      }
-    }
-  }, null, null, [[0, 14]]);
-};
-
-var delete_ContactUs = function delete_ContactUs(id) {
-  var res, result;
-  return regeneratorRuntime.async(function delete_ContactUs$(_context10) {
+  return regeneratorRuntime.async(function get_OneContactUs$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
           _context10.prev = 0;
           _context10.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id), {
-            method: "DELETE"
-          }));
+          return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id)));
 
         case 3:
           res = _context10.sent;
 
           if (!(res.status === 200)) {
-            _context10.next = 12;
+            _context10.next = 11;
             break;
           }
 
@@ -455,38 +430,52 @@ var delete_ContactUs = function delete_ContactUs(id) {
 
         case 7:
           result = _context10.sent;
-          console.log(result);
           return _context10.abrupt("return", result);
 
-        case 12:
+        case 11:
           return _context10.abrupt("return", false);
 
-        case 13:
-          _context10.next = 19;
+        case 12:
+          _context10.next = 18;
           break;
 
-        case 15:
-          _context10.prev = 15;
+        case 14:
+          _context10.prev = 14;
           _context10.t0 = _context10["catch"](0);
           console.log("error", _context10.t0);
           return _context10.abrupt("return", false);
 
-        case 19:
+        case 18:
         case "end":
           return _context10.stop();
       }
     }
-  }, null, null, [[0, 15]]);
+  }, null, null, [[0, 14]]);
+};
+
+var delete_ContactUs = function delete_ContactUs(id) {
+  return regeneratorRuntime.async(function delete_ContactUs$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          return _context11.abrupt("return", deleteApi("/api/contact_us/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  });
 };
 
 var edit_ContactUs = function edit_ContactUs(id, data) {
   var res, result;
-  return regeneratorRuntime.async(function edit_ContactUs$(_context11) {
+  return regeneratorRuntime.async(function edit_ContactUs$(_context12) {
     while (1) {
-      switch (_context11.prev = _context11.next) {
+      switch (_context12.prev = _context12.next) {
         case 0:
-          _context11.prev = 0;
-          _context11.next = 3;
+          _context12.prev = 0;
+          _context12.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id), {
             method: "PUT",
             headers: {
@@ -496,36 +485,36 @@ var edit_ContactUs = function edit_ContactUs(id, data) {
           }));
 
         case 3:
-          res = _context11.sent;
+          res = _context12.sent;
 
           if (!(res.status === 200)) {
-            _context11.next = 11;
+            _context12.next = 11;
             break;
           }
 
-          _context11.next = 7;
+          _context12.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context11.sent;
-          return _context11.abrupt("return", result);
+          result = _context12.sent;
+          return _context12.abrupt("return", result);
 
         case 11:
-          return _context11.abrupt("return", false);
+          return _context12.abrupt("return", false);
 
         case 12:
-          _context11.next = 18;
+          _context12.next = 18;
           break;
 
         case 14:
-          _context11.prev = 14;
-          _context11.t0 = _context11["catch"](0);
-          console.log("error", _context11.t0);
-          return _context11.abrupt("return", false);
+          _context12.prev = 14;
+          _context12.t0 = _context12["catch"](0);
+          console.log("error", _context12.t0);
+          return _context12.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -533,26 +522,11 @@ var edit_ContactUs = function edit_ContactUs(id, data) {
 
 
 var create_Product = function create_Product(url, data) {
-  return regeneratorRuntime.async(function create_Product$(_context12) {
-    while (1) {
-      switch (_context12.prev = _context12.next) {
-        case 0:
-          return _context12.abrupt("return", postApi(url, data));
-
-        case 1:
-        case "end":
-          return _context12.stop();
-      }
-    }
-  });
-};
-
-var edit_Product = function edit_Product(url, data) {
-  return regeneratorRuntime.async(function edit_Product$(_context13) {
+  return regeneratorRuntime.async(function create_Product$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
-          return _context13.abrupt("return", editApi(url, data));
+          return _context13.abrupt("return", postApi(url, data));
 
         case 1:
         case "end":
@@ -562,12 +536,12 @@ var edit_Product = function edit_Product(url, data) {
   });
 };
 
-var delete_Product = function delete_Product(id) {
-  return regeneratorRuntime.async(function delete_Product$(_context14) {
+var edit_Product = function edit_Product(url, data) {
+  return regeneratorRuntime.async(function edit_Product$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
-          return _context14.abrupt("return", deleteApi("/api/product/".concat(id)));
+          return _context14.abrupt("return", editApi(url, data));
 
         case 1:
         case "end":
@@ -577,61 +551,30 @@ var delete_Product = function delete_Product(id) {
   });
 };
 
-var get_OneProduct = function get_OneProduct(id) {
-  var res, result;
-  return regeneratorRuntime.async(function get_OneProduct$(_context15) {
+var delete_Product = function delete_Product(id) {
+  return regeneratorRuntime.async(function delete_Product$(_context15) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
-          _context15.prev = 0;
-          _context15.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/product/".concat(id)));
+          return _context15.abrupt("return", deleteApi("/api/product/".concat(id)));
 
-        case 3:
-          res = _context15.sent;
-
-          if (!(res.status === 200)) {
-            _context15.next = 11;
-            break;
-          }
-
-          _context15.next = 7;
-          return regeneratorRuntime.awrap(res.json());
-
-        case 7:
-          result = _context15.sent;
-          return _context15.abrupt("return", result);
-
-        case 11:
-          return _context15.abrupt("return", false);
-
-        case 12:
-          _context15.next = 18;
-          break;
-
-        case 14:
-          _context15.prev = 14;
-          _context15.t0 = _context15["catch"](0);
-          console.log("error", _context15.t0);
-          return _context15.abrupt("return", false);
-
-        case 18:
+        case 1:
         case "end":
           return _context15.stop();
       }
     }
-  }, null, null, [[0, 14]]);
+  });
 };
 
-var get_CategoryProduct = function get_CategoryProduct(data) {
+var get_OneProduct = function get_OneProduct(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_CategoryProduct$(_context16) {
+  return regeneratorRuntime.async(function get_OneProduct$(_context16) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
           _context16.prev = 0;
           _context16.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/category?".concat(new URLSearchParams(data).toString())));
+          return regeneratorRuntime.awrap(fetch("/api/product/".concat(id)));
 
         case 3:
           res = _context16.sent;
@@ -669,16 +612,62 @@ var get_CategoryProduct = function get_CategoryProduct(data) {
   }, null, null, [[0, 14]]);
 };
 
-var delete_Image_Product = function delete_Image_Product(id, id_image) {
-  return regeneratorRuntime.async(function delete_Image_Product$(_context17) {
+var get_CategoryProduct = function get_CategoryProduct(data) {
+  var res, result;
+  return regeneratorRuntime.async(function get_CategoryProduct$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
-          return _context17.abrupt("return", deleteApi("/api/product/".concat(id, "/").concat(id_image)));
+          _context17.prev = 0;
+          _context17.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/category?".concat(new URLSearchParams(data).toString())));
+
+        case 3:
+          res = _context17.sent;
+
+          if (!(res.status === 200)) {
+            _context17.next = 11;
+            break;
+          }
+
+          _context17.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context17.sent;
+          return _context17.abrupt("return", result);
+
+        case 11:
+          return _context17.abrupt("return", false);
+
+        case 12:
+          _context17.next = 18;
+          break;
+
+        case 14:
+          _context17.prev = 14;
+          _context17.t0 = _context17["catch"](0);
+          console.log("error", _context17.t0);
+          return _context17.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context17.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+};
+
+var delete_Image_Product = function delete_Image_Product(id, id_image) {
+  return regeneratorRuntime.async(function delete_Image_Product$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          return _context18.abrupt("return", deleteApi("/api/product/".concat(id, "/").concat(id_image)));
 
         case 1:
         case "end":
-          return _context17.stop();
+          return _context18.stop();
       }
     }
   });
@@ -687,71 +676,56 @@ var delete_Image_Product = function delete_Image_Product(id, id_image) {
 
 var get_OneCategory = function get_OneCategory(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_OneCategory$(_context18) {
+  return regeneratorRuntime.async(function get_OneCategory$(_context19) {
     while (1) {
-      switch (_context18.prev = _context18.next) {
+      switch (_context19.prev = _context19.next) {
         case 0:
-          _context18.prev = 0;
-          _context18.next = 3;
+          _context19.prev = 0;
+          _context19.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/category/".concat(id)));
 
         case 3:
-          res = _context18.sent;
+          res = _context19.sent;
 
           if (!(res.status === 200)) {
-            _context18.next = 11;
+            _context19.next = 11;
             break;
           }
 
-          _context18.next = 7;
+          _context19.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context18.sent;
-          return _context18.abrupt("return", result);
+          result = _context19.sent;
+          return _context19.abrupt("return", result);
 
         case 11:
-          return _context18.abrupt("return", false);
+          return _context19.abrupt("return", false);
 
         case 12:
-          _context18.next = 18;
+          _context19.next = 18;
           break;
 
         case 14:
-          _context18.prev = 14;
-          _context18.t0 = _context18["catch"](0);
-          console.log("error", _context18.t0);
-          return _context18.abrupt("return", false);
+          _context19.prev = 14;
+          _context19.t0 = _context19["catch"](0);
+          console.log("error", _context19.t0);
+          return _context19.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context18.stop();
+          return _context19.stop();
       }
     }
   }, null, null, [[0, 14]]);
 };
 
 var create_Category = function create_Category(url, data) {
-  return regeneratorRuntime.async(function create_Category$(_context19) {
-    while (1) {
-      switch (_context19.prev = _context19.next) {
-        case 0:
-          return _context19.abrupt("return", postApi(url, data));
-
-        case 1:
-        case "end":
-          return _context19.stop();
-      }
-    }
-  });
-};
-
-var edit_Category = function edit_Category(url, data) {
-  return regeneratorRuntime.async(function edit_Category$(_context20) {
+  return regeneratorRuntime.async(function create_Category$(_context20) {
     while (1) {
       switch (_context20.prev = _context20.next) {
         case 0:
-          return _context20.abrupt("return", editApi(url, data));
+          return _context20.abrupt("return", postApi(url, data));
 
         case 1:
         case "end":
@@ -761,12 +735,12 @@ var edit_Category = function edit_Category(url, data) {
   });
 };
 
-var delete_Category = function delete_Category(id) {
-  return regeneratorRuntime.async(function delete_Category$(_context21) {
+var edit_Category = function edit_Category(url, data) {
+  return regeneratorRuntime.async(function edit_Category$(_context21) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          return _context21.abrupt("return", deleteApi("/api/category/".concat(id)));
+          return _context21.abrupt("return", editApi(url, data));
 
         case 1:
         case "end":
@@ -774,15 +748,14 @@ var delete_Category = function delete_Category(id) {
       }
     }
   });
-}; // Invoice
+};
 
-
-var create_Invoice = function create_Invoice(url, data) {
-  return regeneratorRuntime.async(function create_Invoice$(_context22) {
+var delete_Category = function delete_Category(id) {
+  return regeneratorRuntime.async(function delete_Category$(_context22) {
     while (1) {
       switch (_context22.prev = _context22.next) {
         case 0:
-          return _context22.abrupt("return", postPromise(url, data));
+          return _context22.abrupt("return", deleteApi("/api/category/".concat(id)));
 
         case 1:
         case "end":
@@ -790,6 +763,274 @@ var create_Invoice = function create_Invoice(url, data) {
       }
     }
   });
+}; // Invoice
+
+
+var create_Invoice = function create_Invoice(url, data) {
+  return regeneratorRuntime.async(function create_Invoice$(_context23) {
+    while (1) {
+      switch (_context23.prev = _context23.next) {
+        case 0:
+          return _context23.abrupt("return", postPromise(url, data));
+
+        case 1:
+        case "end":
+          return _context23.stop();
+      }
+    }
+  });
+};
+
+var get_Invoice = function get_Invoice(data) {
+  var queryString, res, result;
+  return regeneratorRuntime.async(function get_Invoice$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
+        case 0:
+          _context24.prev = 0;
+          queryString = params(data);
+          _context24.next = 4;
+          return regeneratorRuntime.awrap(fetch("/api/invoice".concat(queryString)));
+
+        case 4:
+          res = _context24.sent;
+
+          if (!(res.status === 200)) {
+            _context24.next = 12;
+            break;
+          }
+
+          _context24.next = 8;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 8:
+          result = _context24.sent;
+          return _context24.abrupt("return", result);
+
+        case 12:
+          return _context24.abrupt("return", false);
+
+        case 13:
+          _context24.next = 19;
+          break;
+
+        case 15:
+          _context24.prev = 15;
+          _context24.t0 = _context24["catch"](0);
+          console.log("error", _context24.t0);
+          return _context24.abrupt("return", false);
+
+        case 19:
+        case "end":
+          return _context24.stop();
+      }
+    }
+  }, null, null, [[0, 15]]);
+};
+
+var get_OneInvoice = function get_OneInvoice(id) {
+  var res, result;
+  return regeneratorRuntime.async(function get_OneInvoice$(_context25) {
+    while (1) {
+      switch (_context25.prev = _context25.next) {
+        case 0:
+          _context25.prev = 0;
+          _context25.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/invoice/".concat(id)));
+
+        case 3:
+          res = _context25.sent;
+
+          if (!(res.status === 200)) {
+            _context25.next = 11;
+            break;
+          }
+
+          _context25.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context25.sent;
+          return _context25.abrupt("return", result);
+
+        case 11:
+          return _context25.abrupt("return", false);
+
+        case 12:
+          _context25.next = 18;
+          break;
+
+        case 14:
+          _context25.prev = 14;
+          _context25.t0 = _context25["catch"](0);
+          console.log("error", _context25.t0);
+          return _context25.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context25.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+};
+
+var delete_Invoice = function delete_Invoice(id) {
+  return regeneratorRuntime.async(function delete_Invoice$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          return _context26.abrupt("return", deleteApi("/api/invoice/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context26.stop();
+      }
+    }
+  });
+};
+
+var edit_Invoice = function edit_Invoice(id, data) {
+  var res, result;
+  return regeneratorRuntime.async(function edit_Invoice$(_context27) {
+    while (1) {
+      switch (_context27.prev = _context27.next) {
+        case 0:
+          _context27.prev = 0;
+          _context27.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/invoice/".concat(id), {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          }));
+
+        case 3:
+          res = _context27.sent;
+
+          if (!(res.status === 200)) {
+            _context27.next = 11;
+            break;
+          }
+
+          _context27.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context27.sent;
+          return _context27.abrupt("return", result);
+
+        case 11:
+          return _context27.abrupt("return", false);
+
+        case 12:
+          _context27.next = 18;
+          break;
+
+        case 14:
+          _context27.prev = 14;
+          _context27.t0 = _context27["catch"](0);
+          console.log("error", _context27.t0);
+          return _context27.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context27.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+}; //Product
+
+
+var create_Blog = function create_Blog(url, data) {
+  return regeneratorRuntime.async(function create_Blog$(_context28) {
+    while (1) {
+      switch (_context28.prev = _context28.next) {
+        case 0:
+          return _context28.abrupt("return", postApi(url, data));
+
+        case 1:
+        case "end":
+          return _context28.stop();
+      }
+    }
+  });
+};
+
+var edit_Blog = function edit_Blog(url, data) {
+  return regeneratorRuntime.async(function edit_Blog$(_context29) {
+    while (1) {
+      switch (_context29.prev = _context29.next) {
+        case 0:
+          return _context29.abrupt("return", editApi(url, data));
+
+        case 1:
+        case "end":
+          return _context29.stop();
+      }
+    }
+  });
+};
+
+var delete_Blog = function delete_Blog(id) {
+  return regeneratorRuntime.async(function delete_Blog$(_context30) {
+    while (1) {
+      switch (_context30.prev = _context30.next) {
+        case 0:
+          return _context30.abrupt("return", deleteApi("/api/blog/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context30.stop();
+      }
+    }
+  });
+};
+
+var get_OneBlog = function get_OneBlog(id) {
+  var res, result;
+  return regeneratorRuntime.async(function get_OneBlog$(_context31) {
+    while (1) {
+      switch (_context31.prev = _context31.next) {
+        case 0:
+          _context31.prev = 0;
+          _context31.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/blog/".concat(id)));
+
+        case 3:
+          res = _context31.sent;
+
+          if (!(res.status === 200)) {
+            _context31.next = 11;
+            break;
+          }
+
+          _context31.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context31.sent;
+          return _context31.abrupt("return", result);
+
+        case 11:
+          return _context31.abrupt("return", false);
+
+        case 12:
+          _context31.next = 18;
+          break;
+
+        case 14:
+          _context31.prev = 14;
+          _context31.t0 = _context31["catch"](0);
+          console.log("error", _context31.t0);
+          return _context31.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context31.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
 };
 
 var ApiActions = function ApiActions() {
@@ -797,6 +1038,9 @@ var ApiActions = function ApiActions() {
     // Otp ContactUs
     sendOtp: sendOtp,
     checkOtp: checkOtp,
+    // Otp Invoice
+    sendOtpInvoice: sendOtpInvoice,
+    checkOtpInvoice: checkOtpInvoice,
     // ContactUs
     get_ContactUs: get_ContactUs,
     get_OneContactUs: get_OneContactUs,
@@ -815,7 +1059,16 @@ var ApiActions = function ApiActions() {
     edit_Category: edit_Category,
     delete_Category: delete_Category,
     // Invoice
-    create_Invoice: create_Invoice
+    create_Invoice: create_Invoice,
+    get_Invoice: get_Invoice,
+    get_OneInvoice: get_OneInvoice,
+    delete_Invoice: delete_Invoice,
+    edit_Invoice: edit_Invoice,
+    // Invoice
+    create_Blog: create_Blog,
+    edit_Blog: edit_Blog,
+    delete_Blog: delete_Blog,
+    get_OneBlog: get_OneBlog
   };
 };
 

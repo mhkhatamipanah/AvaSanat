@@ -1,6 +1,7 @@
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 import Product from "@/src/models/Product";
+import Invoice from "@/src/models/Invoice";
 
 export async function POST(req, res) {
   try {
@@ -11,7 +12,6 @@ export async function POST(req, res) {
 
     // استفاده از promises
     const promises = Object.values(body).map(async (value) => {
-      console.log(value)
       const obj = {};
       const oneProduct = await Product.findOne(
         { id_Product: value.id },
@@ -31,11 +31,16 @@ export async function POST(req, res) {
             };
           }
         });
+        const newArr = imageData.filter(
+          (item) => item !== null && typeof item !== "undefined"
+        );
+
         obj.feature = value.feature
         obj.title = oneProduct.title;
         obj.id = oneProduct.id_Product;
         obj.subtitle = oneProduct.subtitle;
-        obj.image = imageData[0]?.thumbnailBase64;
+        obj.route = oneProduct.routeCategory;
+        obj.image = newArr[0]?.thumbnailBase64;
         arrayInvoice.push(obj);
       }
     });
@@ -61,17 +66,17 @@ export async function GET(req, res) {
   if (search && search.trim() !== "") {
     query = {
       $or: [
-        { title: { $regex: search, $options: "i" } },
+        // { title: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
       ],
     };
   }
 
-  let countData = await MessageModel.countDocuments(query).catch((err) => {
+  let countData = await Invoice.countDocuments(query).catch((err) => {
     console.log(err);
   });
 
-  const category = await MessageModel.find(query, "-__v")
+  const category = await Invoice.find(query, "-__v")
 
     .sort({ createdAt: -1 })
     .limit(perPage ? perPage : 20)

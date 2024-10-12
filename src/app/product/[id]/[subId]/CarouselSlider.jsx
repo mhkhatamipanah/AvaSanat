@@ -62,32 +62,36 @@ const BookSlider = ({ id, routeCategory }) => {
 
                 </div>
             </div>
-            {data && <Slider {...settings}>
-                {data && data.data && data.data.map((e) => {
-                    return (
-                        <div className='m-2 p-2 '>
-                            <div className=' p-2 border border-gray-300 rounded-xl'>
-                                <Link href={`/product/${e.routeCategory}/${e.id}`} >
-                                    <img className='object-cover w-full h-full rounded-md' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
-                                </Link>
-                                <div className=" text-right p-2">
-                                    <p className="block mb-2 vazirDemibold text-xl antialiased leading-snug tracking-normal text-blue-gray-900 ">
-                                        {e.title}
-                                    </p>
-                                    <p className="block mb-2 vazirLight text-md antialiased leading-snug tracking-normal text-blue-gray-900 text-gray-500">
-                                        {e.description}
-                                    </p>
-                                    <Link href={`/product/${e.routeCategory}/${e.id}`} >
-                                        <Button className='vazirMedium w-full'>
-                                            <ArrowLeft size={20} />
-                                            جزیات محصول
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>)
-                })}
-            </Slider>}
+            {data &&
+                <div className=' flex justify-center items-center flex-col '>
+                    <Slider style={{ width: 'calc(100% )' }} {...settings}>
+                        {data && data.data && data.data.map((e) => {
+                            return (
+                                <div className='m-2 p-2 '>
+                                    <div className=' p-2 border border-gray-300 rounded-xl'>
+                                        <Link href={`/product/${e.routeCategory}/${e.id}`} >
+                                            <img className='object-cover w-full h-full rounded-md' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                                        </Link>
+                                        <div className=" text-right p-2">
+                                            <p className="block mb-2 vazirDemibold text-xl antialiased leading-snug tracking-normal text-blue-gray-900 ">
+                                                {e.title}
+                                            </p>
+                                            <p className="block mb-2 vazirLight text-md antialiased leading-snug tracking-normal text-blue-gray-900 text-gray-500">
+                                                {e.description}
+                                            </p>
+                                            <Link href={`/product/${e.routeCategory}/${e.id}`} >
+                                                <Button className='vazirMedium w-full'>
+                                                    <ArrowLeft size={20} />
+                                                    جزیات محصول
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>)
+                        })}
+                    </Slider>
+                </div>
+            }
         </div>
     );
 };

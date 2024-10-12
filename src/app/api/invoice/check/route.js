@@ -1,7 +1,7 @@
 import OTP from "@/src/models/otp";
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
-import MessageModel from "@/src/models/MessageModel";
+import Invoice from "@/src/models/Invoice";
 const isInteger = (str) => {
   return !isNaN(parseInt(str));
 };
@@ -9,7 +9,7 @@ const isInteger = (str) => {
 export async function POST(req, res) {
   connectDB();
   const body = await req.json();
-  const { phone, code, title, description } = body;
+  const { phone, code, invoice, description } = body;
   if (!phone.trim() || phone.trim().length !== 11) {
     return NextResponse.json(
       { message: " شماره را به درستی وارد کنید" },
@@ -36,6 +36,6 @@ export async function POST(req, res) {
     return NextResponse.json({ message: "کد منقضی شده " }, { status: 400 });
   }
 
-  const newMessage = await  MessageModel.create({ phone, title, description });
+  const newMessage = await  Invoice.create({ phone, invoice, description });
   return NextResponse.json({ message: "ساخته شد" });
 }

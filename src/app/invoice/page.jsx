@@ -1,13 +1,24 @@
 "use client"
-import { getCookie } from '@/src/utils/Cookie';
+import { getCookie, getTotalUniqueItems } from '@/src/utils/Cookie';
 import { ApiActions } from '@/src/utils/Frontend/ApiActions';
-import { Textarea, Button, Input } from '@nextui-org/react';
+
+import { Textarea, Button, Input, Chip } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import ButtonInvoice from './ButtonInvoice';
+import Link from 'next/link';
+import { toast } from 'sonner';
 
 const page = () => {
 
+  const [countData, setCountData] = useState(null)
+
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    setCountData(getTotalUniqueItems())
+
+  }, [selectedItems])
   const [data, setData] = useState(null)
   const { create_Invoice } = ApiActions()
   useEffect(() => {
@@ -56,6 +67,26 @@ const page = () => {
   }
 
 
+
+
+  const [phone, setPhone] = useState("")
+  const [description, setDescription] = useState("")
+
+
+  const { checkOtpInvoice, sendOtpInvoice } = ApiActions()
+
+
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const allItems = data.map(e => ({
+        id: e.id,
+        ...(e.feature && { feature: e.feature }),
+      }));
+      setSelectedItems(allItems);
+    }
+  }, [data]);
+
   const sendOtpHandler = async () => {
 
     if (isSendOTP) {
@@ -75,41 +106,39 @@ const page = () => {
         return;
       }
 
-      // const data =JSON.stringify( { phone, code, title, description })
-      // const res = await checkOtp(data);
+      const data = JSON.stringify({ phone, code, description , invoice:selectedItems })
+      const res = await checkOtpInvoice(data);
 
-      // if (res) {
-      //   setTitle("")
-      //   setPhone("")
-      //   setDescription("")
-      //   setIsSendOTP(false)
-      //   for (let i = 0; i < 6; i++) {
-      //     document.querySelectorAll('.otp-input')[i].value = ""
-      //   }
-      // }
+      if (res) {
+        setPhone("")
+        setDescription("")
+        setIsSendOTP(false)
+        for (let i = 0; i < 6; i++) {
+          document.querySelectorAll('.otp-input')[i].value = ""
+        }
+      }
 
 
 
     } else {
       // send Otp
 
-      // if (!phone.trim()) {
-      //   toast.error("لطفا شماره تلفن را وارد کنید")
-      //   return
-      // } 
-      // console.log(phone.length)
-      // if (phone.length !== 11) {
-      //   toast.error("لطفا 11 رقم تلفن را وارد کنید")
-      //   return
-      // }
+      if (!phone.trim()) {
+        toast.error("لطفا شماره تلفن را وارد کنید")
+        return
+      }
+      if (phone.length !== 11) {
+        toast.error("لطفا 11 رقم تلفن را وارد کنید")
+        return
+      }
 
-      // const data =  JSON.stringify({ phone })
+      const data = JSON.stringify({ phone })
 
-      // const res = sendOtp(data)
-      // if (res) {
-      //   setIsSendOTP(true)
-      // }
-      setIsSendOTP(true)
+      const res = sendOtpInvoice(data)
+      if (res) {
+        setIsSendOTP(true)
+      }
+
     }
   }
 
@@ -122,25 +151,33 @@ const page = () => {
             <div className='col-span-5 w-full rounded-lg bg-white boxShadow p-6'>
               <div className='grid grid-cols-2 gap-3'>
                 {data && data.map((e, i) => {
-                  console.log(e)
                   return (
-                    <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={i}>
-                      <img className='object-cover aspect-square h-36 rounded-md' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                    <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
+                      <Link className='aspect-square h-36' href={`/product/${e.route}/${e.id}`}>
+                        <img className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                      </Link>
                       <div className='flex justify-between w-full'>
-                        <div>
-                          <p className="vazirDemibold text-xl ">
+                        <div className='flex justify-evenly flex-col mr-1'>
+                          <p className="vazirDemibold text-xl ellipsisOneLine">
                             {e.title}
                           </p>
-                          <p className="vazirMedium text-lg text-gray-700 mt-2">
+                          <p className="vazirMedium text-lg text-gray-700 ellipsisOneLine">
                             {e.subtitle}
                           </p>
-                          {e.feature &&
-                            Object.entries(e.feature).map(([key, value]) => {
-                              console.log(`Key: ${key}, Value:`, value);
-                            })}
+                          <div className='flex gap-2 flex-wrap'>
+                            {e.feature &&
+                              Object.entries(e.feature).map(([key, value], index) => {
+                                return (
+                                  <Chip key={`chip-${index}-${e.id}`} color="primary" variant="flat">
+                                    {`${key}: ${value}`}
+                                  </Chip>
+                                )
+                              })}
+                          </div>
+
                         </div>
                         <div className='flex flex-col justify-center items-center'>
-                          <ButtonInvoice id={e.id} invoiceContainer={i} />
+                          <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems ={setSelectedItems} />
                         </div>
 
                       </div>
@@ -161,7 +198,7 @@ const page = () => {
                       تعداد محصولات :
                     </p>
                     <p className='ml-2'>
-                      1
+                      {countData}
                     </p>
                   </div>
                   <div className="border border-b mt-2"></div>
@@ -170,10 +207,10 @@ const page = () => {
                 <div className='w-full'>
                   <Input
 
-                    // value={phone}
-                    // onChange={(e) => {
-                    //   setPhone(e.target.value)
-                    // }}
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value)
+                    }}
                     className="labelRight "
                     label="شماره تلفن"
                     placeholder="شماره تلفن را وارد کنید"
@@ -184,8 +221,8 @@ const page = () => {
                   />
                 </div>
                 <Textarea
-                  // value={description}
-                  // onChange={(e) => { setDescription(e.target.value) }}
+                  value={description}
+                  onChange={(e) => { setDescription(e.target.value) }}
                   label="توضیحات"
                   placeholder="پیام خود را وارد کنید"
                   className=" textareaStyle heightTextArea"
@@ -202,9 +239,12 @@ const page = () => {
                     </div>
                   </div>
                 }
-                <Button onClick={sendOtpHandler} className='bg-[#d94038] text-white w-full mt-3'>
-                  ثبت پیش فاکتور
-                </Button>
+                <div className='w-full flex justify-center'>
+                  <Button onClick={sendOtpHandler} className='bg-[#d94038] text-white text-center w-[85%]'>
+                    ثبت پیش فاکتور
+                  </Button>
+                </div>
+
               </div>
             </div>
           </div>

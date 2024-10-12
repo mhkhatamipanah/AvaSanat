@@ -18,13 +18,13 @@ const ProviderSideBar = ({getChildren}) => {
   return (
     <div className="flex vazirMedium">
     <Sidebar sidebar={sidebar} setSidebar={setSidebar}>
-      <SidebarItem
+      {/* <SidebarItem
         icon={<Home  />}
         text={"خانه"}
         link={"/dashboard"}
        
         active={pathname === "/dashboard" ? true : false}
-      />
+      /> */}
        <SidebarItem
         icon={<ClipboardList  />}
         text={"دسته بندی"}

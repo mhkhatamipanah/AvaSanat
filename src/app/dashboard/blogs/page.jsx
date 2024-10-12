@@ -1,8 +1,217 @@
-import React from 'react'
+"use client"
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+// NextUI
+import { Button } from "@nextui-org/button";
+import { SelectItem, Select, Spinner } from '@nextui-org/react';
+// Icon
+import { BadgePlus, Pencil, Trash } from 'lucide-react';
+// Components
+import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
+import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
+// Api
+import { ApiActions } from '@/src/utils/Frontend/ApiActions';
+import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
+import Image from 'next/image';
+import img1 from "@/public/images/no-resualt.png";
 
 const page = () => {
+
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [countData, setCountData] = useState(null)
+  const [perPage, setPerPage] = useState(12)
+  const [page, setPage] = useState(1)
+
+
+
+
+  // ModalDelete
+  const { delete_Blog } = ApiActions()
+
+  const [idDelete, setIdDelete] = useState(null);
+  const [rerender, setRerender] = useState(false);
+  const toggleRerender = () => {
+    setRerender(!rerender)
+  }
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onModalOpenChange = () => {
+    setIsOpen(false);
+  };
+
+  const deleteEventHandler = async () => {
+    await delete_Blog(idDelete).then((res => {
+      console.log(res)
+      if (res) {
+        toggleRerender()
+      }
+    }))
+
+
+  };
+
+  useEffect(() => {
+    let data = {
+      perPage: perPage,
+      page: page,
+    };
+    let count = {
+      count: true
+    }
+    getApi(`/api/blog?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
+    getApi(`/api/blog?${(new URLSearchParams(count)).toString()}`, setCountData)
+  }, [page, perPage, rerender])
+
+
+  const LoadingState = () => (
+    <div className="w-full h-[600px] flex justify-center items-center">
+      <Spinner />
+    </div>
+  )
+  const renderEmptyState = () => (
+    <div className="h-full w-full flex justify-center items-center">
+      <div className="flex flex-col gap-3 justify-center items-center mb-16">
+        <Image
+          className="w-full he-full max-w-[250px] max-h-[250px]"
+          width={500}
+          height={500}
+          src={img1}
+        />
+        <p> چیزی جهت نمایش وجود ندارد</p>
+      </div>
+    </div>
+  );
+  const renderBlog = () => (
+    <>
+      {data && data.data &&
+        <>
+          <div className='grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 py-2'>
+            {
+              data.data.map((e, i) => {
+                return (
+                  <div className='relative w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={i}>
+                    <div className='w-full aspect-video overflow-hidden rounded-lg border border-solid border-gray-200' >
+
+                      <Link href={`/dashboard/blogs/create?id=${e.id}`}>
+                        <img className=' aspect-video object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                          {e?.image ? `data:image/webp;base64,${e?.image}` : "/images/placeholder.jpg"} alt="" />
+                      </Link>
+                    </div>
+
+                    <div className='oneLineShow'>
+                      <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
+                    </div>
+                    <div className='twoLineShow'>
+                      <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.subtitle}</p>
+                    </div>
+
+                    <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
+
+                      <div className="flex gap-2">
+                        <Link href={`/dashboard/blogs/create?id=${e.id}`}>
+                          <Button
+                            className="px-0 min-w-8 h-8 bg-blue-50 shadow border border-solid border-blue-100 hover:!bg-blue-200"
+                            variant="light"
+                            color="primary"
+                          >
+                            <Pencil className="w-4" size={16} />
+                          </Button>
+                        </Link>
+
+                        <Button
+                          onClick={() => {
+                            setIdDelete(e.id)
+                            setTitle("دسته بندی")
+                            setText(`دسته بندی ${e.title}`)
+                            setIsOpen(true)
+                          }}
+                          className="px-0 min-w-8 h-8 bg-red-50 shadow border border-solid border-red-100 hover:!bg-red-200"
+                          color="danger"
+                          variant="light"
+                        >
+                          <Trash className="w-4" size={16} />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )
+
+              })
+            }
+          </div>
+          <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
+        </>
+      }
+    </>
+
+  )
+
   return (
-    <div>page</div>
+    <>
+      <ModalDelete
+        title={title}
+        text={text}
+        idDelete={idDelete}
+        isModalOpen={isOpen}
+        showId={false}
+        onModalOpenChange={onModalOpenChange}
+        deleteEventHandler={deleteEventHandler}
+      />
+      <div
+        className="p-2 lg:p-3 grid grid-cols-1 justify-center w-full gap-4"
+        id="container"
+      >
+        <section
+          id="section-1"
+          className={`w-full flex flex-col h-full bg-[#ffffff] rounded-lg boxShadow p-4 min-h-[600px]`}
+        >
+
+
+          <div className='flex justify-between items-center mb-3 px-3'>
+
+            <Link href="/dashboard/blogs/create">
+              <Button className='bg-green-700 text-white'>
+                بلاگ جدید
+                <BadgePlus />
+              </Button>
+
+            </Link>
+            <div className='w-24'>
+              <Select
+                value={perPage}
+                onSelectionChange={(e) => {
+                  const values = e.values();
+                  setPerPage(values.next().value)
+                }}
+                variant={"bordered"}
+                placeholder=" نمایش"
+                className="max-w-xs selectNextUi spanSize"
+              >
+                <SelectItem value={12} key={12}>
+                  12
+                </SelectItem>
+                <SelectItem value={18} key={18}>
+                  18
+                </SelectItem>
+                <SelectItem value={24} key={24}>
+                  24
+                </SelectItem>
+              </Select>
+            </div>
+          </div>
+
+          {loading ? LoadingState() :
+            data?.data?.length === 0 ? renderEmptyState() : renderBlog()
+          }
+
+
+
+        </section>
+      </div>
+    </>
   )
 }
 

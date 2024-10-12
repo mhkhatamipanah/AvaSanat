@@ -47,8 +47,7 @@ const page = () => {
 
   const deleteEventHandler = async () => {
     const res = await delete_ContactUs(idDelete)
-    if (res.success) {
-      toast.success(res.message)
+    if (res) {
       toggleRerender()
     }
   };

@@ -132,7 +132,16 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.ellipsisOneLine {
+  display: -webkit-box; /* Use flexbox model */
+  -webkit-box-orient: vertical; /* Orient the box vertically */
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis */
+  /* max-height: 3em;              Set max height to 2 lines (1.5em per line) */
+  /* line-height: 1.5em;           Set line height */
+}
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill
 
@@ -162,7 +171,9 @@ select:-webkit-autofill:focus */ {
 .boxShadow {
   box-shadow: 0px 0px 5px #0000005f;
 }
-
+.boxShadow3 {
+  box-shadow: 0px 0px 3.5px #0000005f;
+}
 input[type="radio"] {
   visibility: hidden;
   height: 0;

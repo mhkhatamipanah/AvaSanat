@@ -167,7 +167,7 @@ const deleteApi = (url) => {
   }
 };
 
-// OTP
+// OTP Countact us
 const sendOtp = (data) => {
   const result = postApi("/api/contact_us/send/", data);
   return result;
@@ -178,6 +178,16 @@ const checkOtp = async (data) => {
   return result;
 };
 
+// OTP Invoice
+const sendOtpInvoice = (data) => {
+  const result = postApi("/api/invoice/send/", data);
+  return result;
+};
+
+const checkOtpInvoice = async (data) => {
+  const result = postApi("/api/invoice/check/", data);
+  return result;
+};
 // ***/ DASHBOARD /* ///
 
 // ContactUs
@@ -213,19 +223,7 @@ const get_OneContactUs = async (id) => {
   }
 };
 const delete_ContactUs = async (id) => {
-  try {
-    const res = await fetch(`/api/contact_us/${id}`, { method: "DELETE" });
-    if (res.status === 200) {
-      const result = await res.json();
-      console.log(result);
-      return result;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.log("error", error);
-    return false;
-  }
+  return deleteApi(`/api/contact_us/${id}`);
 };
 const edit_ContactUs = async (id, data) => {
   try {
@@ -322,11 +320,95 @@ const delete_Category = async (id) => {
 const create_Invoice = async (url, data) => {
   return postPromise(url, data);
 };
+
+const get_Invoice = async (data) => {
+  try {
+    const queryString = params(data);
+
+    const res = await fetch(`/api/invoice${queryString}`);
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+const get_OneInvoice = async (id) => {
+  try {
+    const res = await fetch(`/api/invoice/${id}`);
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+const delete_Invoice = async (id) => {
+  return deleteApi(`/api/invoice/${id}`);
+};
+const edit_Invoice = async (id, data) => {
+  try {
+    const res = await fetch(`/api/invoice/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+
+//Product
+
+const create_Blog = async (url, data) => {
+  return postApi(url, data);
+};
+const edit_Blog = async (url, data) => {
+  return editApi(url, data);
+};
+
+const delete_Blog = async (id) => {
+  return deleteApi(`/api/blog/${id}`);
+};
+const get_OneBlog = async (id) => {
+  try {
+    const res = await fetch(`/api/blog/${id}`);
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+};
+
 export const ApiActions = () => {
   return {
     // Otp ContactUs
     sendOtp,
     checkOtp,
+
+    // Otp Invoice
+    sendOtpInvoice,
+    checkOtpInvoice,
 
     // ContactUs
     get_ContactUs,
@@ -350,5 +432,15 @@ export const ApiActions = () => {
 
     // Invoice
     create_Invoice,
+    get_Invoice,
+    get_OneInvoice,
+    delete_Invoice,
+    edit_Invoice,
+
+    // Invoice
+    create_Blog,
+    edit_Blog,
+    delete_Blog,
+    get_OneBlog,
   };
 };
