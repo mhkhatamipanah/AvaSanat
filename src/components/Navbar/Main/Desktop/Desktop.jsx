@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Link from 'next/link';
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
-import { Input } from "@nextui-org/react";
+
 
 
 // icon
@@ -41,7 +41,9 @@ const Desktop = () => {
     const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
 
     const [Category, setCategory] = useState(null)
-    const {fetchCategory}= ApiActions()
+
+    const { fetchCategory } = ApiActions()
+
     const fetchCategoryApi = async () => {
         const data = await fetchCategory()
         setCategory(data)
@@ -129,7 +131,7 @@ const Desktop = () => {
                             <div className='flex justify-center items-center text-black'>
                                 <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo" />
                             </div>
-                            <div className='mr-3 w-96'>
+                            {!pathname.includes('/search') && <div className='mr-3 w-96'>
                                 {/* <Input
 
                                     className='inputNextUi caret-black !rounded-sm'
@@ -137,9 +139,10 @@ const Desktop = () => {
                                     startContent={
                                         <Search color='var(--color-2)' />
                                     } /> */}
-                                     <SearchComponent/>
-                            </div>
-                           
+                                <SearchComponent />
+                            </div>}
+
+
 
                         </div>
                         <a href="tel:+989023665306" className='flex justify-center items-center gap-3 text-black'>

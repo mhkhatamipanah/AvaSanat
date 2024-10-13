@@ -1,41 +1,47 @@
 "use clinet"
 import { Accordion, AccordionItem, Checkbox, cn } from "@nextui-org/react";
 import { ChevronDown } from "lucide-react";
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export const AccordionList = ({ router }) => {
+import { ApiActions } from "@/src/utils/Frontend/ApiActions";
+
+export const AccordionList = ({ searchParams, router, data, selectedIndex, setSelectedIndex, searchOn }) => {
     // state واحد برای نگه‌داشتن چک‌باکس انتخاب‌شده
-    const [selectedIndex, setSelectedIndex] = useState(null);
 
     // داده‌های چک‌باکس‌ها (می‌توانید نام یا هر چیز دیگری برای هر چک‌باکس تعریف کنید)
-    const checkboxes = [
-        { id: 1, label: "Enda" },
-        { id: 2, label: "Siemens" },
-        { id: 3, label: "Eaton" },
-        { id: 4, label: "Schrack" },
-        { id: 5, label: "GMT CNT" }
-    ];
-    // تابع برای تغییر URL با توجه به مقدار انتخاب شده
+
     const updateURL = (label) => {
-        // ایجاد کوئری پارامتر جدید
-        const query = new URLSearchParams(window.location.search);
-        query.set('brand', label);
-        router.push(`?${query.toString()}`, undefined, { shallow: true }); // shallow برای جلوگیری از reload کل صفحه
+        const query = new URLSearchParams(searchParams.toString());
+        query.set(searchOn, label);
+        router.push(`?${query.toString()}`, undefined, { shallow: true });
     };
 
-    // وقتی چک‌باکس انتخاب می‌شود، هم ایندکس را تغییر می‌دهیم هم URL
+    // تابع برای حذف پارامتر از URL
+    const removeFromURL = () => {
+        const query = new URLSearchParams(searchParams.toString());
+        query.delete(searchOn);
+        router.push(`?${query.toString()}`, undefined, { shallow: true });
+    };
+
+    // وقتی چک‌باکس انتخاب یا لغو انتخاب می‌شود
     const handleCheckboxChange = (id, label) => {
-        setSelectedIndex(id);
-        updateURL(label);
+        if (selectedIndex === id) {
+            // اگر چک‌باکس قبلاً انتخاب شده باشد، انتخاب آن را برداریم و پارامتر مربوطه را از URL حذف کنیم
+            setSelectedIndex(null);
+            removeFromURL();
+        } else {
+            // اگر چک‌باکس انتخاب نشده باشد، آن را انتخاب کنیم و پارامتر مربوطه را به URL اضافه کنیم
+            setSelectedIndex(id);
+            updateURL(label);
+        }
     };
-
     return (
         <>
             <section className="flex flex-col gap-2">
-                {checkboxes.map((checkbox) => (
+                {data.map((checkbox, i) => (
                     <Checkbox
-                        key={checkbox.id}
+                        key={checkbox._id}
                         classNames={{
                             base: cn(
                                 "inline-flex w-full max-w-md bg-content1",
@@ -48,12 +54,20 @@ export const AccordionList = ({ router }) => {
                             label: "w-full",
                         }}
                         // بررسی می‌کنیم که آیا این چک‌باکس انتخاب شده است یا خیر
-                        isSelected={selectedIndex === checkbox.id}
+                        isSelected={selectedIndex === checkbox._id} // اصلاح این قسمت
                         // وقتی انتخاب شد، مقدار ایندکس چک‌باکس و label را در state و URL ذخیره می‌کنیم
-                        onValueChange={() => handleCheckboxChange(checkbox.id, checkbox.label)}
+                        onValueChange={() => {
+                            if (searchOn === "brand") {
+                                handleCheckboxChange(checkbox._id, checkbox.title)
+                            } else {
+                                handleCheckboxChange(checkbox._id, checkbox.route)
+
+                            }
+                        }
+                        } // اصلاح این قسمت
                     >
                         <div className="w-full flex justify-between gap-2">
-                            <p>{checkbox.label}</p>
+                            <p>{checkbox.title}</p>
                         </div>
                     </Checkbox>
                 ))}
@@ -64,24 +78,87 @@ export const AccordionList = ({ router }) => {
 }
 
 
-const AccordionComponent = () => {
-    const router = useRouter(); // برای تغییر URL
+const AccordionComponent = ({toggleRerender}) => {
 
+
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [selectedIndex2, setSelectedIndex2] = useState(null);
+
+    const [Category, setCategory] = useState(null)
+
+    const { fetchCategory } = ApiActions()
+
+    const fetchCategoryApi = async () => {
+        const data = await fetchCategory()
+        setCategory(data)
+    }
+
+    useEffect(() => {
+        fetchCategoryApi()
+    }, [])
+
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+
+    const data = [
+        { _id: 1, title: "Enda" },
+        { _id: 2, title: "Siemens" },
+        { _id: 3, title: "Eaton" },
+        { _id: 4, title: "Schrack" },
+        { _id: 5, title: "GMT CNT" }
+    ];
+
+    const deleteFilter = () => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        // فقط پارامتر 'q' را نگه می‌داریم
+        const qValue = params.get('q');
+
+        // پاک کردن همه پارامترها به جز 'q'
+        params.forEach((_, key) => {
+            if (key !== 'q') {
+                params.delete(key);
+            }
+        });
+
+        // ایجاد یک URL جدید با پارامترهای فیلتر شده
+        const newQuery = qValue ? `?q=${qValue}` : '';
+
+        // استفاده از replace به جای push
+        router.replace(`${window.location.pathname}${newQuery}`, { shallow: true });
+
+    }
     return (
         <div className="flex flex-col gap-2 bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 vazirMedium">
             <div className="flex justify-between p-2 pb-0">
                 <p className="vazirDemibold text-lg text-indigo-500">فیلتر ها </p>
-                <button onClick={()=>{}} className="vazirDemibold text-sm text-red-400"> حذف فیلتر ها </button>
+                <button onClick={deleteFilter} className="vazirDemibold text-sm text-red-400" > حذف فیلتر ها </button>
 
             </div>
-        <Accordion className="!shadow-none" variant="bordered ">
-            <AccordionItem indicator={<ChevronDown />} key="1" aria-label="Accordion 1" title="برند">
-                <AccordionList router={router} />
-            </AccordionItem>
-            <AccordionItem indicator={<ChevronDown />} key="2" aria-label="Accordion 2" title="دسته بندی">
-                <AccordionList router={router} />
-            </AccordionItem>
-        </Accordion>
+            <Accordion className="!shadow-none" variant="bordered ">
+                <AccordionItem indicator={<ChevronDown />} key="1" aria-label="Accordion 1" title="برند">
+                    <AccordionList
+                        searchParams={searchParams}
+                        selectedIndex={selectedIndex}
+                        setSelectedIndex={setSelectedIndex}
+                        data={data}
+                        router={router}
+                        searchOn={"brand"} />
+                </AccordionItem>
+                <AccordionItem indicator={<ChevronDown />} key="2" aria-label="Accordion 2" title="دسته بندی">
+                    {Category ?
+                        <AccordionList
+                            searchParams={searchParams}
+                            selectedIndex={selectedIndex2}
+                            setSelectedIndex={setSelectedIndex2}
+                            data={Category.data}
+                            router={router}
+                            searchOn={"Category"} />
+                        : "در حال دریافت اطلاعات"
+                    }
+                </AccordionItem>
+            </Accordion>
         </div>
     )
 }

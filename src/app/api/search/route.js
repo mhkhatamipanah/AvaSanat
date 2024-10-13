@@ -69,6 +69,7 @@ export async function GET(req, res) {
 
   if (q) {
     let brand = searchParams.get("brand");
+    let Category = searchParams.get("Category");
 
 
     const arrayInvoice = [];
@@ -84,6 +85,10 @@ export async function GET(req, res) {
     if (brand && brand!==null && brand !== "undefined") {
       queryConditions.brand = brand; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
     }
+    if (Category && Category!==null && Category !== "undefined") {
+      queryConditions.routeCategory = Category; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
+    }
+    
 
     const searchProduct = await Product.find(queryConditions, "-__v")
       .sort({ createdAt: -1 })
@@ -109,12 +114,7 @@ console.log(searchProduct)
       obj.route = e.routeCategory;
       arrayInvoice.push(obj);
     });
-    const searchCountProduct = await Product.countDocuments({
-      $or: [
-        { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
-        { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
-      ],
-    }).catch((err) => {
+    const searchCountProduct = await Product.countDocuments(queryConditions).catch((err) => {
       console.log(err);
     });
 

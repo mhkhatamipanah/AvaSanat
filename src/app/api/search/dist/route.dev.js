@@ -11,14 +11,14 @@ var _db = _interopRequireDefault(require("@/src/configs/db"));
 
 var _server = require("next/server");
 
-var _Category = _interopRequireDefault(require("@/src/models/Category"));
+var _Category2 = _interopRequireDefault(require("@/src/models/Category"));
 
 var _Product = _interopRequireDefault(require("@/src/models/Product"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function GET(req, res) {
-  var _ref, searchParams, q, navbar, searchCategory, searchProduct, perPage, page, brand, arrayInvoice, queryConditions, _searchProduct, searchCountProduct, threeData, _blog, _imageData, count, countData, blog, imageData;
+  var _ref, searchParams, q, navbar, searchCategory, searchProduct, perPage, page, brand, _Category, arrayInvoice, queryConditions, _searchProduct, searchCountProduct, threeData, _blog, _imageData, count, countData, blog, imageData;
 
   return regeneratorRuntime.async(function GET$(_context) {
     while (1) {
@@ -48,7 +48,7 @@ function GET(req, res) {
           }
 
           _context.next = 7;
-          return regeneratorRuntime.awrap(_Category["default"].find({
+          return regeneratorRuntime.awrap(_Category2["default"].find({
             $or: [{
               title: {
                 $regex: q,
@@ -104,11 +104,12 @@ function GET(req, res) {
           page = searchParams.get("page");
 
           if (!q) {
-            _context.next = 28;
+            _context.next = 30;
             break;
           }
 
           brand = searchParams.get("brand");
+          _Category = searchParams.get("Category");
           arrayInvoice = [];
           queryConditions = {
             $or: [{
@@ -130,14 +131,18 @@ function GET(req, res) {
             queryConditions.brand = brand; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
           }
 
-          _context.next = 21;
+          if (_Category && _Category !== null && _Category !== "undefined") {
+            queryConditions.routeCategory = _Category; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
+          }
+
+          _context.next = 23;
           return regeneratorRuntime.awrap(_Product["default"].find(queryConditions, "-__v").sort({
             createdAt: -1
           }).limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 21:
+        case 23:
           _searchProduct = _context.sent;
           console.log(_searchProduct);
 
@@ -158,39 +163,25 @@ function GET(req, res) {
             arrayInvoice.push(obj);
           });
 
-          _context.next = 26;
-          return regeneratorRuntime.awrap(_Product["default"].countDocuments({
-            $or: [{
-              title: {
-                $regex: q,
-                $options: "i"
-              }
-            }, // جستجو در عنوان
-            {
-              subtitle: {
-                $regex: q,
-                $options: "i"
-              }
-            } // جستجو در زیرعنوان
-            ]
-          })["catch"](function (err) {
+          _context.next = 28;
+          return regeneratorRuntime.awrap(_Product["default"].countDocuments(queryConditions)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 26:
+        case 28:
           searchCountProduct = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
             product: arrayInvoice,
             total_item: searchCountProduct
           }));
 
-        case 28:
+        case 30:
           return _context.abrupt("return", _server.NextResponse.json({
             product: [],
             total_item: 0
           }));
 
-        case 33:
+        case 35:
           _blog = _context.sent;
           _imageData = _blog.map(function (ducomentProduct) {
             var thumbnailBuffer = Buffer.from(ducomentProduct.file, "base64");
@@ -207,32 +198,32 @@ function GET(req, res) {
             data: _imageData
           }));
 
-        case 36:
+        case 38:
           count = searchParams.get("count");
 
           if (!count) {
-            _context.next = 42;
+            _context.next = 44;
             break;
           }
 
-          _context.next = 40;
+          _context.next = 42;
           return regeneratorRuntime.awrap(_Blog["default"].countDocuments()["catch"](function (err) {
             console.log(err);
           }));
 
-        case 40:
+        case 42:
           countData = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
             countData: countData
           }));
 
-        case 42:
-          _context.next = 44;
+        case 44:
+          _context.next = 46;
           return regeneratorRuntime.awrap(_Blog["default"].find({}, "-__v")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 44:
+        case 46:
           blog = _context.sent;
           imageData = blog.map(function (ducomentProduct) {
             var thumbnailBuffer = Buffer.from(ducomentProduct.file, "base64");
@@ -249,7 +240,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 47:
+        case 49:
         case "end":
           return _context.stop();
       }

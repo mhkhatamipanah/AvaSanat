@@ -1,11 +1,15 @@
+"use client"
 import { Input, Spinner } from '@nextui-org/react';
 import { BarChart3, CircleX, PackageSearch, Search, TimerIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 const SearchComponent = () => {
   const router = useRouter(); // برای تغییر URL
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
 
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
@@ -62,6 +66,32 @@ const SearchComponent = () => {
 
   const [history, setHistory] = useState([]);
 
+  const requestSearch = () => {
+    if (!history.includes(search)) {
+      const newHistory = [...history, search];
+      setHistory(newHistory);
+      localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+
+    }
+    router.push(`/search?q=${search}`)
+
+    // if (pathname.includes("/search")) {
+
+    //   const query = new URLSearchParams(searchParams.toString());
+    //   // حذف پارامتر 'q' (اگر وجود داشته باشد)
+    //   if (query.has('q')) {
+    //     query.delete('q');
+    //   }
+    //   // اضافه کردن مقدار جدید برای پارامتر 'q'
+    //   if (search.trim()) { // مطمئن شوید که 'search' رشته خالی یا فقط فاصله نیست
+    //     query.set('q', search.trim());
+    //   }
+
+    //   router.push(`?${query.toString()}`, undefined, { shallow: true });
+    // } else {
+    // }
+  }
+
   // Load history from localStorage on component mount
   useEffect(() => {
     const storedHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
@@ -71,13 +101,9 @@ const SearchComponent = () => {
   // Save search to history and localStorage when Enter is pressed
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && search.trim()) {
+      e.preventDefault(); // جلوگیری از رویداد پیش‌فرض
       // Check if the search term already exists in the history
-      if (!history.includes(search)) {
-        const newHistory = [...history, search];
-        setHistory(newHistory);
-        localStorage.setItem('searchHistory', JSON.stringify(newHistory));
-        router.push(`/search?q=${search}`)
-      }
+      requestSearch()
       // setSearch(''); // Optional: Clear input after adding to history
     }
   };
@@ -98,7 +124,7 @@ const SearchComponent = () => {
         className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${search ? "SearchLabel" : ""}`}
         placeholder='جست و جو ...'
         startContent={
-          <Search className='mr-2' color='var(--color-2)' />
+          <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch}/>
         }
         endContent={
           <>
@@ -122,7 +148,7 @@ const SearchComponent = () => {
             <div className='flex gap-2 recentSearch overflow-x-auto mx-2'>
               {history.map((item, index) => {
                 return (
-                  <div className='flex gap-2 border rounded-full w-min items-center py-1 px-3'>
+                  <div className='flex gap-2 border rounded-full w-min items-center py-1 px-3' key={`recent-${index}`}>
                     <div key={index} className=" text-gray-600 text-sm">{item}</div>
                     <X className='text-gray-600 cursor-pointer' size={14} onClick={() => removeFromHistory(index)} />
                   </div>
@@ -153,7 +179,7 @@ const SearchComponent = () => {
                 return (
                   <div className='border-t border-gray-200 ' key={`search-${i}`}>
 
-                    <Link className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex'  href={`/product/${e.route}`}>
+                    <Link className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.route}`}>
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
                         <div>
@@ -167,7 +193,7 @@ const SearchComponent = () => {
                       </div>
 
                     </Link>
-           
+
                   </div>
                 )
               }
@@ -189,7 +215,7 @@ const SearchComponent = () => {
             <div className='px-3 py-0'>
               {results?.product.map((e, i) => {
                 return (
-                  <div className='border-t border-gray-200 rounded-md'  key={`searchProduct-${i}`}>
+                  <div className='border-t border-gray-200 rounded-md' key={`searchProduct-${i}`}>
                     <Link className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.routeCategory}/${e.id_Product}`}>
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
@@ -212,9 +238,9 @@ const SearchComponent = () => {
           </>
         }
         {results && results?.product && results?.category && !results?.product.length > 0 && !results?.category.length > 0 && !loading &&
-        <div className="w-full mt-6 flex justify-center items-center">
-          <p className='vazirMedium text-sm text-gray-700'>چیزی جهت نمایش وجود ندارد</p>
-        </div>
+          <div className="w-full mt-6 flex justify-center items-center">
+            <p className='vazirMedium text-sm text-gray-700'>چیزی جهت نمایش وجود ندارد</p>
+          </div>
         }
 
       </div>}
