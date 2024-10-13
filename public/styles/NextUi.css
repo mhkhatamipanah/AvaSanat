@@ -12,6 +12,33 @@
   border-radius: 7px !important;
 }
 
+.paddingControl > div {
+  /* padding:  0 5px; */
+
+}
+.paddingControl div div{
+  padding: 0 !important;
+  
+}
+/* SearchLabel */
+.SearchLabel {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  /* background-color: aqua; */
+}
+.SearchLabel div {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  background-color: white;
+  
+}
+.SearchLabel div div {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  background-color: white;
+  box-shadow: 0px 0px 3px #0000005f;
+}
+
 /* Input Label NextUi */
 .labelInputNextUi label {
   right: 0 !important;
@@ -72,15 +99,13 @@
   background-color: rgb(237, 237, 237);
   height: 200px !important;
   border: 2px solid #cfcfcf;
-
 }
 .textAreaNextUi div:nth-child(1) {
   border: 2px solid #cfcfcf;
 }
 
-.heightTextArea  div:nth-child(1){
+.heightTextArea div:nth-child(1) {
   height: 150px !important;
-
 }
 /* select */
 .selectNextUi div button svg {
@@ -127,4 +152,14 @@
   left: 10 !important;
   top: 14px !important;
   right: calc(100% - 45px) !important;
+}
+
+
+
+/* Accordion */
+
+.asdasdasd div h2 button{
+  padding-right: 8px ;
+  padding-left: 8px ;
+
 }

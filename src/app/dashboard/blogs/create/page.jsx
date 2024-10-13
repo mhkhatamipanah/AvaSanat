@@ -3,7 +3,7 @@ import { ApiActions } from '@/src/utils/Frontend/ApiActions';
 import { Button, Input } from '@nextui-org/react';
 import { CaseUpper, SpellCheck } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 function Page() {
+  const router = useRouter();
 
   const searchParams = useSearchParams();
 
@@ -173,12 +174,14 @@ function Page() {
     if (idBlog) {
       const res = await edit_Blog(`/api/blog/${idBlog}`, formData)
       console.log(res)
-
-
+      if (res) {
+        router.push("/dashboard/blogs")
+      }
     } else {
       const res = await create_Blog("/api/blog/", formData)
-      console.log(res)
-
+      if (res) {
+        router.push("/dashboard/blogs")
+      }
     }
   }
   return (

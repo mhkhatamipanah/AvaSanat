@@ -17,6 +17,7 @@ import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
 
 
 const CreateProduct = () => {
+    const router = useRouter();
 
     useEffect(() => {
         const handleDragOver = (e) => {
@@ -267,6 +268,8 @@ const CreateProduct = () => {
             edit_Product(`/api/product/${idProduct}`, formData).then((res) => {
                 if (res) {
                     // changeRoute
+                    router.push("/dashboard/product")
+
                 }
             })
         } else {
@@ -275,6 +278,8 @@ const CreateProduct = () => {
             create_Product("/api/product", formData).then((res) => {
                 if (res) {
                     // changeRoute
+                    router.push("/dashboard/product")
+
                 }
             })
         }

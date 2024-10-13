@@ -9,6 +9,7 @@ import { ApiActions } from "@/src/utils/Frontend/ApiActions";
 
 
 const CreateCategory = () => {
+    const router = useRouter();
 
     useEffect(() => {
         const handleDragOver = (e) => {
@@ -83,8 +84,8 @@ const CreateCategory = () => {
     const searchParams = useSearchParams();
 
     const idCategory = searchParams.get("id");
-    
-    const { create_Category  , edit_Category} = ApiActions()
+
+    const { create_Category, edit_Category } = ApiActions()
 
     const createNewCategory = () => {
 
@@ -94,24 +95,24 @@ const CreateCategory = () => {
         formData.append("route", urlInput);
 
         formData.append("file", arrayImmages[0]);
-        
-        if(idCategory){
-            
+
+        if (idCategory) {
+
             edit_Category(`/api/category/${idCategory}`, formData).then((res) => {
                 console.log(res)
                 if (res) {
-                    // changeRoute
+                    router.push("/dashboard/category")
                 }
             })
-        }else{
+        } else {
             create_Category("/api/category", formData).then((res) => {
                 console.log(res)
                 if (res) {
-                    // changeRoute
+                    router.push("/dashboard/category")
                 }
             })
         }
-     
+
     }
 
 
@@ -120,17 +121,20 @@ const CreateCategory = () => {
     const { get_OneCategory } = ApiActions()
 
     useEffect(() => {
-        get_OneCategory(idCategory).then((res => {
-            if (res?.success) {
-                const data = res.results
-                const { title, description, route, } = data
-                setCategoryInput(title)
-                setDescription(description)
-                setUrlInput(route)
-                setPreviewBase64(res.images)
-                setPreview(null)
-            }
-        }))
+        if (idCategory) {
+            get_OneCategory(idCategory).then((res => {
+                if (res?.success) {
+                    const data = res.results
+                    const { title, description, route, } = data
+                    setCategoryInput(title)
+                    setDescription(description)
+                    setUrlInput(route)
+                    setPreviewBase64(res.images)
+                    setPreview(null)
+                }
+            }))
+        }
+
     }, [])
     return (
         <>
@@ -202,9 +206,9 @@ const CreateCategory = () => {
 
             </div>
             <Button onClick={createNewCategory} className={`${idCategory ? "bg-blue-600" : "bg-green-700"}  text-white`}>
-                {idCategory ? "ادیت" : "ساخت"} دسته بندی 
+                {idCategory ? "ادیت" : "ساخت"} دسته بندی
             </Button>
-         
+
         </>
 
     )

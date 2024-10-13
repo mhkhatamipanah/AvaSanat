@@ -1,7 +1,7 @@
 import AllBlogs from '@/src/components/Main/AllBlogs/AllBlogs'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
     <>
     <AllBlogs/>
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

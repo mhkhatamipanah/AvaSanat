@@ -316,6 +316,16 @@ const delete_Category = async (id) => {
   return deleteApi(`/api/category/${id}`);
 };
 
+const fetchCategory = async ()=>{
+  let data = {
+      listCategory: true,
+  };
+  const fetchData = await fetch(`/api/category?${(new URLSearchParams(data)).toString()}`)
+
+  return fetchData.json()
+}
+
+
 // Invoice
 const create_Invoice = async (url, data) => {
   return postPromise(url, data);
@@ -429,6 +439,8 @@ export const ApiActions = () => {
     create_Category,
     edit_Category,
     delete_Category,
+
+    fetchCategory,
 
     // Invoice
     create_Invoice,

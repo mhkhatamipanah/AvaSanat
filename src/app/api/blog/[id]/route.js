@@ -11,8 +11,6 @@ export async function GET(req, { params }) {
 
     const id = params.id;
 
-    const { searchParams } = new URL(req.url);
-
     const findOneProduct = await Blog.find({ id_Blog: id }, "-__v").catch(
       (err) => {
         console.log(err);

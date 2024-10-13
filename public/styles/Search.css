@@ -1,0 +1,10 @@
+.recentSearch {
+    overflow-x: auto;  /* فعال کردن اسکرول افقی */
+    white-space: nowrap; /* جلوگیری از شکست خط برای فعال نگه داشتن اسکرول */
+    scrollbar-width: none;  /* مخفی کردن نوار اسکرول در فایرفاکس */
+}
+
+/* مخفی کردن نوار اسکرول در مرورگرهای WebKit مانند Chrome و Safari */
+.recentSearch::-webkit-scrollbar {
+    display: none;
+}

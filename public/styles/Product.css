@@ -5,3 +5,17 @@
 .slick-list{
   max-height: 500px;
 }
+
+
+/* Blog */
+.custom-container img {
+  max-height: 400px;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+@media (min-width: 1024px) {
+  .custom-container img {
+    max-width: 600px;
+  }
+}

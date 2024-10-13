@@ -14,7 +14,9 @@ import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvi
 
 import logo from "@/public/images/png persian.png"
 
-import fetchCategory from "@/src/utils/Frontend/allApiLogicFront/Category/CategoryListFetch";
+
+import SearchComponent from "@/src/components/Main/SeachComponent/SearchComponent";
+import { ApiActions } from "@/src/utils/Frontend/ApiActions";
 function getOffsetRight(element) {
     if (element) {
         const parent = element.offsetParent;
@@ -39,6 +41,7 @@ const Desktop = () => {
     const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
 
     const [Category, setCategory] = useState(null)
+    const {fetchCategory}= ApiActions()
     const fetchCategoryApi = async () => {
         const data = await fetchCategory()
         setCategory(data)
@@ -127,14 +130,16 @@ const Desktop = () => {
                                 <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo" />
                             </div>
                             <div className='mr-3 w-96'>
-                                <Input
+                                {/* <Input
 
                                     className='inputNextUi caret-black !rounded-sm'
                                     placeholder='جست و جو ...'
                                     startContent={
                                         <Search color='var(--color-2)' />
-                                    } />
+                                    } /> */}
+                                     <SearchComponent/>
                             </div>
+                           
 
                         </div>
                         <a href="tel:+989023665306" className='flex justify-center items-center gap-3 text-black'>
@@ -149,7 +154,7 @@ const Desktop = () => {
                     </div>
 
                 </section>
-                <section className="w-full flex justify-center px-7 h-12 bg-white sticky top-0">
+                <section className="w-full flex justify-center px-7 h-12 bg-white sticky top-0 ">
                     <div className='w-full flex justify-between items-center max-w-[1500px] relative MenuContainer'>
 
                         <ul className='relative flex justify-start items-center gap-5 w-full h-full NavbarContainer'>

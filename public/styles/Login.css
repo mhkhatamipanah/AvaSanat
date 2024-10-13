@@ -1,3 +1,15 @@
 /* input:-webkit-autofill{
     background-color: #fff !important; 
 } */
+
+.scroll-container {
+    width: 300px;
+    height: 200px;
+    overflow-x: scroll;
+    overflow-y: hidden; /* پنهان کردن اسکرول عمودی */
+    white-space: nowrap;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none; /* پنهان کردن نوار اسکرول در مرورگرهای WebKit */
+}

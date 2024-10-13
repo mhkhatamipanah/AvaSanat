@@ -76,9 +76,11 @@ const Blogs = () => {
                 {data && data.data && data.data.map((e, i) => {
                     return (
                         <div key={i} className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
+                            <Link href={`/blogs/${e.id}`}>
                             <div className='overflow-hidden cursor-pointer rounded-md'>
                                 <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="" />
                             </div>
+                            </Link>
 
 
 
