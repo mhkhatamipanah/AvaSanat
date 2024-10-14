@@ -3,7 +3,7 @@ import { Input, Spinner } from '@nextui-org/react';
 import { BarChart3, CircleX, PackageSearch, Search, TimerIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { searchContext } from "@/src/components/useContextProvider/ContextProvider";
 
@@ -11,7 +11,7 @@ import { searchContext } from "@/src/components/useContextProvider/ContextProvid
 const SearchComponent = () => {
   const router = useRouter(); // برای تغییر URL
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+
 
   const { searchTextContext, setSearchTextContext } = useContext(searchContext);
 
@@ -79,20 +79,8 @@ const SearchComponent = () => {
       localStorage.setItem('searchHistory', JSON.stringify(newHistory));
 
     }
-
     if (pathname.includes("/search")) {
 
-      // const query = new URLSearchParams(searchParams.toString());
-      // // حذف پارامتر 'q' (اگر وجود داشته باشد)
-      // if (query.has('q')) {
-      //   query.delete('q');
-      // }
-      // // اضافه کردن مقدار جدید برای پارامتر 'q'
-      // if (search.trim()) { // مطمئن شوید که 'search' رشته خالی یا فقط فاصله نیست
-      //   query.set('q', search.trim());
-      // }
-
-      // router.push(`?${query.toString()}`, undefined, { shallow: true });
     } else {
       router.push(`/search?q=${search}`)
     }
@@ -110,7 +98,7 @@ const SearchComponent = () => {
       e.preventDefault(); // جلوگیری از رویداد پیش‌فرض
       // Check if the search term already exists in the history
       requestSearch()
-      // setSearch(''); // Optional: Clear input after adding to history
+      clearSearch(); // Optional: Clear input after adding to history
     }
   };
 
@@ -120,6 +108,10 @@ const SearchComponent = () => {
     setHistory(updatedHistory);
     localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
   };
+
+  const clearSearch = () => {
+    setSearch("")
+  }
   return (
     <div className='relative'>
       {/* بخش اصلی جستجو */}
@@ -158,7 +150,7 @@ const SearchComponent = () => {
               {history.map((item, index) => {
                 return (
                   <div className='flex gap-2 border rounded-full w-min items-center py-1 px-3' key={`recent-${index}`}>
-                    <Link href={`/search?q=${item}`} className=" text-gray-600 text-sm cursor-pointer">{item}</Link>
+                    <Link onClick={clearSearch} href={`/search?q=${item}`} className=" text-gray-600 text-sm cursor-pointer">{item}</Link>
                     <X className='text-gray-600 cursor-pointer' size={14} onClick={() => removeFromHistory(index)} />
                   </div>
 
@@ -188,7 +180,7 @@ const SearchComponent = () => {
                 return (
                   <div className='border-t border-gray-200 ' key={`search-${i}`}>
 
-                    <Link className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.route}`}>
+                    <Link onClick={clearSearch} className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.route}`}>
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
                         <div>
@@ -225,7 +217,7 @@ const SearchComponent = () => {
               {results?.product.map((e, i) => {
                 return (
                   <div className='border-t border-gray-200 rounded-md' key={`searchProduct-${i}`}>
-                    <Link className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.routeCategory}/${e.id_Product}`}>
+                    <Link onClick={clearSearch} className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.routeCategory}/${e.id_Product}`}>
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
                         <div>

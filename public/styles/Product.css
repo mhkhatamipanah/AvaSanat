@@ -19,3 +19,26 @@
     max-width: 600px;
   }
 }
+.product-image {
+  position: relative;
+  display: inline-block;
+  overflow: hidden; /* پنهان کردن قسمت‌های بزرگ‌تر از تصویر */
+  width: 100%; /* تنظیم عرض تصویر */
+  height: auto; /* تنظیم ارتفاع به صورت خودکار */
+}
+
+.zoom-image {
+  transition: transform 0.4s ease; /* افکت نرم برای انتقال */
+  width: 100%; /* عرض تصویر اصلی */
+  height: auto; /* ارتفاع تصویر اصلی */
+}
+
+/* modal Gallery */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, and Opera */
+}

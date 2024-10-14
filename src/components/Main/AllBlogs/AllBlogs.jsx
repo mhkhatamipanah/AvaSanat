@@ -7,6 +7,7 @@ import PaginationComponent from '../../Dashboard/Pagination/PaginationComponents
 import Link from 'next/link'
 import moment from 'jalali-moment'
 import SideBlog from '../SideBlog/SideBlog'
+import { Spinner } from '@nextui-org/react'
 
 
 // تابع برای تبدیل به تاریخ شمسی
@@ -39,6 +40,12 @@ const AllBlogs = () => {
         getApi(`/api/blog?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
         getApi(`/api/blog?${(new URLSearchParams(count)).toString()}`, setCountData)
     }, [page, perPage])
+
+    const LoadingState = () => (
+        <div className="w-full h-[600px] flex justify-center items-center">
+          <Spinner />
+        </div>
+      )
     return (
         <>
             <section className=' flex justify-center w-full my-20 min-h-screen   '>
@@ -47,6 +54,7 @@ const AllBlogs = () => {
 
                     <SideBlog />
                     <div className='col-span-4 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
+                        {data.length ==0 && LoadingState()}
                         {data && data.data &&
                             <>
                                 <div className='grid grid-cols-1 gap-4 py-2'>

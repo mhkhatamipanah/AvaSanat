@@ -150,32 +150,36 @@ export async function GET(req, res) {
     ).catch((err) => {
       console.log(err);
     });
-
-    let bottomImageCount = 0; // شمارنده برای تصاویر فرعی
-    const imageData = oneProduct.file.map((e) => {
-        const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-        const thumbnailBase64 = thumbnailBuffer.toString("base64");
-
-        if (oneProduct.indexMainImage === e.index) {
-          // اگر تصویر اصلی باشد
-          return {
-            type: "main_image",
-            image: thumbnailBase64,
-          };
-        } else if (bottomImageCount < 3) {
-          // اگر تصویر فرعی باشد و هنوز کمتر از 3 تصویر فرعی اضافه شده باشد
-          bottomImageCount++;
-          return {
-            type: "bottom_image",
-            image: thumbnailBase64,
-          };
-        }
-        return null; // برای مواردی که بیشتر از 3 تصویر فرعی وجود دارد، null برمی‌گردد
-      })
-      .filter((item) => item !== null); // حذف موارد null
-
-    const productObject = oneProduct.toObject();
-    return NextResponse.json({ data: productObject, image: imageData });
+    if(oneProduct){
+      let bottomImageCount = 0; // شمارنده برای تصاویر فرعی
+      const imageData = oneProduct.file.map((e) => {
+          const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+          const thumbnailBase64 = thumbnailBuffer.toString("base64");
+  
+          if (oneProduct.indexMainImage === e.index) {
+            // اگر تصویر اصلی باشد
+            return {
+              type: "main_image",
+              image: thumbnailBase64,
+            };
+          } else if (bottomImageCount < 3) {
+            // اگر تصویر فرعی باشد و هنوز کمتر از 3 تصویر فرعی اضافه شده باشد
+            bottomImageCount++;
+            return {
+              type: "bottom_image",
+              image: thumbnailBase64,
+            };
+          }
+          return null; // برای مواردی که بیشتر از 3 تصویر فرعی وجود دارد، null برمی‌گردد
+        })
+        .filter((item) => item !== null); // حذف موارد null
+  
+      const productObject = oneProduct.toObject();
+      return NextResponse.json({ data: productObject, image: imageData });
+    }else{
+      return NextResponse.json({ data: null, image: null });
+    }
+   
   }
 
   const category = await Product.find({}, "-__v")

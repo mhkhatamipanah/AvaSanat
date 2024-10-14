@@ -12,6 +12,38 @@ export async function GET(req, { params }) {
     const id = params.id;
 
     const { searchParams } = new URL(req.url);
+
+    let gallery = searchParams.get("gallery");
+
+    if (gallery) {
+      const category = await Product.find({ id_Product: id }, "-__v").catch(
+        (err) => {
+          console.log(err);
+        }
+      );
+
+      const imageData = category.map((ducomentProduct) => {
+        const imageTransfer = ducomentProduct.file.map((e) => {
+          const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+
+          const thumbnailBase64 = thumbnailBuffer.toString("base64");
+
+          return {
+            fileName: `uploaded_image_${Date.now()}.webp`, // For reference
+            thumbnailBase64: thumbnailBase64,
+          };
+        });
+        const newArr = imageTransfer.filter(
+          (item) => item !== null && typeof item !== "undefined"
+        );
+
+        return {
+          image_gallery:newArr,
+        };
+      });
+      return NextResponse.json({ data: imageData });
+    }
+
     let related = searchParams.get("related");
 
     if (related) {
@@ -145,7 +177,7 @@ export async function PUT(req, { params }) {
               force: true,
             })
             .toBuffer();
-        
+
           return {
             thumbnail: res,
             index: i + maxIndex + 1,

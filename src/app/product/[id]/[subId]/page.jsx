@@ -3,7 +3,7 @@
 // react
 import { useContext, useEffect, useState } from "react"
 // nextui
-import { Button } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 // icon
 import { Ellipsis, MinusCircle, PlusCircle, Trash } from "lucide-react";
 // component
@@ -18,6 +18,7 @@ import Link from "next/link";
 
 import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
 import CarouselSlider from "./CarouselSlider";
+import ModalGallery from "@/src/components/Main/ModalGallery/ModalGallery";
 
 const Page = ({ params }) => {
   const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
@@ -70,22 +71,74 @@ const Page = ({ params }) => {
   }, [data])
 
 
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 }); // مقدار پیش‌فرض
+  const [isHovered, setIsHovered] = useState(false); // وضعیت هاور
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+
+    // محاسبه موقعیت نسبی موس نسبت به تصویر
+    const x = ((clientX - left) / width) * 100; // درصد افقی
+    const y = ((clientY - top) / height) * 100; // درصد عمودی
+
+    setMousePos({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onModalOpenChange = () => {
+    setIsOpen(false);
+  };
+
+  const LoadingState = () => (
+    <div className="w-full h-[600px] flex justify-center items-center">
+      <Spinner />
+    </div>
+  )
+
   return (
     <>
-      <section className=' flex justify-center w-full mb-20  min-h-screen '>
+      <ModalGallery
+        idProduct={subId}
+        isModalOpen={isOpen}
+        onModalOpenChange={onModalOpenChange}
+      />
+      <section className=' flex flex-col items-center  w-full mb-20 min-h-screen '>
 
+        {data && data.length === 0 && LoadingState()}
         <div className='max-w-[1500px] w-full'>
           {data && data.data &&
-            <section className="w-full grid grid-cols-7 rounded mt-3">
-              {console.log(data.image)}
-              <div className="w-full col-span-3 p-2 rounded-xl">
+            <section className="w-full grid grid-cols-3 rounded mt-3">
+              <div className="w-full col-span-1 p-2 rounded-xl">
                 <div className="w-full grid grid-cols-4 gap-4 overflow-hidden">
                   {mainImage && (
-                    <img
-                      className="boxShadow w-full rounded-xl col-span-4"
-                      src={`data:image/webp;base64,${mainImage.image}`}
-                      alt="Main"
-                    />
+                    <div
+                      className="product-image relative overflow-hidden rounded-xl col-span-4 "
+                      onMouseMove={handleMouseMove}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <img
+                        className="boxShadow w-full zoom-image"
+                        src={`data:image/webp;base64,${mainImage.image}`}
+                        alt="Main"
+                        style={{
+                          transform: isHovered ? `scale(1.2)` : `scale(1)`,
+                          transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+                          transition: 'transform 0.3s ease',
+                        }}
+                      />
+                    </div>
                   )}
                   {bottomImages && bottomImages.map((e, i) => (
                     <img
@@ -95,21 +148,26 @@ const Page = ({ params }) => {
                       alt={`Bottom Image ${i + 1}`}
                     />
                   ))}
-                  <div
-                    className="boxShadow2 rounded-lg col-span-1 bg-gray-400 flex justify-center items-center cursor-pointer"
+                  {bottomImages && bottomImages.length > 0 && <div
+                    onClick={() => { setIsOpen(true) }}
+                    className="  col-span-1 bg-white  cursor-pointer p-[2px]"
                   >
-                    <Ellipsis size={30}/>
-                  </div>
+                    <div className="boxShadow w-full h-full  flex justify-center items-center rounded-lg">
+                      <Ellipsis size={30} />
+
+                    </div>
+                  </div>}
+
 
 
 
                 </div>
 
               </div>
-              <div className="w-full col-span-4 p-3">
+              <div className="w-full col-span-2 p-3">
 
 
-                <h1 className="vazirDemibold text-4xl mt-6">
+                <h1 className="vazirDemibold text-4xl mt-3">
                   {data.data.title}
                 </h1>
                 <h3 className="vazirMedium text-2xl text-gray-700 mt-4">
@@ -203,9 +261,7 @@ const Page = ({ params }) => {
 
 
               </div>
-              {/* <button onClick={() => {
-                console.log("Selected radio values:", selectedValues);
-              }}> click</button> */}
+
 
             </section>
           }

@@ -249,7 +249,7 @@ function GET(req, res) {
           detailProduct = searchParams.get("detailProduct");
 
           if (!detailProduct) {
-            _context3.next = 26;
+            _context3.next = 30;
             break;
           }
 
@@ -262,6 +262,12 @@ function GET(req, res) {
 
         case 21:
           oneProduct = _context3.sent;
+
+          if (!oneProduct) {
+            _context3.next = 29;
+            break;
+          }
+
           bottomImageCount = 0; // شمارنده برای تصاویر فرعی
 
           _imageData2 = oneProduct.file.map(function (e) {
@@ -294,13 +300,19 @@ function GET(req, res) {
             image: _imageData2
           }));
 
-        case 26:
-          _context3.next = 28;
+        case 29:
+          return _context3.abrupt("return", _server.NextResponse.json({
+            data: null,
+            image: null
+          }));
+
+        case 30:
+          _context3.next = 32;
           return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 28:
+        case 32:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -331,7 +343,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 31:
+        case 35:
         case "end":
           return _context3.stop();
       }
