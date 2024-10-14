@@ -33,7 +33,6 @@ export async function GET(req, { params }) {
             return {
               fileName: `uploaded_image_${Date.now()}.webp`, // For reference
               thumbnailBase64: thumbnailBase64,
-              // mainImageBase64: mainImageBase64,
             };
           }
         });
@@ -63,7 +62,6 @@ export async function GET(req, { params }) {
       return {
         fileName: `uploaded_image_${Date.now()}.webp`, // For reference
         thumbnailBase64: thumbnailBase64,
-        // mainImageBase64: mainImageBase64,
         index: e.index,
       };
     });
@@ -147,18 +145,9 @@ export async function PUT(req, { params }) {
               force: true,
             })
             .toBuffer();
-          const res2 = await sharp(buffer)
-            .resize(800, 800) // اندازه تصویر را بزرگتر کنید
-            .webp({
-              lossless: true, // از دست دادن کیفیت را به حداقل برسانید
-              quality: 80, // کیفیت تصویر را بالا ببرید
-              alphaQuality: 90, // کیفیت کانال آلفا را بالا ببرید
-              force: true, // تبدیل به فرمت WebP را اجباری کنید
-            })
-            .toBuffer();
+        
           return {
             thumbnail: res,
-            mainImage: res2,
             index: i + maxIndex + 1,
           };
         })

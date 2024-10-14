@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react"
 // nextui
 import { Button } from "@nextui-org/react";
 // icon
-import { MinusCircle, PlusCircle, Trash } from "lucide-react";
+import { Ellipsis, MinusCircle, PlusCircle, Trash } from "lucide-react";
 // component
 import RadioBTN from "./RadioBTN";
 import TabComponent from "./Tabs";
@@ -36,24 +36,13 @@ const Page = ({ params }) => {
   }, [])
 
   const [data, setData] = useState([])
-  const [perPage, setPerPage] = useState(12)
-  const [page, setPage] = useState(1)
-
 
   useEffect(() => {
     let data = {
-      perPage: perPage,
-      page: page,
       detailProduct: subId
-
     };
-
     getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData)
-    // getApi("/api/category", setData)
-  }, [
-    page, perPage
-    //  , rerender
-  ])
+  }, [])
 
 
   const [selectedValues, setSelectedValues] = useState({});
@@ -66,20 +55,51 @@ const Page = ({ params }) => {
     }));
   };
 
+  const [mainImage, setMainImage] = useState(null)
+  const [bottomImages, setBottomImages] = useState(null)
+
+  useEffect(() => {
+    if (data && data.image) {
+      const mainImage = data.image.find((e) => e.type === "main_image");
+      setMainImage(mainImage)
+      // فیلتر کردن تصاویر فرعی
+      const bottomImages = data.image.filter((e) => e.type === "bottom_image");
+      setBottomImages(bottomImages)
+    }
+
+  }, [data])
+
+
   return (
     <>
       <section className=' flex justify-center w-full mb-20  min-h-screen '>
 
         <div className='max-w-[1500px] w-full'>
-          {data && data.data && data.file &&
+          {data && data.data &&
             <section className="w-full grid grid-cols-7 rounded mt-3">
+              {console.log(data.image)}
               <div className="w-full col-span-3 p-2 rounded-xl">
                 <div className="w-full grid grid-cols-4 gap-4 overflow-hidden">
-                  <img className="boxShadow w-full rounded-xl col-span-4 " src={`data:image/webp;base64,${data.file[data.data.indexMainImage].thumbnailBase64}`} alt="" />
-                  <img className="boxShadow2 rounded-lg col-span-1" src={`data:image/webp;base64,${data.file[data.data.indexMainImage].thumbnailBase64}`} alt="" />
-                  <img className="boxShadow2 rounded-lg col-span-1" src={`data:image/webp;base64,${data.file[data.data.indexMainImage].thumbnailBase64}`} alt="" />
-                  <img className="boxShadow2 rounded-lg col-span-1" src={`data:image/webp;base64,${data.file[data.data.indexMainImage].thumbnailBase64}`} alt="" />
-                  <img className="boxShadow2 rounded-lg col-span-1" src={`data:image/webp;base64,${data.file[data.data.indexMainImage].thumbnailBase64}`} alt="" />
+                  {mainImage && (
+                    <img
+                      className="boxShadow w-full rounded-xl col-span-4"
+                      src={`data:image/webp;base64,${mainImage.image}`}
+                      alt="Main"
+                    />
+                  )}
+                  {bottomImages && bottomImages.map((e, i) => (
+                    <img
+                      key={`image-${i}`}
+                      className="boxShadow2 rounded-lg col-span-1"
+                      src={`data:image/webp;base64,${e.image}`}
+                      alt={`Bottom Image ${i + 1}`}
+                    />
+                  ))}
+                  <div
+                    className="boxShadow2 rounded-lg col-span-1 bg-gray-400 flex justify-center items-center cursor-pointer"
+                  >
+                    <Ellipsis size={30}/>
+                  </div>
 
 
 
@@ -89,35 +109,36 @@ const Page = ({ params }) => {
               <div className="w-full col-span-4 p-3">
 
 
-                <h1 className="vazirDemibold text-2xl mt-6">
+                <h1 className="vazirDemibold text-4xl mt-6">
                   {data.data.title}
                 </h1>
-                <h3 className="vazirMedium text-lg text-gray-700 mt-2">
+                <h3 className="vazirMedium text-2xl text-gray-700 mt-4">
                   {data.data.subtitle}
                 </h3>
                 <div className="border border-b my-3"></div>
-                <p className="vazirMedium text-md text-gray-700">
-                  توضیح بلند درباره محصول
-                </p>
+
 
                 <div className="vazirLight">
-                  دسته بندی : <Link href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
+                  <p className="vazirMedium text-xl text-gray-600 mt-4">
+                    دسته بندی : <Link className="hover:underline hover:text-blue-500 transition-all" href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
+
+                  </p>
                 </div>
-                <div className="vazirLight">
+                <div className="vazirLight mt-4">
                   برند : {data.data.brand}
                 </div>
-                <div className="border border-b my-3"></div>
+                <div className="border border-b my-4"></div>
                 {(data && data.data.feature && data.data.feature.map((e, i) => {
                   return (
-                    <div className="vazirLight" key={i}>
+                    <div className="vazirLight" key={`feature-${i}`}>
 
                       <RadioBTN title={e.title} data={e.values} onChange={(value) => handleRadioChange(e.title, value)} />
                     </div>
                   )
                 }))}
 
+                {data.data.feature.length > 0 && <div className="border border-b my-3"></div>}
 
-                <div className="border border-b my-3"></div>
 
                 {countInvoice ? <div className="mt-3 flex items-center">
                   {countInvoice == 1 ?
@@ -196,7 +217,7 @@ const Page = ({ params }) => {
 
 
           <section>
-           {data && data.data && <CarouselSlider id={subId} routeCategory={data.data.routeCategory} />}
+            {data && data.data && <CarouselSlider id={subId} routeCategory={data.data.routeCategory} />}
           </section>
         </div>
 

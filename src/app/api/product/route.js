@@ -17,15 +17,15 @@ export async function POST(req, res) {
 
     const specifications = formData.get("specifications");
     const specificationsData = JSON.parse(specifications);
-    
+
     const title = formData.get("title");
     const description = formData.get("description");
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
-    
+
     const category = formData.get("category");
     const indexMainImage = formData.get("indexMainImage");
-    
+
     const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
@@ -34,7 +34,7 @@ export async function POST(req, res) {
     );
     const routeCategory = oneCategory.route;
     const titleCategory = oneCategory.title;
-    
+
     const files = [];
     for (let i = 0; i < 20; i++) {
       const file = formData.get(`file${i}`);
@@ -57,16 +57,8 @@ export async function POST(req, res) {
               force: true,
             })
             .toBuffer();
-          const res2 = await sharp(buffer)
-            .resize(800, 800) // اندازه تصویر را بزرگتر کنید
-            .webp({
-              lossless: true, // از دست دادن کیفیت را به حداقل برسانید
-              quality: 80, // کیفیت تصویر را بالا ببرید
-              alphaQuality: 90, // کیفیت کانال آلفا را بالا ببرید
-              force: true, // تبدیل به فرمت WebP را اجباری کنید
-            })
-            .toBuffer();
-          return { thumbnail: res, mainImage: res2, index: i };
+
+          return { thumbnail: res, index: i };
         })
       );
       const product = await Product.create({
@@ -79,9 +71,8 @@ export async function POST(req, res) {
         routeCategory,
         titleCategory,
         feature: featureData,
-        specifications:specificationsData ,
+        specifications: specificationsData,
         ...(indexMainImage && { indexMainImage }),
-
       });
       if (product) {
         return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
@@ -132,7 +123,6 @@ export async function GET(req, res) {
           return {
             fileName: `uploaded_image_${Date.now()}.webp`, // For reference
             thumbnailBase64: thumbnailBase64,
-            // mainImageBase64: mainImageBase64,
           };
         }
       });
@@ -160,22 +150,32 @@ export async function GET(req, res) {
     ).catch((err) => {
       console.log(err);
     });
-    const imageData = oneProduct.file.map((e) => {
-      if (oneProduct.indexMainImage === e.index) {
-        const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
 
+    let bottomImageCount = 0; // شمارنده برای تصاویر فرعی
+    const imageData = oneProduct.file.map((e) => {
+        const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
         const thumbnailBase64 = thumbnailBuffer.toString("base64");
 
-        return {
-          fileName: `uploaded_image_${Date.now()}.webp`, // For reference
-          thumbnailBase64: thumbnailBase64,
-          // mainImageBase64: mainImageBase64,
-        };
-      }
-    });
-    const productObject = oneProduct.toObject();
+        if (oneProduct.indexMainImage === e.index) {
+          // اگر تصویر اصلی باشد
+          return {
+            type: "main_image",
+            image: thumbnailBase64,
+          };
+        } else if (bottomImageCount < 3) {
+          // اگر تصویر فرعی باشد و هنوز کمتر از 3 تصویر فرعی اضافه شده باشد
+          bottomImageCount++;
+          return {
+            type: "bottom_image",
+            image: thumbnailBase64,
+          };
+        }
+        return null; // برای مواردی که بیشتر از 3 تصویر فرعی وجود دارد، null برمی‌گردد
+      })
+      .filter((item) => item !== null); // حذف موارد null
 
-    return NextResponse.json({ data: productObject, file: imageData });
+    const productObject = oneProduct.toObject();
+    return NextResponse.json({ data: productObject, image: imageData });
   }
 
   const category = await Product.find({}, "-__v")
@@ -196,7 +196,6 @@ export async function GET(req, res) {
         return {
           fileName: `uploaded_image_${Date.now()}.webp`, // For reference
           thumbnailBase64: thumbnailBase64,
-          // mainImageBase64: mainImageBase64,
         };
       }
     });
@@ -211,7 +210,6 @@ export async function GET(req, res) {
       subtitle: ducomentProduct.subtitle,
       brand: ducomentProduct.brand,
       titleCategory: ducomentProduct.titleCategory,
-      
     };
   });
   return NextResponse.json({ data: imageData });

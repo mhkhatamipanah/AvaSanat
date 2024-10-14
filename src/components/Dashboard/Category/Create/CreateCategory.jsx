@@ -158,7 +158,7 @@ const CreateCategory = () => {
                     placeholder="توضیح کوتاه را وارد کنید"
                     labelPlacement="outside"
                     endContent={
-                        <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                        <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0 " />
                     }
                 />
                 <Input
@@ -168,6 +168,7 @@ const CreateCategory = () => {
                     label=" route (بدون اسلش و فاصله)"
                     placeholder="URL را وارد کنید"
                     labelPlacement="outside"
+                    disabled={idCategory && true}
                     endContent={
                         <Text className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                     }

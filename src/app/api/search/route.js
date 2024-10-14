@@ -27,30 +27,22 @@ export async function GET(req, res) {
   //     console.log(err);
   //   });
   if (navbar) {
-    const searchCategory = await Category.find(
-      {
+    const queryConditions = {
+      ...(q && {
         $or: [
           { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
-          { description: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
+          { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
         ],
-      },
-      "-__v"
-    )
+      }),
+    };
+    const searchCategory = await Category.find(queryConditions, "-__v")
       .sort({ createdAt: -1 })
       .limit(3)
       .catch((err) => {
         console.log(err);
       });
 
-    const searchProduct = await Product.find(
-      {
-        $or: [
-          { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
-          { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
-        ],
-      },
-      "-__v"
-    )
+    const searchProduct = await Product.find(queryConditions, "-__v")
       .sort({ createdAt: -1 })
       .limit(3)
       .catch((err) => {
@@ -63,70 +55,73 @@ export async function GET(req, res) {
       product: searchProduct,
     });
   }
+  let brand = searchParams.get("brand");
+  let Category2 = searchParams.get("Category");
+
+  if (
+    (!brand || brand == "undefined") &&
+    (!Category2 || Category2 == "undefined") &&
+    (!q || q == "undefined")
+  ) {
+    return NextResponse.json({
+      product: [],
+      total_item: 0,
+    });
+  }
 
   const perPage = searchParams.get("perPage");
   const page = searchParams.get("page");
 
-  if (q) {
-    let brand = searchParams.get("brand");
-    let Category = searchParams.get("Category");
+  const arrayInvoice = [];
 
-
-    const arrayInvoice = [];
-
-    const queryConditions = {
+  const queryConditions = {
+    ...(q && {
       $or: [
         { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
         { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
       ],
-    };
+    }),
+  };
 
-    // اگر برند وجود داشته باشد، شرط آن را اضافه می‌کنیم
-    if (brand && brand!==null && brand !== "undefined") {
-      queryConditions.brand = brand; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
-    }
-    if (Category && Category!==null && Category !== "undefined") {
-      queryConditions.routeCategory = Category; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
-    }
-    
-
-    const searchProduct = await Product.find(queryConditions, "-__v")
-      .sort({ createdAt: -1 })
-      .limit(perPage ? perPage : 20)
-      .skip(perPage && page ? perPage * (page - 1) : 0)
-      .catch((err) => {
-        console.log(err);
-      });
-console.log(searchProduct)
-    searchProduct.map((e, i) => {
-      const obj = {};
-      e.file.map((fileMap) => {
-        if (e.indexMainImage === fileMap.index) {
-          const thumbnailBuffer = Buffer.from(fileMap.thumbnail, "base64");
-          const thumbnailBase64 = thumbnailBuffer.toString("base64");
-          obj.image = thumbnailBase64;
-        }
-      });
-      obj.feature = e.feature;
-      obj.title = e.title;
-      obj.id = e.id_Product;
-      obj.subtitle = e.subtitle;
-      obj.route = e.routeCategory;
-      arrayInvoice.push(obj);
-    });
-    const searchCountProduct = await Product.countDocuments(queryConditions).catch((err) => {
+  // اگر برند وجود داشته باشد، شرط آن را اضافه می‌کنیم
+  if (brand && brand !== null && brand !== "undefined") {
+    queryConditions.brand = brand; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
+  }
+  if (Category2 && Category2 !== null && Category2 !== "undefined") {
+    queryConditions.routeCategory = Category2; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
+  }
+  const searchProduct = await Product.find(queryConditions, "-__v")
+    .sort({ createdAt: -1 })
+    .limit(perPage ? perPage : 20)
+    .skip(perPage && page ? perPage * (page - 1) : 0)
+    .catch((err) => {
       console.log(err);
     });
-
-    return NextResponse.json({
-      product: arrayInvoice,
-      total_item: searchCountProduct,
+  searchProduct.map((e, i) => {
+    const obj = {};
+    e.file.map((fileMap) => {
+      if (e.indexMainImage === fileMap.index) {
+        const thumbnailBuffer = Buffer.from(fileMap.thumbnail, "base64");
+        const thumbnailBase64 = thumbnailBuffer.toString("base64");
+        obj.image = thumbnailBase64;
+      }
     });
-  }
+    obj.feature = e.feature;
+    obj.title = e.title;
+    obj.id = e.id_Product;
+    obj.subtitle = e.subtitle;
+    obj.route = e.routeCategory;
+    arrayInvoice.push(obj);
+  });
+  const searchCountProduct = await Product.countDocuments(
+    queryConditions
+  ).catch((err) => {
+    console.log(err);
+  });
 
   return NextResponse.json({
-    product: [],
-    total_item: 0,
+    product: arrayInvoice,
+    total_item: searchCountProduct,
   });
 
   let threeData = searchParams.get("threeData");

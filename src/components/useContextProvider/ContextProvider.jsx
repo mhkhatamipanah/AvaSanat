@@ -6,17 +6,21 @@ import Navbar from "@/src/components/Navbar/Navbar";
 import Footer from "@/src/components/Main/Footer/Footer";
 
 export const InvoiceContext = createContext(null);
+export const searchContext = createContext(null);
 
-const ContextProvider = ({children}) => {
+const ContextProvider = ({ children }) => {
     const [updateInvoice, setUpdateInvoice] = useState(false);
+    const [searchTextContext, setSearchTextContext] = useState("");
 
     return (
         <>
             <InvoiceContext.Provider value={{ updateInvoice, setUpdateInvoice }}>
+                <searchContext.Provider value={{ searchTextContext, setSearchTextContext }}>
 
-            <Navbar />
-            {children}
-            <Footer />
+                    <Navbar />
+                    {children}
+                    <Footer />
+                </searchContext.Provider>
             </InvoiceContext.Provider>
 
         </>

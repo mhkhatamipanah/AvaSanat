@@ -8,46 +8,52 @@ export async function POST(req, res) {
     connectDB();
     const body = await req.json();
 
-    const arrayInvoice = [];
+    if(body){
+      const arrayInvoice = [];
 
-    // استفاده از promises
-    const promises = Object.values(body).map(async (value) => {
-      const obj = {};
-      const oneProduct = await Product.findOne(
-        { id_Product: value.id },
-        "-__v -createdAt -updatedAt"
-      ).catch((err) => {
-        console.log(err);
-      });
-
-     
-      if (oneProduct) {
-        const imageData = oneProduct.file.map((e) => {
-          if (oneProduct.indexMainImage === e.index) {
-            const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-            const thumbnailBase64 = thumbnailBuffer.toString("base64");
-            return {
-              thumbnailBase64: thumbnailBase64,
-            };
-          }
+      // استفاده از promises
+      const promises = Object.values(body).map(async (value) => {
+        const obj = {};
+        const oneProduct = await Product.findOne(
+          { id_Product: value.id },
+          "-__v -createdAt -updatedAt"
+        ).catch((err) => {
+          console.log(err);
         });
-        const newArr = imageData.filter(
-          (item) => item !== null && typeof item !== "undefined"
-        );
+  
+       
+        if (oneProduct) {
+          const imageData = oneProduct.file.map((e) => {
+            if (oneProduct.indexMainImage === e.index) {
+              const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+              const thumbnailBase64 = thumbnailBuffer.toString("base64");
+              return {
+                thumbnailBase64: thumbnailBase64,
+              };
+            }
+          });
+          const newArr = imageData.filter(
+            (item) => item !== null && typeof item !== "undefined"
+          );
+  
+          obj.feature = value.feature
+          obj.title = oneProduct.title;
+          obj.id = oneProduct.id_Product;
+          obj.subtitle = oneProduct.subtitle;
+          obj.route = oneProduct.routeCategory;
+          obj.image = newArr[0]?.thumbnailBase64;
+          arrayInvoice.push(obj);
+        }
+      });
+  
+      // انتظار برای اتمام همه promises
+      await Promise.all(promises);
+      return NextResponse.json({ data: arrayInvoice });
+    }else{
+      return NextResponse.json({ data: [] });
 
-        obj.feature = value.feature
-        obj.title = oneProduct.title;
-        obj.id = oneProduct.id_Product;
-        obj.subtitle = oneProduct.subtitle;
-        obj.route = oneProduct.routeCategory;
-        obj.image = newArr[0]?.thumbnailBase64;
-        arrayInvoice.push(obj);
-      }
-    });
-
-    // انتظار برای اتمام همه promises
-    await Promise.all(promises);
-    return NextResponse.json({ data: arrayInvoice });
+    }
+  
   } catch (err) {
     console.error(err);
   }

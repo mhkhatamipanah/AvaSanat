@@ -46,7 +46,6 @@ export async function GET(req, { params }) {
   );
 
   const arrayInvoice = [];
-
   // استفاده از promises
   const promises = findOneTicket[0].invoice.map(async (value) => {
     const obj = {};

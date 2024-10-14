@@ -55,10 +55,6 @@ var ProductSchema = new Schema({
       type: Buffer,
       required: true
     },
-    mainImage: {
-      type: Buffer,
-      required: true
-    },
     index: {
       type: Number
     }

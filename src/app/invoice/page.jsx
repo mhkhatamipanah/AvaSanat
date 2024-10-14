@@ -2,16 +2,19 @@
 import { getCookie, getTotalUniqueItems } from '@/src/utils/Cookie';
 import { ApiActions } from '@/src/utils/Frontend/ApiActions';
 
-import { Textarea, Button, Input, Chip } from '@nextui-org/react';
+import { Textarea, Button, Input, Chip, Spinner } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import ButtonInvoice from './ButtonInvoice';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import Image from 'next/image';
+import img1 from "@/public/images/no-resualt.png";
 
 const page = () => {
 
   const [countData, setCountData] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -22,10 +25,13 @@ const page = () => {
   const [data, setData] = useState(null)
   const { create_Invoice } = ApiActions()
   useEffect(() => {
+    setLoading(true)
     const cookie = getCookie("Avasanat")
     if (cookie) {
       create_Invoice("/api/invoice/", cookie).then((res) => {
         setData(res.data)
+        setLoading(false)
+
       })
     }
 
@@ -106,7 +112,7 @@ const page = () => {
         return;
       }
 
-      const data = JSON.stringify({ phone, code, description , invoice:selectedItems })
+      const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
       const res = await checkOtpInvoice(data);
 
       if (res) {
@@ -116,6 +122,8 @@ const page = () => {
         for (let i = 0; i < 6; i++) {
           document.querySelectorAll('.otp-input')[i].value = ""
         }
+        setData("")
+        setSelectedItems([])
       }
 
 
@@ -142,6 +150,67 @@ const page = () => {
     }
   }
 
+
+
+  const LoadingState = () => (
+    <div className="w-full h-[600px] flex justify-center items-center col-span-2">
+      <Spinner />
+    </div>
+  )
+  const renderEmptyState = () => (
+    <div className="h-full w-full flex justify-center items-center col-span-2">
+      <div className="flex flex-col gap-3 justify-center items-center mb-16">
+        <Image
+          className="w-full he-full max-w-[250px] max-h-[250px]"
+          width={500}
+          height={500}
+          src={img1}
+        />
+        <p> چیزی جهت نمایش وجود ندارد</p>
+      </div>
+    </div>
+  );
+
+  const renderInvoice = () => (
+    <>
+
+      {data && data.map((e, i) => {
+        return (
+          <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
+            <Link className='aspect-square h-36' href={`/product/${e.route}/${e.id}`}>
+              <img className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+            </Link>
+            <div className='flex justify-between w-full'>
+              <div className='flex justify-evenly flex-col mr-1'>
+                <p className="vazirDemibold text-xl ellipsisOneLine">
+                  {e.title}
+                </p>
+                <p className="vazirMedium text-lg text-gray-700 ellipsisOneLine">
+                  {e.subtitle}
+                </p>
+                <div className='flex gap-2 flex-wrap'>
+                  {e.feature &&
+                    Object.entries(e.feature).map(([key, value], index) => {
+                      return (
+                        <Chip key={`chip-${index}-${e.id}`} color="primary" variant="flat">
+                          {`${key}: ${value}`}
+                        </Chip>
+                      )
+                    })}
+                </div>
+
+              </div>
+              <div className='flex flex-col justify-center items-center'>
+                <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData}/>
+              </div>
+
+            </div>
+          </div>
+        )
+      })}
+    </>
+
+  )
   return (
     <>
       <div className='h-fit flex justify-center items-center xl:px-0 px-6 vazirMedium mb-20'>
@@ -150,40 +219,10 @@ const page = () => {
           <div className='grid grid-cols-7 w-full px-4 gap-3'>
             <div className='col-span-5 w-full rounded-lg bg-white boxShadow p-6'>
               <div className='grid grid-cols-2 gap-3'>
-                {data && data.map((e, i) => {
-                  return (
-                    <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
-                      <Link className='aspect-square h-36' href={`/product/${e.route}/${e.id}`}>
-                        <img className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
-                      </Link>
-                      <div className='flex justify-between w-full'>
-                        <div className='flex justify-evenly flex-col mr-1'>
-                          <p className="vazirDemibold text-xl ellipsisOneLine">
-                            {e.title}
-                          </p>
-                          <p className="vazirMedium text-lg text-gray-700 ellipsisOneLine">
-                            {e.subtitle}
-                          </p>
-                          <div className='flex gap-2 flex-wrap'>
-                            {e.feature &&
-                              Object.entries(e.feature).map(([key, value], index) => {
-                                return (
-                                  <Chip key={`chip-${index}-${e.id}`} color="primary" variant="flat">
-                                    {`${key}: ${value}`}
-                                  </Chip>
-                                )
-                              })}
-                          </div>
+                {loading ? LoadingState() :
+                  data?.length === 0 ? renderEmptyState() : renderInvoice()
+                }
 
-                        </div>
-                        <div className='flex flex-col justify-center items-center'>
-                          <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems ={setSelectedItems} />
-                        </div>
-
-                      </div>
-                    </div>
-                  )
-                })}
               </div>
               <div className='grid grid-cols-2 gap-3 w-full mt-5'>
 

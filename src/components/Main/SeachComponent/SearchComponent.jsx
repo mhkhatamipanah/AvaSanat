@@ -2,13 +2,19 @@
 import { Input, Spinner } from '@nextui-org/react';
 import { BarChart3, CircleX, PackageSearch, Search, TimerIcon, X } from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+
+import { searchContext } from "@/src/components/useContextProvider/ContextProvider";
+
 
 const SearchComponent = () => {
   const router = useRouter(); // برای تغییر URL
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const { searchTextContext, setSearchTextContext } = useContext(searchContext);
+
 
 
   const [search, setSearch] = useState('');
@@ -73,23 +79,23 @@ const SearchComponent = () => {
       localStorage.setItem('searchHistory', JSON.stringify(newHistory));
 
     }
-    router.push(`/search?q=${search}`)
 
-    // if (pathname.includes("/search")) {
+    if (pathname.includes("/search")) {
 
-    //   const query = new URLSearchParams(searchParams.toString());
-    //   // حذف پارامتر 'q' (اگر وجود داشته باشد)
-    //   if (query.has('q')) {
-    //     query.delete('q');
-    //   }
-    //   // اضافه کردن مقدار جدید برای پارامتر 'q'
-    //   if (search.trim()) { // مطمئن شوید که 'search' رشته خالی یا فقط فاصله نیست
-    //     query.set('q', search.trim());
-    //   }
+      // const query = new URLSearchParams(searchParams.toString());
+      // // حذف پارامتر 'q' (اگر وجود داشته باشد)
+      // if (query.has('q')) {
+      //   query.delete('q');
+      // }
+      // // اضافه کردن مقدار جدید برای پارامتر 'q'
+      // if (search.trim()) { // مطمئن شوید که 'search' رشته خالی یا فقط فاصله نیست
+      //   query.set('q', search.trim());
+      // }
 
-    //   router.push(`?${query.toString()}`, undefined, { shallow: true });
-    // } else {
-    // }
+      // router.push(`?${query.toString()}`, undefined, { shallow: true });
+    } else {
+      router.push(`/search?q=${search}`)
+    }
   }
 
   // Load history from localStorage on component mount
@@ -119,12 +125,15 @@ const SearchComponent = () => {
       {/* بخش اصلی جستجو */}
       <Input
         value={search}
-        onChange={(e) => { setSearch(e.target.value) }}
+        onChange={(e) => {
+          setSearch(e.target.value)
+          setSearchTextContext(e.target.value)
+        }}
         onKeyDown={handleKeyDown}
         className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${search ? "SearchLabel" : ""}`}
         placeholder='جست و جو ...'
         startContent={
-          <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch}/>
+          <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch} />
         }
         endContent={
           <>
@@ -135,7 +144,7 @@ const SearchComponent = () => {
 
       {search && <div className='absolute bg-white w-96 h-min pb-8 rounded-bl-md rounded-br-md boxShadow3 z-[1]' >
 
-        {history.length > 0 && (
+        {!pathname.includes("/search") && history.length > 0 && (
           <div className="rounded p-3">
             <div className="flex justify-between mb-2">
               <div className='flex gap-2 items-center'>
@@ -149,7 +158,7 @@ const SearchComponent = () => {
               {history.map((item, index) => {
                 return (
                   <div className='flex gap-2 border rounded-full w-min items-center py-1 px-3' key={`recent-${index}`}>
-                    <div key={index} className=" text-gray-600 text-sm">{item}</div>
+                    <Link href={`/search?q=${item}`} className=" text-gray-600 text-sm cursor-pointer">{item}</Link>
                     <X className='text-gray-600 cursor-pointer' size={14} onClick={() => removeFromHistory(index)} />
                   </div>
 

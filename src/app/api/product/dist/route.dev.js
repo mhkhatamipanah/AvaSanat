@@ -74,7 +74,7 @@ function POST(req, res) {
           _context2.prev = 23;
           _context2.next = 26;
           return regeneratorRuntime.awrap(Promise.all(files.map(function _callee(e, i) {
-            var bufferData, buffer, res, res2;
+            var bufferData, buffer, res;
             return regeneratorRuntime.async(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
@@ -95,28 +95,12 @@ function POST(req, res) {
 
                   case 6:
                     res = _context.sent;
-                    _context.next = 9;
-                    return regeneratorRuntime.awrap(sharp(buffer).resize(800, 800) // اندازه تصویر را بزرگتر کنید
-                    .webp({
-                      lossless: true,
-                      // از دست دادن کیفیت را به حداقل برسانید
-                      quality: 80,
-                      // کیفیت تصویر را بالا ببرید
-                      alphaQuality: 90,
-                      // کیفیت کانال آلفا را بالا ببرید
-                      force: true // تبدیل به فرمت WebP را اجباری کنید
-
-                    }).toBuffer());
-
-                  case 9:
-                    res2 = _context.sent;
                     return _context.abrupt("return", {
                       thumbnail: res,
-                      mainImage: res2,
                       index: i
                     });
 
-                  case 11:
+                  case 8:
                   case "end":
                     return _context.stop();
                 }
@@ -188,7 +172,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, detailProduct, oneProduct, _imageData2, productObject, category, imageData;
+  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, detailProduct, oneProduct, bottomImageCount, _imageData2, productObject, category, imageData;
 
   return regeneratorRuntime.async(function GET$(_context3) {
     while (1) {
@@ -241,8 +225,7 @@ function GET(req, res) {
                 return {
                   fileName: "uploaded_image_".concat(Date.now(), ".webp"),
                   // For reference
-                  thumbnailBase64: thumbnailBase64 // mainImageBase64: mainImageBase64,
-
+                  thumbnailBase64: thumbnailBase64
                 };
               }
             });
@@ -266,7 +249,7 @@ function GET(req, res) {
           detailProduct = searchParams.get("detailProduct");
 
           if (!detailProduct) {
-            _context3.next = 25;
+            _context3.next = 26;
             break;
           }
 
@@ -279,31 +262,45 @@ function GET(req, res) {
 
         case 21:
           oneProduct = _context3.sent;
-          _imageData2 = oneProduct.file.map(function (e) {
-            if (oneProduct.indexMainImage === e.index) {
-              var thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-              var thumbnailBase64 = thumbnailBuffer.toString("base64");
-              return {
-                fileName: "uploaded_image_".concat(Date.now(), ".webp"),
-                // For reference
-                thumbnailBase64: thumbnailBase64 // mainImageBase64: mainImageBase64,
+          bottomImageCount = 0; // شمارنده برای تصاویر فرعی
 
+          _imageData2 = oneProduct.file.map(function (e) {
+            var thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+            var thumbnailBase64 = thumbnailBuffer.toString("base64");
+
+            if (oneProduct.indexMainImage === e.index) {
+              // اگر تصویر اصلی باشد
+              return {
+                type: "main_image",
+                image: thumbnailBase64
+              };
+            } else if (bottomImageCount < 3) {
+              // اگر تصویر فرعی باشد و هنوز کمتر از 3 تصویر فرعی اضافه شده باشد
+              bottomImageCount++;
+              return {
+                type: "bottom_image",
+                image: thumbnailBase64
               };
             }
-          });
+
+            return null; // برای مواردی که بیشتر از 3 تصویر فرعی وجود دارد، null برمی‌گردد
+          }).filter(function (item) {
+            return item !== null;
+          }); // حذف موارد null
+
           productObject = oneProduct.toObject();
           return _context3.abrupt("return", _server.NextResponse.json({
             data: productObject,
-            file: _imageData2
+            image: _imageData2
           }));
 
-        case 25:
-          _context3.next = 27;
+        case 26:
+          _context3.next = 28;
           return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 27:
+        case 28:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -313,8 +310,7 @@ function GET(req, res) {
                 return {
                   fileName: "uploaded_image_".concat(Date.now(), ".webp"),
                   // For reference
-                  thumbnailBase64: thumbnailBase64 // mainImageBase64: mainImageBase64,
-
+                  thumbnailBase64: thumbnailBase64
                 };
               }
             });
@@ -335,7 +331,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 30:
+        case 31:
         case "end":
           return _context3.stop();
       }

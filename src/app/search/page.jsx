@@ -1,16 +1,16 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi'
 import Link from 'next/link'
 import moment from 'jalali-moment'
 import PaginationComponent from '@/src/components/Dashboard/Pagination/PaginationComponents'
 import AccordionComponent from './AccordionComponent'
-import { useSearchParams } from "next/navigation";
+import { useSearchParams  , useRouter } from "next/navigation";
 import Image from 'next/image'
 import img1 from "@/public/images/no-resualt.png";
 import { Spinner } from '@nextui-org/react'
-import { Search } from 'lucide-react'
+import { searchContext } from "@/src/components/useContextProvider/ContextProvider";
 
 
 // تابع برای تبدیل به تاریخ شمسی
@@ -26,12 +26,13 @@ const convertToTime = (isoDateString) => {
 };
 const AllBlogs = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     const q = searchParams.get("q");
     const Category = searchParams.get("Category");
     const brand = searchParams.get("brand");
 
-    const [search, setSearch] = useState('');
+    const { searchTextContext, setSearchTextContext } = useContext(searchContext);
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
@@ -40,22 +41,35 @@ const AllBlogs = () => {
 
     useEffect(() => {
         setLoading(true)
+
         let data = {
-            perPage: perPage,
-            page: page,
-            q,
+            perPage,
+            page,
+            ...(q && { q }),   
+            ...(!q && searchTextContext && { q: searchTextContext }), // اگر q نبود، searchTextContext را اضافه کن
             ...(brand && { brand }),
             ...(Category && { Category }),
         };
+
+        const query = new URLSearchParams(searchParams.toString());
+
+        // حذف پارامتر 'q' (اگر وجود داشته باشد)
+        if (query.has('q')) {
+            query.delete('q');
+        }
+
+        router.push(`?${query.toString()}`, undefined, { shallow: true });
+
+
         getApi(`/api/search?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
-    }, [page, perPage, q, brand, Category])
+    }, [page, perPage, searchTextContext, brand, Category])
 
 
     const renderEmptyState = () => (
         <div className="h-full w-full flex justify-center items-center">
-            <div className="flex flex-col gap-3 justify-center items-center mb-16">
+            <div className="flex flex-col gap-3 justify-center items-center mb-16 h-[500px]">
                 <Image
-                    className="w-full h-[500px] max-w-[250px] max-h-[250px]"
+                    className="w-full max-w-[250px] max-h-[250px]"
                     width={500}
                     height={500}
                     src={img1}
@@ -72,41 +86,12 @@ const AllBlogs = () => {
                 <div className='w-full grid grid-cols-5 gap-3 max-w-[1500px]'>
 
                     <div className='col-span-1 w-full h-min flex flex-col gap-3  '>
+
                         <AccordionComponent />
 
                     </div>
                     <div className='col-span-4 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
-                        <div className='flex justify-between'>
-                            <div>
-                                <Input
-                                    value={search}
-                                    onChange={(e) => { setSearch(e.target.value) }}
-                                    onKeyDown={handleKeyDown}
-                                    className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${search ? "SearchLabel" : ""}`}
-                                    placeholder='جست و جو ...'
-                                    startContent={
-                                        <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch} />
-                                    }
-                                />
-                            </div>
-                                <select
-                                    onChange={(e) => {
-                                        if (e.target.value) {
-                                            setPerPage(e.target.value);
-                                            setPage(1);
-                                        }
-                                    }}
-                                    id="small"
-                                    className="block  p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 h-min w-min"
-                                >
-                                    <option value="" defaultValue>
-                                        تعداد نمایش{" "}
-                                    </option>
-                                    <option value="6">6</option>
-                                    <option value="10">10</option>
-                                    <option value="12">12</option>
-                                </select>
-                        </div>
+
                         {loading ?
                             <div className="w-full h-[500px] flex justify-center items-center">
                                 <Spinner />

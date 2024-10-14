@@ -65,9 +65,9 @@ const BookSlider = ({ id, routeCategory }) => {
             {data &&
                 <div className=' flex justify-center items-center flex-col '>
                     <Slider style={{ width: 'calc(100% )' }} {...settings}>
-                        {data && data.data && data.data.map((e) => {
+                        {data && data.data && data.data.map((e , i) => {
                             return (
-                                <div className='m-2 p-2 '>
+                                <div className='m-2 p-2 ' key ={`slider-${i}`}>
                                     <div className=' p-2 border border-gray-300 rounded-xl'>
                                         <Link href={`/product/${e.routeCategory}/${e.id}`} >
                                             <img className='object-cover w-full h-full rounded-md' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
