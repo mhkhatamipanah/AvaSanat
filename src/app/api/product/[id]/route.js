@@ -38,7 +38,7 @@ export async function GET(req, { params }) {
         );
 
         return {
-          image_gallery:newArr,
+          image_gallery: newArr,
         };
       });
       return NextResponse.json({ data: imageData });
@@ -48,14 +48,36 @@ export async function GET(req, { params }) {
 
     if (related) {
       let routeCategory = searchParams.get("routeCategory");
-
       const category = await Product.find({ routeCategory }, "-__v")
         .limit(10)
         .catch((err) => {
           console.log(err);
         });
 
-      const imageData = category.map((ducomentProduct) => {
+      let relatedArray = [...category]; // مقداردهی اولیه به relatedArray
+
+      if (category.length < 5) {
+        const remainingProductsCount = 5 - category.length;
+
+        // جمع آوری IDs محصولاتی که در نتایج اولیه وجود دارند
+        const existingProductIds = category.map((product) => product._id);
+
+        const randomProducts = await Product.aggregate([
+          {
+            $match: {
+              routeCategory: { $ne: routeCategory },
+              _id: { $nin: existingProductIds },
+            },
+          }, // جستجو برای محصولاتی که routeCategory متفاوت دارند و در نتایج اولیه نیستند
+          { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
+          { $project: { __v: 0 } }, // حذف فیلد __v
+        ]);
+
+        // ترکیب داده‌های اولیه با داده‌های تصادفی
+        relatedArray = [...category, ...randomProducts];
+      }
+
+      const imageData = relatedArray.map((ducomentProduct) => {
         const imageTransfer = ducomentProduct.file.map((e) => {
           if (ducomentProduct.indexMainImage === e.index) {
             const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");

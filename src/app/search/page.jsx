@@ -41,12 +41,12 @@ const AllBlogs = () => {
 
     useEffect(() => {
         setLoading(true)
-
         let data = {
             perPage,
             page,
             ...(q && { q }),   
             ...(!q && searchTextContext && { q: searchTextContext }), // اگر q نبود، searchTextContext را اضافه کن
+            // ...(!q && !searchTextContext && { q: "" }), // اگر q نبود، searchTextContext را اضافه کن
             ...(brand && { brand }),
             ...(Category && { Category }),
         };

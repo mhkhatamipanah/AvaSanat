@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import img from "@/public/images/5.jpg"
-import Image from 'next/image';
 import { ArrowLeft, ArrowRight, ChevronLeft, ListCollapse } from 'lucide-react';
 import { Button } from '@nextui-org/react';
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';

@@ -102,6 +102,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: true,
             message: "ساخته شد"
           }, {
             status: 201
@@ -116,6 +117,7 @@ function POST(req, res) {
           _context.t0 = _context["catch"](13);
           console.log(_context.t0);
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: "ارور ناشناخته"
           }, {
             status: 500

@@ -1,7 +1,8 @@
-import Cookies from "js-cookie";
+
 import { toast } from "sonner";
 
 export const MONGOOSE = process.env.MONGOOSE;
+export const JWT_KEY = process.env.JWT_KEY;
 
 // Function For Params
 const params = (obj) => {
@@ -52,27 +53,35 @@ const postPromise = (url, data) => {
     }
   });
 };
-
-// 3- PostApi
-const postApi = (url, data) => {
+const postApi = async (url, data) => {
   try {
-    toast.promise(postPromise(url, data), {
-      loading: "در حال پردازش اطلاعات...",
-      success: (data) => {
-        // بعدا برداشته شود
-        if (data.otp) {
-          toast.info(data.otp);
-        }
-        return `${data.message}`;
-      },
-      error: (e) => {
-        console.log(e);
-        return `${e}`;
-      },
-    });
-    return true;
+    // 1. فراخوانی postPromise و گرفتن نتیجه به صورت مستقیم
+    const resultPromise = postPromise(url, data);
+
+    // 2. نمایش پیام‌ها با استفاده از toast.promise بدون وابستگی به نتیجه نهایی
+    toast.promise(
+      resultPromise, // postPromise که یک Promise است به عنوان ورودی داده می‌شود
+      {
+        loading: "در حال پردازش اطلاعات...",
+        success: (response) => {
+          if (response.otp) {
+            toast.info(response.otp); // نمایش OTP در صورت وجود
+          }
+          return response.message; // پیام موفقیت را برمی‌گرداند
+        },
+        error: (err) => {
+          return err || "خطا در ارتباط با سرور"; // نمایش پیام خطا
+        },
+      }
+    );
+
+    // 3. منتظر ماندن برای نتیجه اصلی (موفقیت یا خطا)
+    const result = await resultPromise;
+
+    // 4. برگرداندن true یا false بر اساس نتیجه نهایی
+    return result.success ? true : false;
   } catch (e) {
-    console.log(e);
+    console.log("Error in postApi:", e);
     return false;
   }
 };
@@ -165,6 +174,12 @@ const deleteApi = (url) => {
     console.log(e);
     return false;
   }
+};
+
+// Login
+const login = (data) => {
+  const result = postApi("/api/login/", data);
+  return result;
 };
 
 // OTP Countact us
@@ -316,15 +331,16 @@ const delete_Category = async (id) => {
   return deleteApi(`/api/category/${id}`);
 };
 
-const fetchCategory = async ()=>{
+const fetchCategory = async () => {
   let data = {
-      listCategory: true,
+    listCategory: true,
   };
-  const fetchData = await fetch(`/api/category?${(new URLSearchParams(data)).toString()}`)
+  const fetchData = await fetch(
+    `/api/category?${new URLSearchParams(data).toString()}`
+  );
 
-  return fetchData.json()
-}
-
+  return fetchData.json();
+};
 
 // Invoice
 const create_Invoice = async (url, data) => {
@@ -412,6 +428,9 @@ const get_OneBlog = async (id) => {
 
 export const ApiActions = () => {
   return {
+    // Login
+    login,
+
     // Otp ContactUs
     sendOtp,
     checkOtp,

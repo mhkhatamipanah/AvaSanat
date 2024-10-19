@@ -135,6 +135,7 @@ function POST(req, res) {
           }
 
           return _context2.abrupt("return", _server.NextResponse.json({
+            success: true,
             message: "ساخته شد"
           }, {
             status: 201
@@ -149,6 +150,7 @@ function POST(req, res) {
           _context2.t0 = _context2["catch"](23);
           console.log(_context2.t0);
           return _context2.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: "ارور ناشناخته"
           }, {
             status: 500
@@ -172,7 +174,7 @@ function POST(req, res) {
 }
 
 function GET(req, res) {
-  var _ref, searchParams, count, countData, perPage, page, filterCategory, _category, _imageData, detailProduct, oneProduct, bottomImageCount, _imageData2, productObject, category, imageData;
+  var _ref, searchParams, count, countData, perPage, page, countFilterCategory, _countData, filterCategory, _category, _imageData, detailProduct, oneProduct, bottomImageCount, _imageData2, productObject, category, imageData;
 
   return regeneratorRuntime.async(function GET$(_context3) {
     while (1) {
@@ -201,21 +203,42 @@ function GET(req, res) {
         case 8:
           perPage = searchParams.get("perPage");
           page = searchParams.get("page");
-          filterCategory = searchParams.get("filterCategory");
+          countFilterCategory = searchParams.get("countFilterCategory");
 
-          if (!filterCategory) {
-            _context3.next = 17;
+          if (!countFilterCategory) {
+            _context3.next = 16;
             break;
           }
 
           _context3.next = 14;
+          return regeneratorRuntime.awrap(_Product["default"].countDocuments({
+            routeCategory: countFilterCategory
+          })["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 14:
+          _countData = _context3.sent;
+          return _context3.abrupt("return", _server.NextResponse.json({
+            countData: _countData
+          }));
+
+        case 16:
+          filterCategory = searchParams.get("filterCategory");
+
+          if (!filterCategory) {
+            _context3.next = 23;
+            break;
+          }
+
+          _context3.next = 20;
           return regeneratorRuntime.awrap(_Product["default"].find({
             routeCategory: filterCategory
           }, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 14:
+        case 20:
           _category = _context3.sent;
           _imageData = _category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -244,27 +267,27 @@ function GET(req, res) {
             data: _imageData
           }));
 
-        case 17:
+        case 23:
           // detailProduct
           detailProduct = searchParams.get("detailProduct");
 
           if (!detailProduct) {
-            _context3.next = 30;
+            _context3.next = 36;
             break;
           }
 
-          _context3.next = 21;
+          _context3.next = 27;
           return regeneratorRuntime.awrap(_Product["default"].findOne({
             id_Product: detailProduct
           }, "-__v -createdAt -updatedAt")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 21:
+        case 27:
           oneProduct = _context3.sent;
 
           if (!oneProduct) {
-            _context3.next = 29;
+            _context3.next = 35;
             break;
           }
 
@@ -300,19 +323,19 @@ function GET(req, res) {
             image: _imageData2
           }));
 
-        case 29:
+        case 35:
           return _context3.abrupt("return", _server.NextResponse.json({
             data: null,
             image: null
           }));
 
-        case 30:
-          _context3.next = 32;
+        case 36:
+          _context3.next = 38;
           return regeneratorRuntime.awrap(_Product["default"].find({}, "-__v").limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 32:
+        case 38:
           category = _context3.sent;
           imageData = category.map(function (ducomentProduct) {
             var imageTransfer = ducomentProduct.file.map(function (e) {
@@ -343,7 +366,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 35:
+        case 41:
         case "end":
           return _context3.stop();
       }

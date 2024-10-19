@@ -17,7 +17,6 @@ const ModalGallery = ({ isModalOpen, onModalOpenChange, idProduct, }) => {
         };
         const res = await fetch(`/api/product/${idProduct}?${(new URLSearchParams(data)).toString()}`);
         const result = await res.json();
-        console.log(result)
         if (result.data.length > 0) {
             setData(result.data[0])
             setMainImage(result.data[0].image_gallery[0].thumbnailBase64)

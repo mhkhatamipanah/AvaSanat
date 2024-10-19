@@ -1,62 +1,97 @@
+"use client"
 import React from 'react'
-import img1 from "@/public/images/4.png"
-import Image from 'next/image'
-import Link from 'next/link'
-import { Button } from '@nextui-org/react'
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+// import required modules
+import { Pagination } from 'swiper/modules';
+
+const images = [
+  "/images/landing/1.png",
+  "https://images.unsplash.com/photo-1590004953392-5aba2e72269a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=500&w=800&q=80",
+  "https://images.unsplash.com/photo-1590004845575-cc18b13d1d0a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=500&w=800&q=80",
+  "https://images.unsplash.com/photo-1590004987778-bece5c9adab6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=500&w=800&q=80",
+  "https://images.unsplash.com/photo-1590005176489-db2e714711fc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=500&w=800&q=80",
+]
 
 const Landing = () => {
+
+  // const [loaded, setLoaded] = React.useState([])
+  // const [currentSlide, setCurrentSlide] = React.useState(0)
+
+  // const [sliderRef] = useKeenSlider({
+  //   animationEnded(s) {
+  //     setCurrentSlide(s.track.details.rel)
+  //   },
+  //   loop: true,
+  //   initial: 0,
+  // })
+
+  // React.useEffect(() => {
+  //   const new_loaded = [...loaded]
+  //   new_loaded[currentSlide] = true
+  //   // setLoaded(new_loaded)
+  // }, [currentSlide])
+
   return (
-    <div className='flex justify-center w-full h-[calc(100vh-96px)] imageLanding'>
-      <div className='h-full w-full max-w-screen-2xl items-center justify-between xl:px-0 px-6 vazirMedium mb-20'>
-        <section className='w-full h-full flex flex-col items-center '>
-          <section className='grid h-full grid-cols-9 w-full lg:gap-10 '>
-
-            <div className='h-full col-span-9 min-[600px]:col-span-5 w-full relative flex flex-col '>
-
-              <Image className='min-[600px]:absolute top-[5%] z-[1] p-10' width={1500} height={1500} src={img1} alt='about-us' />
-            </div>
-            <div className='col-span-9 flex h-[90%] items-center min-[600px]:col-span-4 w-full my-2 overflow-hidden px-4'>
-              <section className='flex mb-32 gap-6'>
-                {/* <div >
-                  <span className='block w-3 rounded-xl bg-[var(--color-2)] h-24'></span>
-
-                </div> */}
-                <div>
-                  <h3 className='text-xl md:text-2xl lg:text-3xl iranSansDemibold !leading-[60px]'>
-                    <span className='border-b-red-400  border-b-4 border-t-0 border-l-0 border-r-0'>آواصنعت</span>
-                    {" "}
-                    تامین کننده و واردکننده قطعات اتوماسیون
-                  </h3>
-                  <p className='text-gray-600 md:text-md lg:text-[18px] mt-8 leading-8'>
-                    در آواصنعت، اهمیت کیفیت قطعات و قابل اعتماد را درک می‌کنیم. به همین دلیل، ما به ارائه قطعات و اجزای با کیفیت بالا برای کمک به افزایش بهره‌وری و کارایی عملیات شما متعهد هستیم.
-                  </p>
-                  <p className='text-gray-500 md:text-md lg:text-[16px] mt-3 leading-8'>
-                    به عنوان یک تامین‌کننده پیشرو قطعات اتوماسیون، ما شهرتی برای ارائه محصولات و خدمات استثنایی به صنایع مانند تولید، لجستیک و بیشتر داریم. تیم متخصص ما سال‌ها تجربه در این زمینه دارد، بنابراین می‌توانید مطمئن باشید که راه‌حل‌های مناسب برای نیازهای خاص شما دریافت می‌کنید
-                  </p>
-                  <div className='flex gap-3 mt-7'>
-                    <Link href={"/contact-us"}>
-                      <Button className='bg-[#ff4458] text-white text-lg px-5 py-3 h-[50px] vazirDemibold' >ثبت پیام</Button>
-                    </Link>
-                    <Link href={"/about-us"}>
-                      <Button variant="bordered" className='border border-solid border-[#fe796f] text-lg px-5 py-3 h-[50px] vazirDemibold' >درباره ما </Button>
-                    </Link>
-                  </div>
-
-                </div>
-
-              </section>
-              {/* <p className='text-gray-500 md:text-md lg:text-[14px] mt-5 md:mt-8 sm:text-justify'>
+    // <div ref={sliderRef} className="keen-slider ">
+    //   {/* {console.log(loaded)} */}
+    //   {images.map((src, idx) => (
+    //     <div key={idx} className="keen-slider__slide lazy__slide h-[90vh]">
+    //       <img className='h-[90vh] !border-0' src={loaded[idx] ? src : ""} />
+    //     </div>
+    //   ))}
+    // </div>
+    // <div className="bg-gray-100">
+    <section className="relative flex flex-col items-center justify-center w-full bg-[#f7f7f7] overflow-hidden">
 
 
-              </p>
-          */}
+      <div className='max-w-[1500px] h-[700px]'>
 
+        <Swiper
+          // spaceBetween={50}
+          pagination={true}
+          modules={[Pagination]}
+          dir="rtl"
+          // lazy={true}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          slidesPerView={1}
+          // onSlideChange={() => console.log('slide change')}
+          // onSwiper={(swiper) => console.log(swiper)}
+        >
+          <SwiperSlide className='w-full h-full max-h-[700px] relative'>
+            <div className='bg-[#eeeeee] absolute w-full h-[300px] bg-banner top-1/2 -z-[2]'></div>
+            <img
+              className='w-full h-full max-h-[700px] object-cover aspect-video z-20'
+              src={images[0]}
+              loading="lazy"
+              alt='2'
+            />
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          </SwiperSlide>
+          <SwiperSlide className='w-full h-full max-h-[700px] relative'>
+            <div className='bg-[#eeeeee] absolute w-full h-[300px] bg-banner top-1/2 -z-[2]'></div>
+            <img
+              className='w-full h-full max-h-[700px] object-cover aspect-video z-20'
+              src={images[0]}
+              loading="lazy"
+              alt='2'
+            />
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          </SwiperSlide>
 
-            </div>
-          </section>
-        </section>
+        </Swiper>
       </div>
-    </div>
+    </section>
+    // </div>
+
   )
 }
 

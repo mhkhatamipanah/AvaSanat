@@ -1,5 +1,5 @@
 import React from 'react'
-import img1 from "@/public/images/2.png"
+import img1 from "@/public/images/4.png"
 import Image from 'next/image'
 const AboutUs = () => {
   return (

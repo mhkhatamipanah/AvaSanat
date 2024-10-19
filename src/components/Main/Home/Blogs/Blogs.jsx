@@ -49,6 +49,7 @@ const Blogs = () => {
                     width={500}
                     height={500}
                     src={img1}
+                    alt='asd'
                 />
                 <p> چیزی جهت نمایش وجود ندارد</p>
             </div>
@@ -78,7 +79,7 @@ const Blogs = () => {
                         <div key={i} className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
                             <Link href={`/blogs/${e.id}`}>
                             <div className='overflow-hidden cursor-pointer rounded-md'>
-                                <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="" />
+                                <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="as" />
                             </div>
                             </Link>
 

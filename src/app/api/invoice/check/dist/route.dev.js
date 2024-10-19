@@ -39,6 +39,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: " شماره را به درستی وارد کنید"
           }, {
             status: 400
@@ -51,6 +52,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: " شماره باید عدد باشد"
           }, {
             status: 400
@@ -74,6 +76,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: "کد نا معتبر"
           }, {
             status: 400
@@ -89,6 +92,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: "کد منقضی شده "
           }, {
             status: 400
@@ -105,6 +109,7 @@ function POST(req, res) {
         case 20:
           newMessage = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
+            success: true,
             message: "ساخته شد"
           }));
 

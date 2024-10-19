@@ -3,17 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ApiActions = exports.MONGOOSE = void 0;
-
-var _jsCookie = _interopRequireDefault(require("js-cookie"));
+exports.ApiActions = exports.JWT_KEY = exports.MONGOOSE = void 0;
 
 var _sonner = require("sonner");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var MONGOOSE = process.env.MONGOOSE; // Function For Params
-
+var MONGOOSE = process.env.MONGOOSE;
 exports.MONGOOSE = MONGOOSE;
+var JWT_KEY = process.env.JWT_KEY; // Function For Params
+
+exports.JWT_KEY = JWT_KEY;
 
 var params = function params(obj) {
   var page = obj.page;
@@ -105,54 +103,76 @@ var postPromise = function postPromise(url, data) {
       }
     }, null, null, [[0, 10]]);
   });
-}; // 3- PostApi
-
+};
 
 var postApi = function postApi(url, data) {
-  try {
-    _sonner.toast.promise(postPromise(url, data), {
-      loading: "در حال پردازش اطلاعات...",
-      success: function success(data) {
-        // بعدا برداشته شود
-        if (data.otp) {
-          _sonner.toast.info(data.otp);
-        }
+  var resultPromise, result;
+  return regeneratorRuntime.async(function postApi$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.prev = 0;
+          // 1. فراخوانی postPromise و گرفتن نتیجه به صورت مستقیم
+          resultPromise = postPromise(url, data); // 2. نمایش پیام‌ها با استفاده از toast.promise بدون وابستگی به نتیجه نهایی
 
-        return "".concat(data.message);
-      },
-      error: function error(e) {
-        console.log(e);
-        return "".concat(e);
+          _sonner.toast.promise(resultPromise, // postPromise که یک Promise است به عنوان ورودی داده می‌شود
+          {
+            loading: "در حال پردازش اطلاعات...",
+            success: function success(response) {
+              if (response.otp) {
+                _sonner.toast.info(response.otp); // نمایش OTP در صورت وجود
+
+              }
+
+              return response.message; // پیام موفقیت را برمی‌گرداند
+            },
+            error: function error(err) {
+              return err || "خطا در ارتباط با سرور"; // نمایش پیام خطا
+            }
+          }); // 3. منتظر ماندن برای نتیجه اصلی (موفقیت یا خطا)
+
+
+          _context3.next = 5;
+          return regeneratorRuntime.awrap(resultPromise);
+
+        case 5:
+          result = _context3.sent;
+          return _context3.abrupt("return", result.success ? true : false);
+
+        case 9:
+          _context3.prev = 9;
+          _context3.t0 = _context3["catch"](0);
+          console.log("Error in postApi:", _context3.t0);
+          return _context3.abrupt("return", false);
+
+        case 13:
+        case "end":
+          return _context3.stop();
       }
-    });
-
-    return true;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
+    }
+  }, null, null, [[0, 9]]);
 }; // 1- Edit
 
 
 var EditMethod = function EditMethod(url, data) {
   var res;
-  return regeneratorRuntime.async(function EditMethod$(_context3) {
+  return regeneratorRuntime.async(function EditMethod$(_context4) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          _context3.next = 2;
+          _context4.next = 2;
           return regeneratorRuntime.awrap(fetch(url, {
             method: "PUT",
             body: data
           }));
 
         case 2:
-          res = _context3.sent;
-          return _context3.abrupt("return", res);
+          res = _context4.sent;
+          return _context4.abrupt("return", res);
 
         case 4:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
     }
   });
@@ -162,21 +182,21 @@ var EditMethod = function EditMethod(url, data) {
 var editPromise = function editPromise(url, data) {
   return new Promise(function _callee2(resolve, reject) {
     var res, result;
-    return regeneratorRuntime.async(function _callee2$(_context4) {
+    return regeneratorRuntime.async(function _callee2$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
+            _context5.prev = 0;
+            _context5.next = 3;
             return regeneratorRuntime.awrap(EditMethod(url, data));
 
           case 3:
-            res = _context4.sent;
-            _context4.next = 6;
+            res = _context5.sent;
+            _context5.next = 6;
             return regeneratorRuntime.awrap(res.json());
 
           case 6:
-            result = _context4.sent;
+            result = _context5.sent;
 
             if (res.status === 200 || res.status === 201) {
               resolve(result);
@@ -184,18 +204,18 @@ var editPromise = function editPromise(url, data) {
               reject(result.message);
             }
 
-            _context4.next = 14;
+            _context5.next = 14;
             break;
 
           case 10:
-            _context4.prev = 10;
-            _context4.t0 = _context4["catch"](0);
-            console.log("error", _context4.t0);
+            _context5.prev = 10;
+            _context5.t0 = _context5["catch"](0);
+            console.log("error", _context5.t0);
             reject("ارور در درخواست");
 
           case 14:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
     }, null, null, [[0, 10]]);
@@ -225,22 +245,22 @@ var editApi = function editApi(url, data) {
 
 var deleteMethod = function deleteMethod(url) {
   var res;
-  return regeneratorRuntime.async(function deleteMethod$(_context5) {
+  return regeneratorRuntime.async(function deleteMethod$(_context6) {
     while (1) {
-      switch (_context5.prev = _context5.next) {
+      switch (_context6.prev = _context6.next) {
         case 0:
-          _context5.next = 2;
+          _context6.next = 2;
           return regeneratorRuntime.awrap(fetch(url, {
             method: "Delete"
           }));
 
         case 2:
-          res = _context5.sent;
-          return _context5.abrupt("return", res);
+          res = _context6.sent;
+          return _context6.abrupt("return", res);
 
         case 4:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
     }
   });
@@ -250,21 +270,21 @@ var deleteMethod = function deleteMethod(url) {
 var deletePromise = function deletePromise(url) {
   return new Promise(function _callee3(resolve, reject) {
     var res, result;
-    return regeneratorRuntime.async(function _callee3$(_context6) {
+    return regeneratorRuntime.async(function _callee3$(_context7) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
-            _context6.prev = 0;
-            _context6.next = 3;
+            _context7.prev = 0;
+            _context7.next = 3;
             return regeneratorRuntime.awrap(deleteMethod(url));
 
           case 3:
-            res = _context6.sent;
-            _context6.next = 6;
+            res = _context7.sent;
+            _context7.next = 6;
             return regeneratorRuntime.awrap(res.json());
 
           case 6:
-            result = _context6.sent;
+            result = _context7.sent;
             console.log(result);
 
             if (res.status === 200 || res.status === 201) {
@@ -273,18 +293,18 @@ var deletePromise = function deletePromise(url) {
               reject(result.message);
             }
 
-            _context6.next = 15;
+            _context7.next = 15;
             break;
 
           case 11:
-            _context6.prev = 11;
-            _context6.t0 = _context6["catch"](0);
-            console.log("error", _context6.t0);
+            _context7.prev = 11;
+            _context7.t0 = _context7["catch"](0);
+            console.log("error", _context7.t0);
             reject("ارور در درخواست");
 
           case 15:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
       }
     }, null, null, [[0, 11]]);
@@ -310,6 +330,12 @@ var deleteApi = function deleteApi(url) {
     console.log(e);
     return false;
   }
+}; // Login
+
+
+var login = function login(data) {
+  var result = postApi("/api/login/", data);
+  return result;
 }; // OTP Countact us
 
 
@@ -320,16 +346,16 @@ var sendOtp = function sendOtp(data) {
 
 var checkOtp = function checkOtp(data) {
   var result;
-  return regeneratorRuntime.async(function checkOtp$(_context7) {
+  return regeneratorRuntime.async(function checkOtp$(_context8) {
     while (1) {
-      switch (_context7.prev = _context7.next) {
+      switch (_context8.prev = _context8.next) {
         case 0:
           result = postApi("/api/contact_us/check/", data);
-          return _context7.abrupt("return", result);
+          return _context8.abrupt("return", result);
 
         case 2:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
     }
   });
@@ -343,16 +369,16 @@ var sendOtpInvoice = function sendOtpInvoice(data) {
 
 var checkOtpInvoice = function checkOtpInvoice(data) {
   var result;
-  return regeneratorRuntime.async(function checkOtpInvoice$(_context8) {
+  return regeneratorRuntime.async(function checkOtpInvoice$(_context9) {
     while (1) {
-      switch (_context8.prev = _context8.next) {
+      switch (_context9.prev = _context9.next) {
         case 0:
           result = postApi("/api/invoice/check/", data);
-          return _context8.abrupt("return", result);
+          return _context9.abrupt("return", result);
 
         case 2:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
     }
   });
@@ -362,46 +388,46 @@ var checkOtpInvoice = function checkOtpInvoice(data) {
 
 var get_ContactUs = function get_ContactUs(data) {
   var queryString, res, result;
-  return regeneratorRuntime.async(function get_ContactUs$(_context9) {
+  return regeneratorRuntime.async(function get_ContactUs$(_context10) {
     while (1) {
-      switch (_context9.prev = _context9.next) {
+      switch (_context10.prev = _context10.next) {
         case 0:
-          _context9.prev = 0;
+          _context10.prev = 0;
           queryString = params(data);
-          _context9.next = 4;
+          _context10.next = 4;
           return regeneratorRuntime.awrap(fetch("/api/contact_us".concat(queryString)));
 
         case 4:
-          res = _context9.sent;
+          res = _context10.sent;
 
           if (!(res.status === 200)) {
-            _context9.next = 12;
+            _context10.next = 12;
             break;
           }
 
-          _context9.next = 8;
+          _context10.next = 8;
           return regeneratorRuntime.awrap(res.json());
 
         case 8:
-          result = _context9.sent;
-          return _context9.abrupt("return", result);
+          result = _context10.sent;
+          return _context10.abrupt("return", result);
 
         case 12:
-          return _context9.abrupt("return", false);
+          return _context10.abrupt("return", false);
 
         case 13:
-          _context9.next = 19;
+          _context10.next = 19;
           break;
 
         case 15:
-          _context9.prev = 15;
-          _context9.t0 = _context9["catch"](0);
-          console.log("error", _context9.t0);
-          return _context9.abrupt("return", false);
+          _context10.prev = 15;
+          _context10.t0 = _context10["catch"](0);
+          console.log("error", _context10.t0);
+          return _context10.abrupt("return", false);
 
         case 19:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
     }
   }, null, null, [[0, 15]]);
@@ -409,60 +435,60 @@ var get_ContactUs = function get_ContactUs(data) {
 
 var get_OneContactUs = function get_OneContactUs(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_OneContactUs$(_context10) {
+  return regeneratorRuntime.async(function get_OneContactUs$(_context11) {
     while (1) {
-      switch (_context10.prev = _context10.next) {
+      switch (_context11.prev = _context11.next) {
         case 0:
-          _context10.prev = 0;
-          _context10.next = 3;
+          _context11.prev = 0;
+          _context11.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id)));
 
         case 3:
-          res = _context10.sent;
+          res = _context11.sent;
 
           if (!(res.status === 200)) {
-            _context10.next = 11;
+            _context11.next = 11;
             break;
           }
 
-          _context10.next = 7;
+          _context11.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context10.sent;
-          return _context10.abrupt("return", result);
+          result = _context11.sent;
+          return _context11.abrupt("return", result);
 
         case 11:
-          return _context10.abrupt("return", false);
+          return _context11.abrupt("return", false);
 
         case 12:
-          _context10.next = 18;
+          _context11.next = 18;
           break;
 
         case 14:
-          _context10.prev = 14;
-          _context10.t0 = _context10["catch"](0);
-          console.log("error", _context10.t0);
-          return _context10.abrupt("return", false);
+          _context11.prev = 14;
+          _context11.t0 = _context11["catch"](0);
+          console.log("error", _context11.t0);
+          return _context11.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
     }
   }, null, null, [[0, 14]]);
 };
 
 var delete_ContactUs = function delete_ContactUs(id) {
-  return regeneratorRuntime.async(function delete_ContactUs$(_context11) {
+  return regeneratorRuntime.async(function delete_ContactUs$(_context12) {
     while (1) {
-      switch (_context11.prev = _context11.next) {
+      switch (_context12.prev = _context12.next) {
         case 0:
-          return _context11.abrupt("return", deleteApi("/api/contact_us/".concat(id)));
+          return _context12.abrupt("return", deleteApi("/api/contact_us/".concat(id)));
 
         case 1:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
     }
   });
@@ -470,12 +496,12 @@ var delete_ContactUs = function delete_ContactUs(id) {
 
 var edit_ContactUs = function edit_ContactUs(id, data) {
   var res, result;
-  return regeneratorRuntime.async(function edit_ContactUs$(_context12) {
+  return regeneratorRuntime.async(function edit_ContactUs$(_context13) {
     while (1) {
-      switch (_context12.prev = _context12.next) {
+      switch (_context13.prev = _context13.next) {
         case 0:
-          _context12.prev = 0;
-          _context12.next = 3;
+          _context13.prev = 0;
+          _context13.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/contact_us/".concat(id), {
             method: "PUT",
             headers: {
@@ -485,36 +511,36 @@ var edit_ContactUs = function edit_ContactUs(id, data) {
           }));
 
         case 3:
-          res = _context12.sent;
+          res = _context13.sent;
 
           if (!(res.status === 200)) {
-            _context12.next = 11;
+            _context13.next = 11;
             break;
           }
 
-          _context12.next = 7;
+          _context13.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context12.sent;
-          return _context12.abrupt("return", result);
+          result = _context13.sent;
+          return _context13.abrupt("return", result);
 
         case 11:
-          return _context12.abrupt("return", false);
+          return _context13.abrupt("return", false);
 
         case 12:
-          _context12.next = 18;
+          _context13.next = 18;
           break;
 
         case 14:
-          _context12.prev = 14;
-          _context12.t0 = _context12["catch"](0);
-          console.log("error", _context12.t0);
-          return _context12.abrupt("return", false);
+          _context13.prev = 14;
+          _context13.t0 = _context13["catch"](0);
+          console.log("error", _context13.t0);
+          return _context13.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context12.stop();
+          return _context13.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -522,26 +548,11 @@ var edit_ContactUs = function edit_ContactUs(id, data) {
 
 
 var create_Product = function create_Product(url, data) {
-  return regeneratorRuntime.async(function create_Product$(_context13) {
-    while (1) {
-      switch (_context13.prev = _context13.next) {
-        case 0:
-          return _context13.abrupt("return", postApi(url, data));
-
-        case 1:
-        case "end":
-          return _context13.stop();
-      }
-    }
-  });
-};
-
-var edit_Product = function edit_Product(url, data) {
-  return regeneratorRuntime.async(function edit_Product$(_context14) {
+  return regeneratorRuntime.async(function create_Product$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
-          return _context14.abrupt("return", editApi(url, data));
+          return _context14.abrupt("return", postApi(url, data));
 
         case 1:
         case "end":
@@ -551,12 +562,12 @@ var edit_Product = function edit_Product(url, data) {
   });
 };
 
-var delete_Product = function delete_Product(id) {
-  return regeneratorRuntime.async(function delete_Product$(_context15) {
+var edit_Product = function edit_Product(url, data) {
+  return regeneratorRuntime.async(function edit_Product$(_context15) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
-          return _context15.abrupt("return", deleteApi("/api/product/".concat(id)));
+          return _context15.abrupt("return", editApi(url, data));
 
         case 1:
         case "end":
@@ -566,61 +577,30 @@ var delete_Product = function delete_Product(id) {
   });
 };
 
-var get_OneProduct = function get_OneProduct(id) {
-  var res, result;
-  return regeneratorRuntime.async(function get_OneProduct$(_context16) {
+var delete_Product = function delete_Product(id) {
+  return regeneratorRuntime.async(function delete_Product$(_context16) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
-          _context16.prev = 0;
-          _context16.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/product/".concat(id)));
+          return _context16.abrupt("return", deleteApi("/api/product/".concat(id)));
 
-        case 3:
-          res = _context16.sent;
-
-          if (!(res.status === 200)) {
-            _context16.next = 11;
-            break;
-          }
-
-          _context16.next = 7;
-          return regeneratorRuntime.awrap(res.json());
-
-        case 7:
-          result = _context16.sent;
-          return _context16.abrupt("return", result);
-
-        case 11:
-          return _context16.abrupt("return", false);
-
-        case 12:
-          _context16.next = 18;
-          break;
-
-        case 14:
-          _context16.prev = 14;
-          _context16.t0 = _context16["catch"](0);
-          console.log("error", _context16.t0);
-          return _context16.abrupt("return", false);
-
-        case 18:
+        case 1:
         case "end":
           return _context16.stop();
       }
     }
-  }, null, null, [[0, 14]]);
+  });
 };
 
-var get_CategoryProduct = function get_CategoryProduct(data) {
+var get_OneProduct = function get_OneProduct(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_CategoryProduct$(_context17) {
+  return regeneratorRuntime.async(function get_OneProduct$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
           _context17.prev = 0;
           _context17.next = 3;
-          return regeneratorRuntime.awrap(fetch("/api/category?".concat(new URLSearchParams(data).toString())));
+          return regeneratorRuntime.awrap(fetch("/api/product/".concat(id)));
 
         case 3:
           res = _context17.sent;
@@ -658,16 +638,62 @@ var get_CategoryProduct = function get_CategoryProduct(data) {
   }, null, null, [[0, 14]]);
 };
 
-var delete_Image_Product = function delete_Image_Product(id, id_image) {
-  return regeneratorRuntime.async(function delete_Image_Product$(_context18) {
+var get_CategoryProduct = function get_CategoryProduct(data) {
+  var res, result;
+  return regeneratorRuntime.async(function get_CategoryProduct$(_context18) {
     while (1) {
       switch (_context18.prev = _context18.next) {
         case 0:
-          return _context18.abrupt("return", deleteApi("/api/product/".concat(id, "/").concat(id_image)));
+          _context18.prev = 0;
+          _context18.next = 3;
+          return regeneratorRuntime.awrap(fetch("/api/category?".concat(new URLSearchParams(data).toString())));
+
+        case 3:
+          res = _context18.sent;
+
+          if (!(res.status === 200)) {
+            _context18.next = 11;
+            break;
+          }
+
+          _context18.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          result = _context18.sent;
+          return _context18.abrupt("return", result);
+
+        case 11:
+          return _context18.abrupt("return", false);
+
+        case 12:
+          _context18.next = 18;
+          break;
+
+        case 14:
+          _context18.prev = 14;
+          _context18.t0 = _context18["catch"](0);
+          console.log("error", _context18.t0);
+          return _context18.abrupt("return", false);
+
+        case 18:
+        case "end":
+          return _context18.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+};
+
+var delete_Image_Product = function delete_Image_Product(id, id_image) {
+  return regeneratorRuntime.async(function delete_Image_Product$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          return _context19.abrupt("return", deleteApi("/api/product/".concat(id, "/").concat(id_image)));
 
         case 1:
         case "end":
-          return _context18.stop();
+          return _context19.stop();
       }
     }
   });
@@ -676,71 +702,56 @@ var delete_Image_Product = function delete_Image_Product(id, id_image) {
 
 var get_OneCategory = function get_OneCategory(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_OneCategory$(_context19) {
+  return regeneratorRuntime.async(function get_OneCategory$(_context20) {
     while (1) {
-      switch (_context19.prev = _context19.next) {
+      switch (_context20.prev = _context20.next) {
         case 0:
-          _context19.prev = 0;
-          _context19.next = 3;
+          _context20.prev = 0;
+          _context20.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/category/".concat(id)));
 
         case 3:
-          res = _context19.sent;
+          res = _context20.sent;
 
           if (!(res.status === 200)) {
-            _context19.next = 11;
+            _context20.next = 11;
             break;
           }
 
-          _context19.next = 7;
+          _context20.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context19.sent;
-          return _context19.abrupt("return", result);
+          result = _context20.sent;
+          return _context20.abrupt("return", result);
 
         case 11:
-          return _context19.abrupt("return", false);
+          return _context20.abrupt("return", false);
 
         case 12:
-          _context19.next = 18;
+          _context20.next = 18;
           break;
 
         case 14:
-          _context19.prev = 14;
-          _context19.t0 = _context19["catch"](0);
-          console.log("error", _context19.t0);
-          return _context19.abrupt("return", false);
+          _context20.prev = 14;
+          _context20.t0 = _context20["catch"](0);
+          console.log("error", _context20.t0);
+          return _context20.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context19.stop();
+          return _context20.stop();
       }
     }
   }, null, null, [[0, 14]]);
 };
 
 var create_Category = function create_Category(url, data) {
-  return regeneratorRuntime.async(function create_Category$(_context20) {
-    while (1) {
-      switch (_context20.prev = _context20.next) {
-        case 0:
-          return _context20.abrupt("return", postApi(url, data));
-
-        case 1:
-        case "end":
-          return _context20.stop();
-      }
-    }
-  });
-};
-
-var edit_Category = function edit_Category(url, data) {
-  return regeneratorRuntime.async(function edit_Category$(_context21) {
+  return regeneratorRuntime.async(function create_Category$(_context21) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          return _context21.abrupt("return", editApi(url, data));
+          return _context21.abrupt("return", postApi(url, data));
 
         case 1:
         case "end":
@@ -750,12 +761,12 @@ var edit_Category = function edit_Category(url, data) {
   });
 };
 
-var delete_Category = function delete_Category(id) {
-  return regeneratorRuntime.async(function delete_Category$(_context22) {
+var edit_Category = function edit_Category(url, data) {
+  return regeneratorRuntime.async(function edit_Category$(_context22) {
     while (1) {
       switch (_context22.prev = _context22.next) {
         case 0:
-          return _context22.abrupt("return", deleteApi("/api/category/".concat(id)));
+          return _context22.abrupt("return", editApi(url, data));
 
         case 1:
         case "end":
@@ -765,25 +776,40 @@ var delete_Category = function delete_Category(id) {
   });
 };
 
-var fetchCategory = function fetchCategory() {
-  var data, fetchData;
-  return regeneratorRuntime.async(function fetchCategory$(_context23) {
+var delete_Category = function delete_Category(id) {
+  return regeneratorRuntime.async(function delete_Category$(_context23) {
     while (1) {
       switch (_context23.prev = _context23.next) {
+        case 0:
+          return _context23.abrupt("return", deleteApi("/api/category/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context23.stop();
+      }
+    }
+  });
+};
+
+var fetchCategory = function fetchCategory() {
+  var data, fetchData;
+  return regeneratorRuntime.async(function fetchCategory$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
         case 0:
           data = {
             listCategory: true
           };
-          _context23.next = 3;
+          _context24.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/category?".concat(new URLSearchParams(data).toString())));
 
         case 3:
-          fetchData = _context23.sent;
-          return _context23.abrupt("return", fetchData.json());
+          fetchData = _context24.sent;
+          return _context24.abrupt("return", fetchData.json());
 
         case 5:
         case "end":
-          return _context23.stop();
+          return _context24.stop();
       }
     }
   });
@@ -791,15 +817,15 @@ var fetchCategory = function fetchCategory() {
 
 
 var create_Invoice = function create_Invoice(url, data) {
-  return regeneratorRuntime.async(function create_Invoice$(_context24) {
+  return regeneratorRuntime.async(function create_Invoice$(_context25) {
     while (1) {
-      switch (_context24.prev = _context24.next) {
+      switch (_context25.prev = _context25.next) {
         case 0:
-          return _context24.abrupt("return", postPromise(url, data));
+          return _context25.abrupt("return", postPromise(url, data));
 
         case 1:
         case "end":
-          return _context24.stop();
+          return _context25.stop();
       }
     }
   });
@@ -807,46 +833,46 @@ var create_Invoice = function create_Invoice(url, data) {
 
 var get_Invoice = function get_Invoice(data) {
   var queryString, res, result;
-  return regeneratorRuntime.async(function get_Invoice$(_context25) {
+  return regeneratorRuntime.async(function get_Invoice$(_context26) {
     while (1) {
-      switch (_context25.prev = _context25.next) {
+      switch (_context26.prev = _context26.next) {
         case 0:
-          _context25.prev = 0;
+          _context26.prev = 0;
           queryString = params(data);
-          _context25.next = 4;
+          _context26.next = 4;
           return regeneratorRuntime.awrap(fetch("/api/invoice".concat(queryString)));
 
         case 4:
-          res = _context25.sent;
+          res = _context26.sent;
 
           if (!(res.status === 200)) {
-            _context25.next = 12;
+            _context26.next = 12;
             break;
           }
 
-          _context25.next = 8;
+          _context26.next = 8;
           return regeneratorRuntime.awrap(res.json());
 
         case 8:
-          result = _context25.sent;
-          return _context25.abrupt("return", result);
+          result = _context26.sent;
+          return _context26.abrupt("return", result);
 
         case 12:
-          return _context25.abrupt("return", false);
+          return _context26.abrupt("return", false);
 
         case 13:
-          _context25.next = 19;
+          _context26.next = 19;
           break;
 
         case 15:
-          _context25.prev = 15;
-          _context25.t0 = _context25["catch"](0);
-          console.log("error", _context25.t0);
-          return _context25.abrupt("return", false);
+          _context26.prev = 15;
+          _context26.t0 = _context26["catch"](0);
+          console.log("error", _context26.t0);
+          return _context26.abrupt("return", false);
 
         case 19:
         case "end":
-          return _context25.stop();
+          return _context26.stop();
       }
     }
   }, null, null, [[0, 15]]);
@@ -854,60 +880,60 @@ var get_Invoice = function get_Invoice(data) {
 
 var get_OneInvoice = function get_OneInvoice(id) {
   var res, result;
-  return regeneratorRuntime.async(function get_OneInvoice$(_context26) {
+  return regeneratorRuntime.async(function get_OneInvoice$(_context27) {
     while (1) {
-      switch (_context26.prev = _context26.next) {
+      switch (_context27.prev = _context27.next) {
         case 0:
-          _context26.prev = 0;
-          _context26.next = 3;
+          _context27.prev = 0;
+          _context27.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/invoice/".concat(id)));
 
         case 3:
-          res = _context26.sent;
+          res = _context27.sent;
 
           if (!(res.status === 200)) {
-            _context26.next = 11;
+            _context27.next = 11;
             break;
           }
 
-          _context26.next = 7;
+          _context27.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context26.sent;
-          return _context26.abrupt("return", result);
+          result = _context27.sent;
+          return _context27.abrupt("return", result);
 
         case 11:
-          return _context26.abrupt("return", false);
+          return _context27.abrupt("return", false);
 
         case 12:
-          _context26.next = 18;
+          _context27.next = 18;
           break;
 
         case 14:
-          _context26.prev = 14;
-          _context26.t0 = _context26["catch"](0);
-          console.log("error", _context26.t0);
-          return _context26.abrupt("return", false);
+          _context27.prev = 14;
+          _context27.t0 = _context27["catch"](0);
+          console.log("error", _context27.t0);
+          return _context27.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context26.stop();
+          return _context27.stop();
       }
     }
   }, null, null, [[0, 14]]);
 };
 
 var delete_Invoice = function delete_Invoice(id) {
-  return regeneratorRuntime.async(function delete_Invoice$(_context27) {
+  return regeneratorRuntime.async(function delete_Invoice$(_context28) {
     while (1) {
-      switch (_context27.prev = _context27.next) {
+      switch (_context28.prev = _context28.next) {
         case 0:
-          return _context27.abrupt("return", deleteApi("/api/invoice/".concat(id)));
+          return _context28.abrupt("return", deleteApi("/api/invoice/".concat(id)));
 
         case 1:
         case "end":
-          return _context27.stop();
+          return _context28.stop();
       }
     }
   });
@@ -915,12 +941,12 @@ var delete_Invoice = function delete_Invoice(id) {
 
 var edit_Invoice = function edit_Invoice(id, data) {
   var res, result;
-  return regeneratorRuntime.async(function edit_Invoice$(_context28) {
+  return regeneratorRuntime.async(function edit_Invoice$(_context29) {
     while (1) {
-      switch (_context28.prev = _context28.next) {
+      switch (_context29.prev = _context29.next) {
         case 0:
-          _context28.prev = 0;
-          _context28.next = 3;
+          _context29.prev = 0;
+          _context29.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/invoice/".concat(id), {
             method: "PUT",
             headers: {
@@ -930,36 +956,36 @@ var edit_Invoice = function edit_Invoice(id, data) {
           }));
 
         case 3:
-          res = _context28.sent;
+          res = _context29.sent;
 
           if (!(res.status === 200)) {
-            _context28.next = 11;
+            _context29.next = 11;
             break;
           }
 
-          _context28.next = 7;
+          _context29.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context28.sent;
-          return _context28.abrupt("return", result);
+          result = _context29.sent;
+          return _context29.abrupt("return", result);
 
         case 11:
-          return _context28.abrupt("return", false);
+          return _context29.abrupt("return", false);
 
         case 12:
-          _context28.next = 18;
+          _context29.next = 18;
           break;
 
         case 14:
-          _context28.prev = 14;
-          _context28.t0 = _context28["catch"](0);
-          console.log("error", _context28.t0);
-          return _context28.abrupt("return", false);
+          _context29.prev = 14;
+          _context29.t0 = _context29["catch"](0);
+          console.log("error", _context29.t0);
+          return _context29.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context28.stop();
+          return _context29.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -967,26 +993,11 @@ var edit_Invoice = function edit_Invoice(id, data) {
 
 
 var create_Blog = function create_Blog(url, data) {
-  return regeneratorRuntime.async(function create_Blog$(_context29) {
-    while (1) {
-      switch (_context29.prev = _context29.next) {
-        case 0:
-          return _context29.abrupt("return", postApi(url, data));
-
-        case 1:
-        case "end":
-          return _context29.stop();
-      }
-    }
-  });
-};
-
-var edit_Blog = function edit_Blog(url, data) {
-  return regeneratorRuntime.async(function edit_Blog$(_context30) {
+  return regeneratorRuntime.async(function create_Blog$(_context30) {
     while (1) {
       switch (_context30.prev = _context30.next) {
         case 0:
-          return _context30.abrupt("return", editApi(url, data));
+          return _context30.abrupt("return", postApi(url, data));
 
         case 1:
         case "end":
@@ -996,12 +1007,12 @@ var edit_Blog = function edit_Blog(url, data) {
   });
 };
 
-var delete_Blog = function delete_Blog(id) {
-  return regeneratorRuntime.async(function delete_Blog$(_context31) {
+var edit_Blog = function edit_Blog(url, data) {
+  return regeneratorRuntime.async(function edit_Blog$(_context31) {
     while (1) {
       switch (_context31.prev = _context31.next) {
         case 0:
-          return _context31.abrupt("return", deleteApi("/api/blog/".concat(id)));
+          return _context31.abrupt("return", editApi(url, data));
 
         case 1:
         case "end":
@@ -1011,47 +1022,62 @@ var delete_Blog = function delete_Blog(id) {
   });
 };
 
-var get_OneBlog = function get_OneBlog(id) {
-  var res, result;
-  return regeneratorRuntime.async(function get_OneBlog$(_context32) {
+var delete_Blog = function delete_Blog(id) {
+  return regeneratorRuntime.async(function delete_Blog$(_context32) {
     while (1) {
       switch (_context32.prev = _context32.next) {
         case 0:
-          _context32.prev = 0;
-          _context32.next = 3;
+          return _context32.abrupt("return", deleteApi("/api/blog/".concat(id)));
+
+        case 1:
+        case "end":
+          return _context32.stop();
+      }
+    }
+  });
+};
+
+var get_OneBlog = function get_OneBlog(id) {
+  var res, result;
+  return regeneratorRuntime.async(function get_OneBlog$(_context33) {
+    while (1) {
+      switch (_context33.prev = _context33.next) {
+        case 0:
+          _context33.prev = 0;
+          _context33.next = 3;
           return regeneratorRuntime.awrap(fetch("/api/blog/".concat(id)));
 
         case 3:
-          res = _context32.sent;
+          res = _context33.sent;
 
           if (!(res.status === 200)) {
-            _context32.next = 11;
+            _context33.next = 11;
             break;
           }
 
-          _context32.next = 7;
+          _context33.next = 7;
           return regeneratorRuntime.awrap(res.json());
 
         case 7:
-          result = _context32.sent;
-          return _context32.abrupt("return", result);
+          result = _context33.sent;
+          return _context33.abrupt("return", result);
 
         case 11:
-          return _context32.abrupt("return", false);
+          return _context33.abrupt("return", false);
 
         case 12:
-          _context32.next = 18;
+          _context33.next = 18;
           break;
 
         case 14:
-          _context32.prev = 14;
-          _context32.t0 = _context32["catch"](0);
-          console.log("error", _context32.t0);
-          return _context32.abrupt("return", false);
+          _context33.prev = 14;
+          _context33.t0 = _context33["catch"](0);
+          console.log("error", _context33.t0);
+          return _context33.abrupt("return", false);
 
         case 18:
         case "end":
-          return _context32.stop();
+          return _context33.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -1059,6 +1085,8 @@ var get_OneBlog = function get_OneBlog(id) {
 
 var ApiActions = function ApiActions() {
   return {
+    // Login
+    login: login,
     // Otp ContactUs
     sendOtp: sendOtp,
     checkOtp: checkOtp,

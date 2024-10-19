@@ -21,13 +21,13 @@ export async function POST(req, res) {
     const { phone } = body;
     if (!phone.trim() || phone.trim().length !== 11) {
       return NextResponse.json(
-        { message: " شماره را به درستی وارد کنید" },
+        { success: false , message: " شماره را به درستی وارد کنید" },
         { status: 400 }
       );
     }
     if (!isInteger(phone)) {
       return NextResponse.json(
-        { message: " شماره باید عدد باشد" },
+        { success: false , message: " شماره باید عدد باشد" },
         { status: 400 }
       );
     }
@@ -54,12 +54,13 @@ export async function POST(req, res) {
     const otpCode =  sixDigitOTP()
     console.log()
     OTP.create({
+      
       phone: body.phone,
       code: otpCode,
       expTime: expireOTP,
     });
     // بعدا باید otp رو بردارم که به فرانت نفرستم 
-    return NextResponse.json({ message: "کد ارسال شد" , otp: otpCode });
+    return NextResponse.json({ success: true , message: "کد ارسال شد" , otp: otpCode });
 
 
     var data = JSON.stringify({

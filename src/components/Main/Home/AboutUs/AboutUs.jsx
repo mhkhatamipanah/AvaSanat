@@ -1,5 +1,5 @@
 import React from 'react'
-import img1 from "@/public/images/3.png"
+import img1 from "@/public/images/4.png"
 import Image from 'next/image'
 import Title from '../../Title/Title'
 
@@ -30,7 +30,7 @@ const AboutUs = () => {
                       <div className="p-4 ">
                         <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
                           <div className="flex justify-center">
-                            <Image src={icon3} className="w-32 mb-3" />
+                            <Image alt='23' src={icon3} className="w-32 mb-3" />
                           </div>
                           <h2 className="title-font font-regular text-md text-gray-800">قطعات باکیفیت</h2>
                         </div>
@@ -39,7 +39,7 @@ const AboutUs = () => {
                       <div className="p-4 ">
                         <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
                           <div className="flex justify-center">
-                            <Image src={icon1} className="w-32 mb-3" />
+                            <Image alt='23' src={icon1} className="w-32 mb-3" />
                           </div>
                           <h2 className="title-font font-regular text-md text-gray-800">قیمت رقابتی</h2>
                         </div>
@@ -50,7 +50,7 @@ const AboutUs = () => {
                       <div className="p-4 ">
                         <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
                           <div className="flex justify-center">
-                            <Image src={icon2} className="w-32 mb-3" />
+                            <Image alt='23' src={icon2} className="w-32 mb-3" />
                           </div>
                           <h2 className="title-font font-regular text-md text-gray-800">مشاوره از خرید تا نصب</h2>
                         </div>
@@ -78,7 +78,7 @@ const AboutUs = () => {
             </div>
             <div className='h-full col-span-9 lg:col-span-5 w-full relative flex flex-col justify-center'>
 
-              <Image className='' width={1500} height={1500} src={img1} alt='about-us' />
+              <Image className='p-6' width={1500} height={1500} src={img1} alt='about-us' />
             </div>
           </section>
         </section>

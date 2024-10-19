@@ -34,13 +34,13 @@ export async function POST(req, res) {
         file: res,
       });
       if (blog) {
-        return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
+        return NextResponse.json({ success: true ,  message: "ساخته شد" }, { status: 201 });
       }
       // else {
       // }
     } catch (err) {
       console.log(err);
-      return NextResponse.json({ message: "ارور ناشناخته" }, { status: 500 });
+      return NextResponse.json({  success: false , message: "ارور ناشناخته" }, { status: 500 });
     }
   } catch (err) {
     console.error(err); // خطاها را نمایش دهید

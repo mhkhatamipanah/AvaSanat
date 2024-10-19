@@ -17,7 +17,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, title, description, route, file, bufferData, buffer, _res, category;
+  var formData, title, description, route, data, file, bufferData, buffer, _res, category;
 
   return regeneratorRuntime.async(function POST$(_context) {
     while (1) {
@@ -33,15 +33,38 @@ function POST(req, res) {
           title = formData.get("title");
           description = formData.get("description");
           route = formData.get("route");
+          _context.next = 10;
+          return regeneratorRuntime.awrap(_Category["default"].findOne({
+            route: route
+          }, "")["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 10:
+          data = _context.sent;
+
+          if (!data) {
+            _context.next = 13;
+            break;
+          }
+
+          return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
+            message: "این route قبلا ثبت شده"
+          }, {
+            status: 400
+          }));
+
+        case 13:
           file = formData.get("file");
-          _context.next = 11;
+          _context.next = 16;
           return regeneratorRuntime.awrap(file.arrayBuffer());
 
-        case 11:
+        case 16:
           bufferData = _context.sent;
           buffer = Buffer.from(bufferData);
-          _context.prev = 13;
-          _context.next = 16;
+          _context.prev = 18;
+          _context.next = 21;
           return regeneratorRuntime.awrap(sharp(buffer).resize(500, 500).webp({
             lossless: true,
             quality: 60,
@@ -49,9 +72,9 @@ function POST(req, res) {
             force: true
           }).toBuffer());
 
-        case 16:
+        case 21:
           _res = _context.sent;
-          _context.next = 19;
+          _context.next = 24;
           return regeneratorRuntime.awrap(_Category["default"].create({
             title: title,
             description: description,
@@ -59,49 +82,51 @@ function POST(req, res) {
             file: _res
           }));
 
-        case 19:
+        case 24:
           category = _context.sent;
 
           if (!category) {
-            _context.next = 22;
+            _context.next = 27;
             break;
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: true,
             message: "ساخته شد"
           }, {
             status: 201
           }));
 
-        case 22:
-          _context.next = 28;
+        case 27:
+          _context.next = 33;
           break;
 
-        case 24:
-          _context.prev = 24;
-          _context.t0 = _context["catch"](13);
+        case 29:
+          _context.prev = 29;
+          _context.t0 = _context["catch"](18);
           console.log(_context.t0);
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: "ارور ناشناخته"
           }, {
             status: 500
           }));
 
-        case 28:
-          _context.next = 33;
+        case 33:
+          _context.next = 38;
           break;
 
-        case 30:
-          _context.prev = 30;
+        case 35:
+          _context.prev = 35;
           _context.t1 = _context["catch"](0);
           console.error(_context.t1); // خطاها را نمایش دهید
 
-        case 33:
+        case 38:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 30], [13, 24]]);
+  }, null, null, [[0, 35], [18, 29]]);
 }
 
 function GET(req, res) {
@@ -184,7 +209,7 @@ function GET(req, res) {
           imageData = category.map(function (e) {
             var imageBuffer = Buffer.from(e.file, "base64"); // Convert buffer to base64 string
 
-            var base64Image = imageBuffer.toString('base64'); // Return the data along with a unique identifier or filename if necessary
+            var base64Image = imageBuffer.toString("base64"); // Return the data along with a unique identifier or filename if necessary
 
             var object = {
               fileName: "uploaded_image_".concat(Date.now(), ".webp"),

@@ -48,9 +48,9 @@ export async function POST(req, res) {
   
       // انتظار برای اتمام همه promises
       await Promise.all(promises);
-      return NextResponse.json({ data: arrayInvoice });
+      return NextResponse.json({  success: true , data: arrayInvoice });
     }else{
-      return NextResponse.json({ data: [] });
+      return NextResponse.json({  data: [] });
 
     }
   

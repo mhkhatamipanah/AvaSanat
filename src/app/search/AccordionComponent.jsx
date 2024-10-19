@@ -127,7 +127,8 @@ const AccordionComponent = ({toggleRerender}) => {
 
         // استفاده از replace به جای push
         router.replace(`${window.location.pathname}${newQuery}`, { shallow: true });
-
+        setSelectedIndex(null)
+        setSelectedIndex2(null)
     }
     return (
         <div className="flex flex-col gap-2 bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 vazirMedium">

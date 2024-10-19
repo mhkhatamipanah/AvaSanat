@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import img1 from '@/public/images/Proforma_Invoice/1.jpg'
+import img1 from '@/public/images/Proforma_Invoice/2.png'
 import Title from '../../Title/Title'
 const Proforma_Invoice = () => {
     return (
@@ -8,7 +8,7 @@ const Proforma_Invoice = () => {
                 <div className=" max-w-[1500px] px-6">
                     <Title text={"نحوه ثبت سفارش"} size={52} />
 
-                    <Image alt='' className='w-full' src={img1} />
+                    <Image alt='wds' className='w-full' src={img1} />
                 </div>
             </section>
         </>

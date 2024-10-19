@@ -12,13 +12,14 @@ export async function POST(req, res) {
   const { phone, code, title, description } = body;
   if (!phone.trim() || phone.trim().length !== 11) {
     return NextResponse.json(
-      { message: " شماره را به درستی وارد کنید" },
+      
+      { success: false ,message: " شماره را به درستی وارد کنید" },
       { status: 400 }
     );
   }
   if (!isInteger(phone)) {
     return NextResponse.json(
-      { message: " شماره باید عدد باشد" },
+      {  success: false , message: " شماره باید عدد باشد" },
       { status: 400 }
     );
   }
@@ -27,15 +28,15 @@ export async function POST(req, res) {
     console.log(err);
   });
   if (!otp) {
-    return NextResponse.json({ message: "کد نا معتبر" }, { status: 400 });
+    return NextResponse.json({  success: false , message: "کد نا معتبر" }, { status: 400 });
   }
   const date = new Date();
   const now = date.getTime();
 
   if (otp.expTime < now) {
-    return NextResponse.json({ message: "کد منقضی شده " }, { status: 400 });
+    return NextResponse.json({ success: false ,  message: "کد منقضی شده " }, { status: 400 });
   }
 
   const newMessage = await  MessageModel.create({ phone, title, description });
-  return NextResponse.json({ message: "ساخته شد" });
+  return NextResponse.json({ success: true ,  message: "ساخته شد" });
 }

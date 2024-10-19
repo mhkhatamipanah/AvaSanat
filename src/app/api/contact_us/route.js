@@ -71,13 +71,13 @@ export async function POST(req, res) {
         file: res,
       });
       if (category) {
-        return NextResponse.json({ message: "ساخته شد" }, { status: 201 });
+        return NextResponse.json({ success: true , message: "ساخته شد" }, { status: 201 });
       }
       // else {
       // }
     } catch (err) {
       console.log(err);
-      return NextResponse.json({ message: "ارور ناشناخته" }, { status: 500 });
+      return NextResponse.json({ success: false , message: "ارور ناشناخته" }, { status: 500 });
     }
     // if (!fs.existsSync(dir)) {
     //   fs.mkdirSync(dir, { recursive: true });

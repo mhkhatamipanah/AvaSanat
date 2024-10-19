@@ -33,7 +33,7 @@ const SearchComponent = () => {
     setAbortController(controller); // ذخیره کردن AbortController جدید
 
     const fetchData = async () => {
-      if (search) {
+      if (search && !pathname.includes("/search")) {
         setLoading(true); // شروع بارگذاری
         try {
           const response = await fetch(`/api/search?q=${search}&navbar="true`, {
@@ -111,6 +111,7 @@ const SearchComponent = () => {
 
   const clearSearch = () => {
     setSearch("")
+    setSearchTextContext("")
   }
   return (
     <div className='relative'>
@@ -122,19 +123,23 @@ const SearchComponent = () => {
           setSearchTextContext(e.target.value)
         }}
         onKeyDown={handleKeyDown}
-        className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${search ? "SearchLabel" : ""}`}
+        className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${(search && !pathname.includes("/search")) ? "SearchLabel" : ""}`}
         placeholder='جست و جو ...'
         startContent={
           <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch} />
         }
         endContent={
           <>
-            {search && <CircleX onClick={() => { setSearch('') }} className='ml-2 cursor-pointer text-red-400' />}
+            {search && <CircleX onClick={() => {
+              setSearch('')
+              setSearchTextContext("")
+
+            }} className='ml-2 cursor-pointer text-red-400' />}
           </>
         }
       />
 
-      {search && <div className='absolute bg-white w-96 h-min pb-8 rounded-bl-md rounded-br-md boxShadow3 z-[1]' >
+      {search && !pathname.includes("/search") && <div className='absolute bg-white w-96 h-min pb-8 rounded-bl-md rounded-br-md boxShadow3 z-[1]' >
 
         {!pathname.includes("/search") && history.length > 0 && (
           <div className="rounded p-3">

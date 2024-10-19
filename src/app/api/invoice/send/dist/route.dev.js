@@ -50,6 +50,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: " شماره را به درستی وارد کنید"
           }, {
             status: 400
@@ -62,6 +63,7 @@ function POST(req, res) {
           }
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: false,
             message: " شماره باید عدد باشد"
           }, {
             status: 400
@@ -94,6 +96,7 @@ function POST(req, res) {
 
 
           return _context.abrupt("return", _server.NextResponse.json({
+            success: true,
             message: "کد ارسال شد",
             otp: otpCode
           }));

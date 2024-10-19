@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import ButtonInvoice from "./ButtonInvoice"
 import { Spinner } from "@nextui-org/react"
+import PaginationComponent from "@/src/components/Dashboard/Pagination/PaginationComponents"
 
 const Page = ({ params }) => {
 
@@ -17,6 +18,7 @@ const Page = ({ params }) => {
 
 
 
+  const [countData, setCountData] = useState(null)
 
   const [data, setData] = useState([])
   const [perPage, setPerPage] = useState(12)
@@ -28,11 +30,15 @@ const Page = ({ params }) => {
       page: page,
       filterCategory: id
     };
+    let data2 = {
+      countFilterCategory: id
+    };
 
     getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData)
-    // getApi("/api/category", setData)
+    getApi(`/api/product?${(new URLSearchParams(data2)).toString()}`, setCountData)
+
   }, [
-    // page, perPage
+    page, perPage
     //  , rerender
   ])
 
@@ -46,7 +52,7 @@ const Page = ({ params }) => {
       <section className=' flex flex-col items-center justify-center w-full my-20'>
 
         {data.length == 0 && LoadingState()}
-        <div className='max-w-[1500px] grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full gap-3'>
+        <div className='max-w-[1500px] grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full gap-3 mb-3'>
 
 
           {data && data.data && data.data.map((e, i) => {
@@ -75,11 +81,12 @@ const Page = ({ params }) => {
 
             </div>)
           })}</div>
-      </section>
-      {/* {countData &&
+        {countData &&
 
-        <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
-      } */}
+          <PaginationComponent countData={countData.countData} perPage={perPage} page={page} setPage={setPage} />
+        }
+      </section>
+
     </>
 
   )
