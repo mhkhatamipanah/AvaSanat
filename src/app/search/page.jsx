@@ -6,7 +6,7 @@ import Link from 'next/link'
 import moment from 'jalali-moment'
 import PaginationComponent from '@/src/components/Dashboard/Pagination/PaginationComponents'
 import AccordionComponent from './AccordionComponent'
-import { useSearchParams  , useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Image from 'next/image'
 import img1 from "@/public/images/no-resualt.png";
 import { Spinner } from '@nextui-org/react'
@@ -44,7 +44,7 @@ const AllBlogs = () => {
         let data = {
             perPage,
             page,
-            ...(q && { q }),   
+            ...(q && { q }),
             ...(!q && searchTextContext && { q: searchTextContext }), // اگر q نبود، searchTextContext را اضافه کن
             // ...(!q && !searchTextContext && { q: "" }), // اگر q نبود، searchTextContext را اضافه کن
             ...(brand && { brand }),
@@ -81,16 +81,18 @@ const AllBlogs = () => {
 
     return (
         <>
-            <section className=' flex justify-center w-full my-20 min-h-screen   '>
+            <section className=' flex flex-col items-center w-full mt-10 min-h-screen   '>
+                <div>
+sad
+                </div>
+                <div className='w-full grid grid-cols-5 gap-3 max-w-[1500px] sm:px-6 px-3'>
 
-                <div className='w-full grid grid-cols-5 gap-3 max-w-[1500px]'>
-
-                    <div className='col-span-1 w-full h-min flex flex-col gap-3  '>
+                    <div className='min-[768px]:flex hidden col-span-1 w-full h-min flex-col gap-3  '>
 
                         <AccordionComponent />
 
                     </div>
-                    <div className='col-span-4 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
+                    <div className='min-[768px]:col-span-4 col-span-5 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
 
                         {loading ?
                             <div className="w-full h-[500px] flex justify-center items-center">
@@ -100,7 +102,7 @@ const AllBlogs = () => {
                             <>
                                 {data && data.product && data.product.length > 0 &&
                                     <>
-                                        <div className='grid grid-cols-3 gap-4 py-2'>
+                                        <div className='grid grid-cols-2 lg:grid-cols-3 gap-3 pb-2'>
                                             {
                                                 data.product.map((e, i) => {
                                                     return (
