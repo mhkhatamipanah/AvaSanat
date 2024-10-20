@@ -16,7 +16,7 @@ import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 import Image from 'next/image';
 import img1 from "@/public/images/no-resualt.png";
 
-const page = () => {
+const Page = () => {
 
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -220,4 +220,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -26,7 +26,7 @@ const convertToTime = (isoDateString) => {
     const gregorianDate = moment(isoDateString);
     return gregorianDate.format("HH:mm:ss");
 };
-const AllBlogs = () => {
+const Page = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -165,4 +165,4 @@ const AllBlogs = () => {
     )
 }
 
-export default AllBlogs
+export default Page

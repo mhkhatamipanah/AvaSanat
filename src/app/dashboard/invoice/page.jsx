@@ -26,7 +26,7 @@ const convertToTime = (isoDateString) => {
   const gregorianDate = moment(isoDateString);
   return gregorianDate.format("HH:mm:ss");
 };
-const page = () => {
+const Page = () => {
   const { get_Invoice, delete_Invoice } = ApiActions()
 
 
@@ -211,4 +211,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -1,6 +1,6 @@
 "use client"
 import Category from '@/src/components/Dashboard/Category/Create/CreateCategory'
-const page = () => {
+const Page = () => {
 
   return (
     <>
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

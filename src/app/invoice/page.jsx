@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import Image from 'next/image';
 import img1 from "@/public/images/no-resualt.png";
 
-const page = () => {
+const Page = () => {
 
   const [countData, setCountData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -293,4 +293,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
