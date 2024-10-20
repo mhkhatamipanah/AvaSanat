@@ -1,9 +1,11 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar , {SidebarItem} from "@/src/components/Dashboard/SideBar/Sidebar";
-import { Mail, UserRound,Home , ShoppingBagIcon  ,AppWindow, Scroll, ClipboardList, MailOpen } from "lucide-react";
-import DropDownSideBar from "./DropDownSideBar";
+import {  ShoppingBagIcon  ,AppWindow, Scroll, ClipboardList, MailOpen } from "lucide-react";
+
 import { usePathname } from "next/navigation"
+import cookieGet from "@/src/utils/Backend/cookieGet";
+import { useRouter } from 'next/navigation';
 
 
 
@@ -12,7 +14,18 @@ const ProviderSideBar = ({getChildren}) => {
   const [sidebar, setSidebar] = useState(false);
 
   const pathname = usePathname()
+  const router = useRouter();
 
+const getCookie  = async ()=>{
+  const cookie = await cookieGet()
+  console.log(cookie)
+  if((!cookie?.name  == "AvaSanatToken")|| !cookie){
+    router.push('/login')
+  }
+}
+useEffect(() => {
+  getCookie()
+}, [])
 
 
   return (

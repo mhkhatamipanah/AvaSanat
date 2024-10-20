@@ -1,11 +1,23 @@
 "use client"
 import { ApiActions } from '@/src/utils/Frontend/ApiActions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation';
+import cookieGet from '@/src/utils/Backend/cookieGet';
 
 const Login = () => {
   const router = useRouter();
+
+
+  const getCookie = async () => {
+    const cookie = await cookieGet()
+    if (cookie?.name == "AvaSanatToken") {
+      router.push('/dashboard/category')
+    }
+  }
+  useEffect(() => {
+    getCookie()
+  }, [])
 
   const [showPassword, setShowPassword] = useState(false)
   const { login } = ApiActions()
@@ -13,18 +25,18 @@ const Login = () => {
   const loginFunc = async () => {
     const username = document.getElementById("username").value
     const password = document.getElementById("password").value
-    if(!username){
+    if (!username) {
       toast.error("نام کاربری را وارد کنید")
       return
     }
-    if(!password){
+    if (!password) {
       toast.error(" پسورد را وارد کنید")
       return
     }
     const obj = { username, password }
     const JsonStrigfy = JSON.stringify(obj)
     const loginApi = await login(JsonStrigfy)
-    if(loginApi){
+    if (loginApi) {
       router.push("/dashboard/category")
     }
   }
