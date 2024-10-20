@@ -19,6 +19,7 @@ import Link from "next/link";
 import { InvoiceContext } from "@/src/hooks/useContextProvider/ContextProvider";
 import CarouselSlider from "./CarouselSlider";
 import ModalGallery from "@/src/components/Main/ModalGallery/ModalGallery";
+import Image from "next/image";
 
 const Page = ({ params }) => {
   const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
@@ -30,19 +31,24 @@ const Page = ({ params }) => {
 
   const [countInvoice, setCountInvoice] = useState(null)
 
-
-  useEffect(() => {
+  const getCountInvoice = () => {
     const count = getItemCount(subId)
     setCountInvoice(count)
+  }
+  useEffect(() => {
+    getCountInvoice()
   }, [])
 
   const [data, setData] = useState([])
 
-  useEffect(() => {
+  const getData = () => {
     let data = {
       detailProduct: subId
     };
     getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData)
+  }
+  useEffect(() => {
+    getData()
   }, [])
 
 
@@ -59,7 +65,8 @@ const Page = ({ params }) => {
   const [mainImage, setMainImage] = useState(null)
   const [bottomImages, setBottomImages] = useState(null)
 
-  useEffect(() => {
+
+  const mainImageHandler = () => {
     if (data && data.image) {
       const mainImage = data.image.find((e) => e.type === "main_image");
       setMainImage(mainImage)
@@ -68,6 +75,9 @@ const Page = ({ params }) => {
       setBottomImages(bottomImages)
     }
 
+  }
+  useEffect(() => {
+    mainImageHandler()
   }, [data])
 
 
@@ -128,7 +138,9 @@ const Page = ({ params }) => {
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <img
+                      <Image
+                        width={500}
+                        height={500}
                         className="boxShadow w-full zoom-image"
                         src={`data:image/webp;base64,${mainImage.image}`}
                         alt="Main"
@@ -141,7 +153,9 @@ const Page = ({ params }) => {
                     </div>
                   )}
                   {bottomImages && bottomImages.map((e, i) => (
-                    <img
+                    <Image
+                      width={500}
+                      height={500}
                       key={`image-${i}`}
                       className="boxShadow2 rounded-lg col-span-1"
                       src={`data:image/webp;base64,${e.image}`}

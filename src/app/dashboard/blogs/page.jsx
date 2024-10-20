@@ -75,10 +75,11 @@ const Page = () => {
     <div className="h-full w-full flex justify-center items-center">
       <div className="flex flex-col gap-3 justify-center items-center mb-16">
         <Image
-          className="w-full he-full max-w-[250px] max-h-[250px]"
           width={500}
           height={500}
+          className="w-full he-full max-w-[250px] max-h-[250px]"
           src={img1}
+          alt='empty'
         />
         <p> چیزی جهت نمایش وجود ندارد</p>
       </div>
@@ -96,7 +97,10 @@ const Page = () => {
                     <div className='w-full aspect-video overflow-hidden rounded-lg border border-solid border-gray-200' >
 
                       <Link href={`/dashboard/blogs/create?id=${e.id}`}>
-                        <img className=' aspect-video object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                        <Image
+                          width={500}
+                          height={500}
+                           className=' aspect-video object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
                           {e?.image ? `data:image/webp;base64,${e?.image}` : "/images/placeholder.jpg"} alt="" />
                       </Link>
                     </div>

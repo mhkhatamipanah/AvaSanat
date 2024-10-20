@@ -3,6 +3,7 @@ import { ApiActions } from '@/src/utils/Frontend/ApiActions';
 import { Button, Input } from '@nextui-org/react';
 import { CaseUpper, SpellCheck } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
@@ -20,7 +21,7 @@ function Page() {
 
   const { get_OneBlog } = ApiActions()
 
-  useEffect(() => {
+  const fetchBlog = useCallback(() => {
     if (idBlog) {
       get_OneBlog(idBlog).then((res => {
         // if (res?.success) {
@@ -36,7 +37,10 @@ function Page() {
         // }
       }))
     }
+  }, []);
 
+  useEffect(() => {
+    fetchBlog()
   }, [])
 
 
@@ -47,11 +51,16 @@ function Page() {
 
 
   const [load, setLoad] = useState(false);
+  const loadFunc = useCallback(() => {
+    if (idBlog) {
+      if (!load) {
+        setLoad(true);
+      }
 
-  useEffect(() => {
-    if (!load) {
-      setLoad(true);
     }
+  }, []);
+  useEffect(() => {
+    loadFunc()
   }, []);
 
   const modules = {
@@ -228,12 +237,12 @@ function Page() {
         </div>
         {preview &&
           <div className="mt-4 " >
-            <img src={preview} alt="Preview" className="max-w-full h-auto aspect-video w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
+            <Image width={500} height={500} src={preview} alt="Preview" className="max-w-full h-auto aspect-video w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
           </div>
         }
         {previewBase64 &&
           <div className="mt-4 " >
-            <img src={`data:image/webp;base64,${previewBase64}`} alt="previewBase64" className="max-w-full h-auto aspect-video w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
+            <Image width={500} height={500} src={`data:image/webp;base64,${previewBase64}`} alt="previewBase64" className="max-w-full h-auto aspect-video w-full object-cover border-2 rounded-md border-gray-100 border-solid " />
           </div>
         }
       </div>

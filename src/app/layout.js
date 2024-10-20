@@ -103,7 +103,9 @@ export default function RootLayout({ children }) {
           }}
         />
         <NextUIProvider>
-          <ContextProvider children={children} />
+          <ContextProvider >
+          {children}
+          </ContextProvider>
         </NextUIProvider>
       </body>
     </html>

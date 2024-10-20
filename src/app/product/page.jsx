@@ -39,10 +39,11 @@ const Page = () => {
             {data && data.data && data.data.length == 0 && <div className="h-full w-full flex justify-center items-center">
               <div className="flex flex-col gap-3 justify-center items-center mb-16">
                 <Image
-                  className="w-full he-full max-w-[250px] max-h-[250px]"
                   width={500}
                   height={500}
+                  className="w-full he-full max-w-[250px] max-h-[250px]"
                   src={img1}
+                  alt="empty"
                 />
                 <p> چیزی جهت نمایش وجود ندارد</p>
               </div>
@@ -52,7 +53,9 @@ const Page = () => {
 
               return (<Link href={`/product/${e.route}`} key={`${i}354`} className=" flex flex-col text-gray-700 bg-white shadow-lg border-[3px] border-gray-200 bg-clip-border rounded-xl w-full h-min hover:border-[#f548485d] transition-all duration-500 ease-in-out">
                 <div className="mx-2 mt-2 sm:mx-3 md:mx-4 sm:mt-3 md:mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg">
-                  <img className='object-cover w-full h-full' src={`data:image/webp;base64,${e.imageBase64}`} alt="profile-picture" />
+                <Image
+                  width={500}
+                  height={500} className='object-cover w-full h-full' src={`data:image/webp;base64,${e.imageBase64}`} alt="profile-picture" />
                 </div>
                 <div className="p-4 sm:p-6 text-center">
                   <p className="block mb-2 vazirDemibold text-lg antialiased leading-snug tracking-normal text-blue-gray-900 ">

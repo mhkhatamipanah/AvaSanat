@@ -12,9 +12,11 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
         return getItemCount(id)
     }
     const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
-
-    useEffect(() => {
+    const setCountInvoiceHandler = ()=>{
         setCountInvoice(getCookieCount(id))
+    }
+    useEffect(() => {
+        setCountInvoiceHandler()
     }, [])
 
 

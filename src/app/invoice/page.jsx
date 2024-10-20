@@ -17,14 +17,17 @@ const Page = () => {
   const [loading, setLoading] = useState(true)
 
   const [selectedItems, setSelectedItems] = useState([]);
-
-  useEffect(() => {
+  const setCountDataHandler = () => {
     setCountData(getTotalUniqueItems())
+  }
+  useEffect(() => {
+    setCountDataHandler()
 
   }, [selectedItems])
   const [data, setData] = useState(null)
   const { create_Invoice } = ApiActions()
-  useEffect(() => {
+
+  const getCookieData = () => {
     setLoading(true)
     const cookie = getCookie("Avasanat")
     if (cookie) {
@@ -34,7 +37,9 @@ const Page = () => {
 
       })
     }
-
+  }
+  useEffect(() => {
+    getCookieData()
   }, [])
 
 
@@ -161,10 +166,11 @@ const Page = () => {
     <div className="h-full w-full flex justify-center items-center col-span-2">
       <div className="flex flex-col gap-3 justify-center items-center mb-16">
         <Image
-          className="w-full he-full max-w-[250px] max-h-[250px]"
           width={500}
           height={500}
+          className="w-full he-full max-w-[250px] max-h-[250px]"
           src={img1}
+          alt='empty'
         />
         <p> چیزی جهت نمایش وجود ندارد</p>
       </div>
@@ -178,7 +184,10 @@ const Page = () => {
         return (
           <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
             <Link className='aspect-square h-36' href={`/product/${e.route}/${e.id}`}>
-              <img className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+              <Image
+                width={500}
+                height={500}
+                className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
             </Link>
             <div className='flex justify-between w-full'>
               <div className='flex justify-evenly flex-col mr-1'>
@@ -201,7 +210,7 @@ const Page = () => {
 
               </div>
               <div className='flex flex-col justify-center items-center'>
-                <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData}/>
+                <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
               </div>
 
             </div>

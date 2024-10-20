@@ -17,7 +17,7 @@ import img1 from "@/public/images/no-resualt.png";
 
 
 
-const page = () => {
+const Page = () => {
 
 
 
@@ -84,6 +84,7 @@ const page = () => {
           width={500}
           height={500}
           src={img1}
+          alt='empty'
         />
         <p> چیزی جهت نمایش وجود ندارد</p>
       </div>
@@ -103,7 +104,10 @@ const page = () => {
                     <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
 
                       <Link href={`/dashboard/product/create?id=${e.id}`}>
-                        <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                        <Image
+                          width={500}
+                          height={500}
+                           className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
                           {e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="" />
                       </Link>
                     </div>
@@ -221,4 +225,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

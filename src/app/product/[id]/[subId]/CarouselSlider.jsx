@@ -6,23 +6,21 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ListCollapse } from 'lucide-react';
 import { Button } from '@nextui-org/react';
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 import Link from 'next/link';
+import Image from 'next/image';
 const BookSlider = ({ id, routeCategory }) => {
 
     const [data, setData] = useState(null)
 
-    useEffect(() => {
+    const getData = () => {
         let data = {
             related: true,
             ...(routeCategory && { routeCategory }),
-
         };
-
         getApi(`/api/product/${id}?${(new URLSearchParams(data)).toString()}`, setData)
-        // getApi("/api/category", setData)
-    }, [
-        // page, perPage
-        //  , rerender
-    ])
+    }
+    useEffect(() => {
+        getData()
+    }, [])
 
 
     const settings = {
@@ -107,7 +105,7 @@ const BookSlider = ({ id, routeCategory }) => {
                                 <div className='' key={`slider-${i}`}>
                                     <div className='max-[768px]:m-2 m-3 p-2 border border-gray-300 rounded-xl'>
                                         {/* <Link href={`/product/${e.routeCategory}/${e.id}`} > */}
-                                            <img className='object-cover w-full h-full rounded-md' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                                        <Image width={500} height={500} className='object-cover w-full h-full rounded-md' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
                                         {/* </Link> */}
                                         <div className=" text-right p-2">
                                             <p className="block mb-2 mt-1 vazirDemibold lg:text-lg md:text-base text-sm antialiased leading-snug tracking-normal text-blue-gray-900 ">

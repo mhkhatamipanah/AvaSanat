@@ -162,6 +162,7 @@ const TableComponents = ({
                   width={500}
                   height={500}
                   src={img1}
+                  alt="empty"
                 />
                 <p> چیزی جهت نمایش وجود ندارد</p>
               </div>

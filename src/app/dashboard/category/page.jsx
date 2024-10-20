@@ -82,6 +82,7 @@ const Page = () => {
           width={500}
           height={500}
           src={img1}
+          alt='empty'
         />
         <p> چیزی جهت نمایش وجود ندارد</p>
       </div>
@@ -102,7 +103,9 @@ const Page = () => {
                     <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
 
                       <Link href={`/dashboard/category/create?id=${e.id}`}>
-                        <img className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                        <Image
+                          width={500}
+                          height={500} className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
                           {e?.imageBase64 ? `data:image/webp;base64,${e?.imageBase64}` : "/images/placeholder.jpg"} alt="" />
                       </Link>
                     </div>

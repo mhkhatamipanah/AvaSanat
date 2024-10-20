@@ -12,9 +12,11 @@ const ButtonInvoice = ({ id }) => {
         return getItemCount(id)
     }
     const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
-
-    useEffect(() => {
+    const setCountInvoiceHandler = () => {
         setCountInvoice(getCookieCount(id))
+    }
+    useEffect(() => {
+        setCountInvoiceHandler()
     }, [])
 
 
@@ -74,7 +76,7 @@ const ButtonInvoice = ({ id }) => {
                     <PlusCircle className="w-5 text-green-600" size={24} />
                 </Button>
             </div> :
-             
+
                 <button type="button" onClick={() => {
                     addToCart(id, JSON.stringify({ id: id }));
                     setCountInvoice(countInvoice + 1)
