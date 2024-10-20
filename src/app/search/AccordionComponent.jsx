@@ -1,7 +1,7 @@
 "use clinet"
 import { Accordion, AccordionItem, Checkbox, cn } from "@nextui-org/react";
 import { ChevronDown } from "lucide-react";
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { ApiActions } from "@/src/utils/Frontend/ApiActions";
@@ -139,39 +139,42 @@ const AccordionComponent = ({ setOpen }) => {
 
     }
     return (
-        <div className="flex flex-col gap-2 bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 vazirMedium">
-            <div className="flex justify-between p-2 pb-0">
-                <p className="vazirDemibold text-lg text-indigo-500">فیلتر ها </p>
-                <button onClick={deleteFilter} className="vazirDemibold text-sm text-red-400" > حذف فیلتر ها </button>
+        <Suspense>
+            <div className="flex flex-col gap-2 bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 vazirMedium">
+                <div className="flex justify-between p-2 pb-0">
+                    <p className="vazirDemibold text-lg text-indigo-500">فیلتر ها </p>
+                    <button onClick={deleteFilter} className="vazirDemibold text-sm text-red-400" > حذف فیلتر ها </button>
 
-            </div>
-            <Accordion className="!shadow-none" variant="bordered ">
-                <AccordionItem indicator={<ChevronDown />} key="1" aria-label="Accordion 1" title="برند">
-                    <AccordionList
-                        searchParams={searchParams}
-                        selectedIndex={selectedIndex}
-                        setSelectedIndex={setSelectedIndex}
-                        data={data}
-                        router={router}
-                        searchOn={"brand"}
-                        setOpen={setOpen} />
-                </AccordionItem>
-                <AccordionItem indicator={<ChevronDown />} key="2" aria-label="Accordion 2" title="دسته بندی">
-                    {Category ?
+                </div>
+                <Accordion className="!shadow-none" variant="bordered ">
+                    <AccordionItem indicator={<ChevronDown />} key="1" aria-label="Accordion 1" title="برند">
                         <AccordionList
                             searchParams={searchParams}
-                            selectedIndex={selectedIndex2}
-                            setSelectedIndex={setSelectedIndex2}
-                            data={Category.data}
+                            selectedIndex={selectedIndex}
+                            setSelectedIndex={setSelectedIndex}
+                            data={data}
                             router={router}
-                            searchOn={"Category"}
-                            setOpen={setOpen}
-                        />
-                        : "در حال دریافت اطلاعات"
-                    }
-                </AccordionItem>
-            </Accordion>
-        </div>
+                            searchOn={"brand"}
+                            setOpen={setOpen} />
+                    </AccordionItem>
+                    <AccordionItem indicator={<ChevronDown />} key="2" aria-label="Accordion 2" title="دسته بندی">
+                        {Category ?
+                            <AccordionList
+                                searchParams={searchParams}
+                                selectedIndex={selectedIndex2}
+                                setSelectedIndex={setSelectedIndex2}
+                                data={Category.data}
+                                router={router}
+                                searchOn={"Category"}
+                                setOpen={setOpen}
+                            />
+                            : "در حال دریافت اطلاعات"
+                        }
+                    </AccordionItem>
+                </Accordion>
+            </div>
+        </Suspense>
+
     )
 }
 

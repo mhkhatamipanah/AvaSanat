@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Suspense } from "react"
 
 import { ApiActions } from "@/src/utils/Frontend/ApiActions"
 
@@ -321,7 +321,7 @@ const CreateProduct = () => {
 
 
     return (
-        <>
+        <Suspense>
             <ModalDelete
                 title={title}
                 text={text}
@@ -561,7 +561,7 @@ const CreateProduct = () => {
             <Button onClick={createNewProduct} className={`${idProduct ? "bg-blue-600" : "bg-green-700"}  text-white`}>
                 {idProduct ? "ادیت" : "ساخت"} محصول جدید
             </Button>
-        </>
+        </Suspense>
 
     )
 }

@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation";
 
 import { Input, Button } from "@nextui-org/react"
@@ -137,7 +137,7 @@ const CreateCategory = () => {
 
     }, [])
     return (
-        <>
+        <Suspense>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mb-10">
                 <Input
                     value={categoryInput}
@@ -210,7 +210,7 @@ const CreateCategory = () => {
                 {idCategory ? "ادیت" : "ساخت"} دسته بندی
             </Button>
 
-        </>
+        </Suspense>
 
     )
 }

@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Suspense, useContext, useEffect, useState } from 'react'
 
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi'
 import Link from 'next/link'
@@ -83,7 +83,7 @@ const Page = () => {
 
     const [isOpen, setIsOpen] = useState(false)
     return (
-        <>
+        <Suspense>
             <Drawlerbottom open={isOpen} setOpen={setIsOpen} />
             <section className=' flex flex-col items-center w-full mt-4 sm:mt-6 md:mt-8 min-h-screen   '>
                 <div className='flex min-[1000px]:hidden justify-between items-center mb-4 w-full sm:px-6 px-3 vazirDemibold ' >
@@ -161,7 +161,7 @@ const Page = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </Suspense>
     )
 }
 
