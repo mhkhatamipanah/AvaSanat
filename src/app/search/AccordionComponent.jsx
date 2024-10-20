@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { ApiActions } from "@/src/utils/Frontend/ApiActions";
 
-export const AccordionList = ({ searchParams, router, data, selectedIndex, setSelectedIndex, searchOn }) => {
+export const AccordionList = ({ searchParams, router, data, selectedIndex, setSelectedIndex, searchOn, setOpen }) => {
     // state واحد برای نگه‌داشتن چک‌باکس انتخاب‌شده
 
     // داده‌های چک‌باکس‌ها (می‌توانید نام یا هر چیز دیگری برای هر چک‌باکس تعریف کنید)
@@ -34,6 +34,9 @@ export const AccordionList = ({ searchParams, router, data, selectedIndex, setSe
             // اگر چک‌باکس انتخاب نشده باشد، آن را انتخاب کنیم و پارامتر مربوطه را به URL اضافه کنیم
             setSelectedIndex(id);
             updateURL(label);
+        }
+        if (setOpen) {
+            setOpen(false)
         }
     };
     return (
@@ -78,7 +81,7 @@ export const AccordionList = ({ searchParams, router, data, selectedIndex, setSe
 }
 
 
-const AccordionComponent = ({toggleRerender}) => {
+const AccordionComponent = ({ setOpen }) => {
 
 
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -129,6 +132,11 @@ const AccordionComponent = ({toggleRerender}) => {
         router.replace(`${window.location.pathname}${newQuery}`, { shallow: true });
         setSelectedIndex(null)
         setSelectedIndex2(null)
+        if (setOpen) {
+
+            setOpen(false)
+        }
+
     }
     return (
         <div className="flex flex-col gap-2 bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 vazirMedium">
@@ -145,7 +153,8 @@ const AccordionComponent = ({toggleRerender}) => {
                         setSelectedIndex={setSelectedIndex}
                         data={data}
                         router={router}
-                        searchOn={"brand"} />
+                        searchOn={"brand"}
+                        setOpen={setOpen} />
                 </AccordionItem>
                 <AccordionItem indicator={<ChevronDown />} key="2" aria-label="Accordion 2" title="دسته بندی">
                     {Category ?
@@ -155,7 +164,9 @@ const AccordionComponent = ({toggleRerender}) => {
                             setSelectedIndex={setSelectedIndex2}
                             data={Category.data}
                             router={router}
-                            searchOn={"Category"} />
+                            searchOn={"Category"}
+                            setOpen={setOpen}
+                        />
                         : "در حال دریافت اطلاعات"
                     }
                 </AccordionItem>

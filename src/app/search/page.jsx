@@ -9,8 +9,10 @@ import AccordionComponent from './AccordionComponent'
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from 'next/image'
 import img1 from "@/public/images/no-resualt.png";
-import { Spinner } from '@nextui-org/react'
+import { Button, Spinner } from '@nextui-org/react'
 import { searchContext } from "@/src/hooks/useContextProvider/ContextProvider";
+import Drawlerbottom from './Drawlerbottom'
+import { SendHorizonal, SlidersHorizontal } from 'lucide-react'
 
 
 // تابع برای تبدیل به تاریخ شمسی
@@ -79,20 +81,31 @@ const AllBlogs = () => {
         </div>
     );
 
+    const [isOpen, setIsOpen] = useState(false)
     return (
         <>
-            <section className=' flex flex-col items-center w-full mt-10 min-h-screen   '>
-                <div>
-sad
+            <Drawlerbottom open={isOpen} setOpen={setIsOpen} />
+            <section className=' flex flex-col items-center w-full mt-4 sm:mt-6 md:mt-8 min-h-screen   '>
+                <div className='flex min-[1000px]:hidden justify-between items-center mb-4 w-full sm:px-6 px-3 vazirDemibold ' >
+                    <Button
+                        onClick={() => { setIsOpen(true) }}
+                        className="bg-[#ebebeb]"
+                        variant="solid"
+                    >
+                        <SlidersHorizontal />
+
+                        فیلتر
+                    </Button>
+
                 </div>
                 <div className='w-full grid grid-cols-5 gap-3 max-w-[1500px] sm:px-6 px-3'>
 
-                    <div className='min-[768px]:flex hidden col-span-1 w-full h-min flex-col gap-3  '>
+                    <div className='min-[1000px]:flex hidden col-span-1 w-full h-min flex-col gap-3  '>
 
                         <AccordionComponent />
 
                     </div>
-                    <div className='min-[768px]:col-span-4 col-span-5 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
+                    <div className='min-[1000px]:col-span-4 col-span-5 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 '>
 
                         {loading ?
                             <div className="w-full h-[500px] flex justify-center items-center">
