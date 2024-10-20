@@ -10,7 +10,7 @@ import { useSearchParams  , useRouter } from "next/navigation";
 import Image from 'next/image'
 import img1 from "@/public/images/no-resualt.png";
 import { Spinner } from '@nextui-org/react'
-import { searchContext } from "@/src/components/useContextProvider/ContextProvider";
+import { searchContext } from "@/src/hooks/useContextProvider/ContextProvider";
 
 
 // تابع برای تبدیل به تاریخ شمسی

@@ -16,7 +16,7 @@ import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import Link from "next/link";
 
 
-import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
+import { InvoiceContext } from "@/src/hooks/useContextProvider/ContextProvider";
 import CarouselSlider from "./CarouselSlider";
 import ModalGallery from "@/src/components/Main/ModalGallery/ModalGallery";
 
@@ -118,9 +118,9 @@ const Page = ({ params }) => {
         {data && data.length === 0 && LoadingState()}
         <div className='max-w-[1500px] w-full'>
           {data && data.data &&
-            <section className="w-full grid grid-cols-3 rounded mt-3">
-              <div className="w-full col-span-1 p-2 rounded-xl">
-                <div className="w-full grid grid-cols-4 gap-4 overflow-hidden">
+            <section className="w-full grid grid-cols-3 rounded mt-3 px-4">
+              <div className="w-full max-[768px]:col-span-3 col-span-1 p-2 rounded-xl">
+                <div className="w-full grid grid-cols-4 gap-4 overflow-hidden max-[768px]:px-3">
                   {mainImage && (
                     <div
                       className="product-image relative overflow-hidden rounded-xl col-span-4 "
@@ -164,26 +164,35 @@ const Page = ({ params }) => {
                 </div>
 
               </div>
-              <div className="w-full col-span-2 p-3">
+              <div className="w-full max-[768px]:col-span-3 col-span-2 p-3">
 
 
-                <h1 className="vazirDemibold text-4xl mt-3">
+                <h1 className="vazirDemibold text-base sm:text-xl md:text-3xl lg:text-4xl mt-3">
                   {data.data.title}
                 </h1>
-                <h3 className="vazirMedium text-2xl text-gray-700 mt-4">
+                <h3 className="vazirMedium text-sm sm:text-lg md:text-xl lg:text-2xl  text-gray-700 mt-4">
                   {data.data.subtitle}
                 </h3>
                 <div className="border border-b my-3"></div>
 
 
                 <div className="vazirLight">
-                  <p className="vazirMedium text-xl text-gray-600 mt-4">
-                    دسته بندی : <Link className="hover:underline hover:text-blue-500 transition-all" href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
+                  <div className="vazirMedium text-gray-600 mt-4 flex items-center">
+                    <p className="text-base sm:text-xl">
+                      دسته بندی: &nbsp;
+                    </p>
+                    <Link className="hover:underline hover:text-blue-500 text-blue-600 transition-all text-sm sm:text-lg md:text-lg" href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
 
-                  </p>
+                  </div>
                 </div>
-                <div className="vazirLight mt-4">
-                  برند : {data.data.brand}
+                <div className="vazirLight mt-4 flex items-center">
+                  <p className="text-base sm:text-xl">
+                    برند:  &nbsp;
+                  </p>
+                  <p className="text-sm sm:text-lg md:text-lg">
+                    {data.data.brand}
+                  </p>
+
                 </div>
                 <div className="border border-b my-4"></div>
                 {(data && data.data.feature && data.data.feature.map((e, i) => {
@@ -254,7 +263,7 @@ const Page = ({ params }) => {
                       rerenderBTN_Invoice()
                     }}
 
-                    className=" bg-green-700 vazirMedium text-white">
+                    className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm">
                     افزودن به  پیش فاکتور
                   </Button>
                 }
@@ -265,7 +274,7 @@ const Page = ({ params }) => {
 
             </section>
           }
-          {data && data.data && <section className="mt-6">
+          {data && data.data && <section className="mt-6 px-4">
             <TabComponent
               description={data.data.description}
               specifications={data.data.specifications} />

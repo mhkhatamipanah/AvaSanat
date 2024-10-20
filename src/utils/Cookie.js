@@ -4,7 +4,7 @@ function getCookie(name) {
   return Cookies.get(name);
 }
 
-function setCookie(name, value, options = { expires: 7, path: "/" }) {
+function setCookie(name, value, options = { expires: 7, path: "/" ,sameSite: "None", secure: true }) {
   Cookies.set(name, value, options);
 }
 function addToCart(productId, quantity) {
@@ -29,15 +29,6 @@ function addToCart(productId, quantity) {
   setCookie("Avasanat", JSON.stringify(cart));
 }
  
-function getTotalItemCount() {
-  const cart = getCookie("Avasanat");
-  if (cart) {
-    const parsedCart = JSON.parse(cart);
-    // جمع کل تعداد اقلام
-    return Object.values(parsedCart).reduce((total, item) => total + item.count, 0);
-  }
-  return 0;
-}
 
 function getItemCount(productId) {
   // Retrieve the cart from the cookie
@@ -91,17 +82,6 @@ function decreaseItemCount(productId) {
       setCookie("Avasanat", JSON.stringify(cart));
     }
   }
-}
-function updateLocalStorageItemCount() {
-  const cart = Cookies.get("Avasanat");
-  let totalItems = 0;
-  
-  if (cart) {
-    const parsedCart = JSON.parse(cart);
-    totalItems = Object.values(parsedCart).reduce((total, item) => total + item.count, 0);
-  }
-  
-  localStorage.setItem('itemCount', totalItems);
 }
 function getTotalUniqueItems() {
   const cart = getCookie("Avasanat");

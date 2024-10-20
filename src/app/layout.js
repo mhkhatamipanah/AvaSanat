@@ -15,7 +15,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 
-import ContextProvider from "../components/useContextProvider/ContextProvider";
+import ContextProvider from "../hooks/useContextProvider/ContextProvider";
 
 
 

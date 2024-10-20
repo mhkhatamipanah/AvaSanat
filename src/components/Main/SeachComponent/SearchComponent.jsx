@@ -5,10 +5,13 @@ import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-import { searchContext } from "@/src/components/useContextProvider/ContextProvider";
+import { searchContext } from "@/src/hooks/useContextProvider/ContextProvider";
+import UseWindowSize from '@/src/hooks/UseWindowSize/UseWindowSize';
 
 
 const SearchComponent = () => {
+  const { width } = UseWindowSize()
+
   const router = useRouter(); // برای تغییر URL
   const pathname = usePathname();
 
@@ -123,7 +126,7 @@ const SearchComponent = () => {
           setSearchTextContext(e.target.value)
         }}
         onKeyDown={handleKeyDown}
-        className={`inputNextUi paddingControl z-10 caret-black !rounded-sm ${(search && !pathname.includes("/search")) ? "SearchLabel" : ""}`}
+        className={`inputNextUi paddingControl placeholderStyle z-10 caret-black !rounded-sm ${(search && !pathname.includes("/search")) ? "SearchLabel" : ""} text-[12px] sm:text-base`}
         placeholder='جست و جو ...'
         startContent={
           <Search className='mr-2 cursor-pointer' color='var(--color-2)' onClick={requestSearch} />
@@ -139,7 +142,7 @@ const SearchComponent = () => {
         }
       />
 
-      {search && !pathname.includes("/search") && <div className='absolute bg-white w-96 h-min pb-8 rounded-bl-md rounded-br-md boxShadow3 z-[1]' >
+      {search && !pathname.includes("/search") && <div className='absolute bg-white w-full h-min pb-8 rounded-bl-md rounded-br-md boxShadow3 z-[1]' >
 
         {!pathname.includes("/search") && history.length > 0 && (
           <div className="rounded p-3">
@@ -168,7 +171,7 @@ const SearchComponent = () => {
         )}
 
         {loading && <div className="w-full mt-6 flex justify-center items-center">
-          <Spinner />
+          <Spinner size={`${width > 768 ? "" : "sm" }`}/>
         </div>} {/* نمایش بارگذاری */}
 
         {results && results?.category && results?.category.length > 0 && !loading &&
@@ -176,7 +179,7 @@ const SearchComponent = () => {
             <div className="flex justify-between p-3">
               <div className='flex gap-2 items-center'>
                 <BarChart3 size={18} className='text-gray-700' />
-                <h3 className='text-gray-700 text-sm vazirMedium'>  دسته بندی</h3>
+                <h3 className='text-gray-700 text-[11px] sm:text-sm vazirMedium'>  دسته بندی</h3>
               </div>
             </div>
 
@@ -187,18 +190,19 @@ const SearchComponent = () => {
 
                     <Link onClick={clearSearch} className='hover:!bg-gray-300 transition-all duration-300 rounded-md h-min w-full flex' href={`/product/${e.route}`}>
                       <div className='flex items-center gap-2 my-2'>
-                        <Search className='mr-2' color='var(--color-2)' />
+                        <Search className='mr-2 max-sm:w-5 max-sm:h-5' color='var(--color-2)'/>
                         <div>
-                          <p className='text-gray-800 text-md'>
+                          <p className='text-gray-800 text-[13px] sm:text-md'>
                             {e.title}
                           </p>
-                          <p className='text-gray-500 text-sm'>
+                          <p className='text-gray-500 text-[11px] sm:text-sm'>
                             {e.description}
                           </p>
                         </div>
                       </div>
 
                     </Link>
+                  
 
                   </div>
                 )
@@ -214,7 +218,7 @@ const SearchComponent = () => {
             <div className="flex justify-between p-3">
               <div className='flex gap-2 items-center'>
                 <PackageSearch size={18} className='text-gray-700' />
-                <h3 className='text-gray-700 text-sm vazirMedium'>  محصولات </h3>
+                <h3 className='text-gray-700 text-[11px] sm:text-sm vazirMedium'>  محصولات </h3>
               </div>
             </div>
 
@@ -226,10 +230,10 @@ const SearchComponent = () => {
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
                         <div>
-                          <p className='text-gray-800 text-md'>
+                          <p className='text-gray-800 text-[13px] sm:text-md'>
                             {e.title}
                           </p>
-                          <p className='text-gray-500 text-sm'>
+                          <p className='text-gray-500 text-[11px] sm:text-sm'>
                             {e.subtitle}
                           </p>
                         </div>
@@ -245,7 +249,7 @@ const SearchComponent = () => {
         }
         {results && results?.product && results?.category && !results?.product.length > 0 && !results?.category.length > 0 && !loading &&
           <div className="w-full mt-6 flex justify-center items-center">
-            <p className='vazirMedium text-sm text-gray-700'>چیزی جهت نمایش وجود ندارد</p>
+            <p className='vazirMedium text-[11px] sm:text-sm text-gray-700'>چیزی جهت نمایش وجود ندارد</p>
           </div>
         }
 

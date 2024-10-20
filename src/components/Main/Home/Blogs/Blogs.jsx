@@ -59,50 +59,54 @@ const Blogs = () => {
         <>
             <div className='flex justify-between items-center px-4 vazirDemibold my-3'>
                 <div>
-                    <p className='text-xl'>
+                    <p className='text-sm sm:text-md md:text-xl'>
 
                         آخرین مقالات
                     </p>
                 </div>
 
                 <div className='flex justify-center items-center gap-2'>
-                    <Link href={'/blogs'}>
+                    <Link className='text-sm sm:text-md md:text-xl' href={'/blogs'}>
                         مشاهده همه
                     </Link>
-                    <ArrowLeft />
+                    <ArrowLeft className='max-sm:w-4 max-sm:h-4' />
                 </div>
             </div>
-            <div className=' grid grid-cols-3 gap-3'>
+            <div className=' grid md:grid-cols-3 gap-3'>
 
                 {data && data.data && data.data.map((e, i) => {
                     return (
-                        <div key={i} className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
-                            <Link href={`/blogs/${e.id}`}>
-                            <div className='overflow-hidden cursor-pointer rounded-md'>
-                                <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="as" />
-                            </div>
-                            </Link>
+                        <section key={i} className='max-md:px-3'>
 
-
-
-                            <div className="p-4">
-
-                                <h3 className="text-xl font-medium text-gray-900 vazirDemibold oneLineShow text-right"> {e.title} </h3>
-                                <p className="mt-1 text-gray-500 vazirMedium h-[70px] twoLineShow text-right"> {e.subtitle}</p>
-                                <div className="mt-4 flex gap-2">
-                                    <div className='flex gap-1 items-center rounded-full bg-blue-50 px-2 py-1 text-xs vazirDemibold text-blue-600'>
-                                        <span > {convertToJalaliDate(e.updatedAt)}</span>
-                                        <Calendar className='mb-[2px]' size={18} />
+                            <div  className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
+                                <Link href={`/blogs/${e.id}`}>
+                                    <div className='overflow-hidden cursor-pointer rounded-md'>
+                                        <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="as" />
                                     </div>
-                                    <div className='flex gap-1 items-center rounded-full bg-orange-50 px-2 py-1 text-xs vazirDemibold text-orange-600'>
-                                        <span > {convertToTime(e.updatedAt)}</span>
-                                        <TimerIcon className='mb-[2px]' size={18} />
+                                </Link>
+
+
+
+                                <div className="p-4">
+
+                                    <h3 className="text-xl font-medium text-gray-900 vazirDemibold oneLineShow text-right"> {e.title} </h3>
+                                    <p className="mt-1 text-gray-500 vazirMedium h-[70px] twoLineShow text-right"> {e.subtitle}</p>
+                                    <div className="mt-4 flex gap-2">
+                                        <div className='flex gap-1 items-center rounded-full bg-blue-50 px-2 py-1 text-xs vazirDemibold text-blue-600'>
+                                            <span > {convertToJalaliDate(e.updatedAt)}</span>
+                                            <Calendar className='mb-[2px]' size={18} />
+                                        </div>
+                                        <div className='flex gap-1 items-center rounded-full bg-orange-50 px-2 py-1 text-xs vazirDemibold text-orange-600'>
+                                            <span > {convertToTime(e.updatedAt)}</span>
+                                            <TimerIcon className='mb-[2px]' size={18} />
+                                        </div>
+
+
                                     </div>
-
-
                                 </div>
                             </div>
-                        </div>
+                        </section>
+
                     )
                 })}
 
@@ -113,7 +117,7 @@ const Blogs = () => {
     )
     return (
         <>
-            <section className=' flex justify-center w-full mb-20 mt-10  '>
+            <section className=' flex justify-center w-full pt-5 pb-5 md:pb-10 lg:pb-14 md:pt-14 '>
                 <div className='max-w-[1500px]'>
                     <Title text={"مقالات"} size={32} />
 

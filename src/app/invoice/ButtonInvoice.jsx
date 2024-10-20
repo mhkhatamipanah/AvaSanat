@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { addToCart, decreaseItemCount, removeFromCart, getItemCount } from "@/src/utils/Cookie"
-import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
+import { InvoiceContext } from "@/src/hooks/useContextProvider/ContextProvider";
 import { Button } from '@nextui-org/react';
 import { MinusCircle, PlusCircle, Trash } from 'lucide-react';
 

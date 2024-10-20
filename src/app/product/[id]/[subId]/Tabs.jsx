@@ -1,10 +1,12 @@
+import UseWindowSize from "@/src/hooks/UseWindowSize/UseWindowSize";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
 export default function TabComponent({ specifications, description }) {
+    const { width } = UseWindowSize()
 
     return (
         <div className="flex w-full flex-col ">
-            <Tabs className="vazirMedium" aria-label="Options">
+            <Tabs size={width > 768 ? "md" : "sm"} className="vazirMedium asdasdsadsdafs" aria-label="Options">
                 {specifications && specifications.length !== 0 && <Tab key="photos" title="مشخصات">
                     <Card>
                         <CardBody className="vazirMedium rtl text-right p-3">
@@ -17,10 +19,10 @@ export default function TabComponent({ specifications, description }) {
                                                 key={index}
                                                 className={`${index % 2 === 0 ? 'bg-gray-100' : ' bg-white'}`}
                                             >
-                                                <td className=" px-4 py-3 text-right w-[250px] text-lg vazirDemibold ">
+                                                <td className=" px-4 py-3 text-right max-[768px]:w-[30vw] w-[250px] md:text-md text-sm vazirDemibold ">
                                                     {spec.title}
                                                 </td>
-                                                <td className=" px-4 py-3 pr-7 text-right text-md text-gray-600 vazirLight border-r-2 ">
+                                                <td className=" px-4 py-3 pr-7 text-right text-[12px] sm:text-base text-gray-600 vazirLight border-r-2 ">
                                                     {spec.value}
                                                 </td>
                                             </tr>

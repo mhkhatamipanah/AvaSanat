@@ -71,7 +71,7 @@ const ContactUs = () => {
         toast.error("لطفا توضیحات را وارد کنید")
         return
       }
-      const data =JSON.stringify( { phone, code, title, description })
+      const data = JSON.stringify({ phone, code, title, description })
       const res = await checkOtp(data);
 
       if (res) {
@@ -92,15 +92,15 @@ const ContactUs = () => {
       if (!phone.trim()) {
         toast.error("لطفا شماره تلفن را وارد کنید")
         return
-      } 
+      }
       console.log(phone.length)
       if (phone.length !== 11) {
         toast.error("لطفا 11 رقم تلفن را وارد کنید")
         return
       }
 
-      const data =  JSON.stringify({ phone })
-      
+      const data = JSON.stringify({ phone })
+
       const res = sendOtp(data)
       if (res) {
         setIsSendOTP(true)
@@ -108,41 +108,45 @@ const ContactUs = () => {
     }
   }
   return (
-    <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-6 mx-auto vazirMedium mb-20'>
+    <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-3 sm:px-6 mx-auto vazirMedium mb-20'>
       <section className='w-full flex flex-col items-center mt-2 '>
 
         <section className='grid grid-cols-9 w-full mt-3'>
-          <div className='col-span-9 lg:col-span-5 w-full h-full flex justify-center items-center'>
+          <div className='col-span-9 lg:col-span-5 w-full h-full flex justify-center items-center max-[768px]:order-last'>
             <div className='grid grid-cols-2 gap-5 p-2 items-center w-full '>
-              <div className='w-full flex justify-center col-span-2 my-2 mt-7'>
-                <p className='text-3xl '>  پیام خود را ثبت کنید</p>
+              <div className='w-full flex justify-center col-span-2 my-2 min-[768px]:mt-7'>
+                <p className='text-base sm:text-lg md:text-xl lg:text-3xl '>  پیام خود را ثبت کنید</p>
 
               </div>
-              <Input
-                value={title}
-                onChange={(e) => { setTitle(e.target.value) }}
-                className="labelRight"
-                label="موضوع"
-                placeholder="موضوع را وارد کنید"
-                labelPlacement="outside"
-                endContent={
-                  <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                }
-              />
-              <Input
+              <div className='max-sm:col-span-2'>
+                <Input
+                  value={title}
+                  onChange={(e) => { setTitle(e.target.value) }}
+                  className="labelRight"
+                  label="موضوع"
+                  placeholder="موضوع را وارد کنید"
+                  labelPlacement="outside"
+                  endContent={
+                    <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                />
+              </div>
+              <div className='max-sm:col-span-2'>
+                <Input
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value)
+                  }}
+                  className="labelRight"
+                  label="شماره تلفن"
+                  placeholder="شماره تلفن را وارد کنید"
+                  labelPlacement="outside"
+                  endContent={
+                    <Phone className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                />
+              </div>
 
-                value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value)
-                }}
-                className="labelRight"
-                label="شماره تلفن"
-                placeholder="شماره تلفن را وارد کنید"
-                labelPlacement="outside"
-                endContent={
-                  <Phone className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                }
-              />
               <Textarea
 
 
@@ -178,8 +182,8 @@ const ContactUs = () => {
 
             </div>
           </div>
-          <div className='col-span-9 lg:col-span-4 w-full'>
-            <div className='p-10'>
+          <div className='col-span-9 lg:col-span-4 w-full '>
+            <div className='p-6 sm:p-10'>
               <Image src={img1} />
             </div>
           </div>
@@ -201,7 +205,7 @@ const ContactUs = () => {
 
           </div>
           <div className='h-full col-span-9 lg:col-span-5 w-full relative flex flex-col justify-center'>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 mt-5'>
               <div className='flex gap-2'>
                 <MapPin />
                 <p>

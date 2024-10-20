@@ -27,7 +27,7 @@ const RadioBTN = ({ title, data, onChange }) => {
                                 checked={radioValue === e.value}
                             />
                             <label
-                                className={`px-2 py-1 rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all duration-150 ${radioValue === e.value ? "text-white bg-green-600" : ""}`}
+                                className={`px-2 py-1 text-sm sm:text-md rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all duration-150 ${radioValue === e.value ? "text-white bg-green-600" : ""}`}
                                 htmlFor={`${e.value}${i}`}
                             >
                                 {e.value}

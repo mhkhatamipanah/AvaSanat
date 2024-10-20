@@ -49,7 +49,7 @@ const Landing = () => {
     <section className="relative flex flex-col items-center justify-center w-full bg-[#f7f7f7] overflow-hidden">
 
 
-      <div className='max-w-[1500px] h-[700px]'>
+      <div className='w-full max-w-[1500px] h-full max-h-[700px]'>
 
         <Swiper
           // spaceBetween={50}
@@ -67,7 +67,6 @@ const Landing = () => {
           // onSwiper={(swiper) => console.log(swiper)}
         >
           <SwiperSlide className='w-full h-full max-h-[700px] relative'>
-            <div className='bg-[#eeeeee] absolute w-full h-[300px] bg-banner top-1/2 -z-[2]'></div>
             <img
               className='w-full h-full max-h-[700px] object-cover aspect-video z-20'
               src={images[0]}
@@ -77,7 +76,6 @@ const Landing = () => {
             <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
           </SwiperSlide>
           <SwiperSlide className='w-full h-full max-h-[700px] relative'>
-            <div className='bg-[#eeeeee] absolute w-full h-[300px] bg-banner top-1/2 -z-[2]'></div>
             <img
               className='w-full h-full max-h-[700px] object-cover aspect-video z-20'
               src={images[0]}

@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import { ChevronDown, ChevronLeft, ContactRound, FileText, Home, PhoneCall, Search, ShoppingCart, Vote } from 'lucide-react';
 // component
 import InvoiceBTN from "./InvoiceBTN";
-import { InvoiceContext } from "@/src/components/useContextProvider/ContextProvider";
+import { InvoiceContext } from "@/src/hooks/useContextProvider/ContextProvider";
 
 import logo from "@/public/images/png persian.png"
 

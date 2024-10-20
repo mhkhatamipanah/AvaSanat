@@ -7,9 +7,9 @@ const AboutUs = () => {
       <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-6 mx-auto vazirMedium mb-20'>
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8'>
 
-          <section className='grid grid-cols-9 w-full  lg:gap-16 mt-3  '>
-            <div className='col-span-9 lg:col-span-4 w-full my-2 lg:my-8 overflow-hidden flex flex-col items-center justify-center'>
-              <section className='flex gap-6'>
+          <section className='grid grid-cols-9 w-full lg:gap-16 mt-3 justify-center items-center '>
+            <div className='col-span-9 lg:col-span-4 w-full my-2 overflow-hidden flex flex-col items-center justify-center'>
+              <section className='flex gap-6 self-start'>
                 <div >
                   <span className='block w-3 rounded-xl bg-[#e43253] h-24'></span>
 
