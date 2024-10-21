@@ -44,7 +44,7 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                                 removeItemById(id)
 
                             }}
-                            className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
+                            className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
                             variant="light"
                             color="primary"
                         >
@@ -57,7 +57,7 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                                 setCountInvoice(countInvoice - 1)
                                 rerenderBTN_Invoice()
                             }}
-                            className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
+                            className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
                             variant="light"
                             color="primary"
                         >
@@ -75,7 +75,7 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                             setCountInvoice(countInvoice + 1)
                             rerenderBTN_Invoice()
                         }}
-                        className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
+                        className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
                         variant="light"
                         color="primary"
                     >
