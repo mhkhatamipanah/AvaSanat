@@ -109,9 +109,8 @@ const ContactUs = () => {
   }
   return (
     <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-3 sm:px-6 mx-auto vazirMedium mb-20'>
-      <section className='w-full flex flex-col items-center mt-2 '>
-
-        <section className='grid grid-cols-9 w-full mt-3'>
+      <section className='w-full flex flex-col items-center sm:mt-2 '>
+        <section className='grid grid-cols-9 w-full sm:mt-3'>
           <div className='col-span-9 lg:col-span-5 w-full h-full flex justify-center items-center max-[768px]:order-last'>
             <div className='grid grid-cols-2 gap-5 p-2 items-center w-full '>
               <div className='w-full flex justify-center col-span-2 sm:my-2 min-[768px]:mt-7'>
@@ -182,9 +181,9 @@ const ContactUs = () => {
 
             </div>
           </div>
-          <div className='col-span-9 lg:col-span-4 w-full '>
+          <div className='col-span-9 lg:col-span-4 w-full flex justify-center'>
             <div className='p-6 sm:p-10'>
-              <Image src={img1} />
+              <Image width={500} height={500} className='object-contain max-md:max-h-[450px]' src={img1} />
             </div>
           </div>
         </section>

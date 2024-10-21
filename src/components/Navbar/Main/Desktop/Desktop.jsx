@@ -131,7 +131,7 @@ const Desktop = () => {
                             <div className='flex justify-center items-center text-black'>
                                 <Image className="object-contain h-10 w-min ml-3 " src={logo} alt="logo" />
                             </div>
-                            <div className='mr-3 w-96'>
+                            <div className='mr-3 w-80 lg:w-96'>
                                 {/* <Input
 
                                     className='inputNextUi caret-black !rounded-sm'

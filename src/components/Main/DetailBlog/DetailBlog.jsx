@@ -47,7 +47,7 @@ const DetailBlog = ({ id }) => {
     <>
       <section className='flex justify-center w-full my-4 sm:my-8 md:my-11 lg:my-14  min-h-screen'>
 
-        <div className='w-full grid max-[768px]:grid-cols-1 grid-cols-4 gap-3 max-w-[1000px]'>
+        <div className='w-full grid max-[768px]:grid-cols-1 grid-cols-4 gap-3 max-w-[1200px] px-3'>
 
           <SideBlog />
           <div className='max-[768px]:col-span-1 col-span-3 w-full h-min bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2 flex flex-col justify-center'>

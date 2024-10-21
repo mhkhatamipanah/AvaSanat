@@ -10,7 +10,7 @@ import icon3 from "@/public/images/icon/3.png"
 const AboutUs = () => {
   return (
     <>
-      <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-3 sm:px-6 mx-auto vazirMedium md:mb-20 pt-5 pb-5'>
+      <div className='h-fit max-w-screen-xl items-center justify-between xl:px-0 px-3 sm:px-6 mx-auto vazirMedium md:mb-8 pt-5 pb-5'>
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8 w'>
           <Title text={" درباره ما"} size={32} />
 
@@ -78,7 +78,7 @@ const AboutUs = () => {
             </div>
             <div className='h-full col-span-9 lg:col-span-5 w-full relative flex-col justify-center max-[768px]:hidden block'>
 
-              <Image className='p-6' width={1500} height={1500} src={img1} alt='about-us' />
+              <Image className='p-6 max-h-[650px] object-contain' width={1500} height={1500} src={img1} alt='about-us' />
             </div>
           </section>
         </section>
