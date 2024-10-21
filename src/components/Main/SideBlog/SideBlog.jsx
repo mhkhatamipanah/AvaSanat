@@ -3,7 +3,7 @@ import React from 'react'
 
 const SideBlog = () => {
     return (
-        <div className='col-span-1 w-full h-min flex flex-col gap-3  '>
+        <div className='col-span-1 w-full h-min flex flex-col gap-3 max-[768px]:order-last '>
             <section className='bg-white rounded-md boxShadow3 border border-gray-200 border-solid p-2'>
                 <div className='flex gap-2 items-center p-1 py-2'>
                     <Diamond className='text-indigo-400' size={14} />

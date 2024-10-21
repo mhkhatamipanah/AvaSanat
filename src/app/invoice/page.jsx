@@ -172,7 +172,7 @@ const Page = () => {
         <Image
           width={500}
           height={500}
-          className="w-full he-full max-w-[250px] max-h-[250px]"
+          className="w-full he-full max-w-[180px] max-h-[180px] sm:max-w-[250px] sm:max-h-[250px]"
           src={img1}
           alt='empty'
         />
@@ -187,18 +187,18 @@ const Page = () => {
       {data && data.map((e, i) => {
         return (
           <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
-            <Link className='aspect-square h-36' href={`/product/${e.route}/${e.id}`}>
+            <Link className='aspect-square h-28 sm:h-32 md:h-36' href={`/product/${e.route}/${e.id}`}>
               <Image
                 width={500}
                 height={500}
                 className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
             </Link>
             <div className='flex justify-between w-full'>
-              <div className='flex justify-evenly flex-col mr-1'>
-                <p className="vazirDemibold text-xl ellipsisOneLine">
+              <div className='flex justify-evenly flex-col mr-1 w-full'>
+                <p className="vazirDemibold text-sm sm:text-md md:text-lg lg:text-xl ellipsisOneLine">
                   {e.title}
                 </p>
-                <p className="vazirMedium text-lg text-gray-700 ellipsisOneLine">
+                <p className="vazirMedium text-[12px] sm:text-sm md:text-md lg:text-lg  text-gray-700 ellipsisTwoLine">
                   {e.subtitle}
                 </p>
                 <div className='flex gap-2 flex-wrap'>
@@ -229,9 +229,9 @@ const Page = () => {
       <div className='h-fit flex justify-center items-center xl:px-0 max-[768px]:px-3 px-6 vazirMedium mb-20'>
 
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8 min-h-screen max-w-screen-2xl'>
-          <div className='grid grid-cols-7 w-full px-4 gap-3'>
+          <div className='grid grid-cols-7 w-full sm:px-4 gap-3'>
             <div className='max-[768px]:col-span-7 md:col-span-4 lg:col-span-5 w-full rounded-lg bg-white boxShadow max-[768px]:p-3 p-6'>
-              <div className='grid grid-cols-2 gap-3'>
+              <div className='grid lg:grid-cols-2 gap-3'>
                 {loading ? LoadingState() :
                   data?.length === 0 ? renderEmptyState() : renderInvoice()
                 }

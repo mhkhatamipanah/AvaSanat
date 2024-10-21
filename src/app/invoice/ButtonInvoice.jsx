@@ -31,7 +31,7 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
     return (
         <>
             {countInvoice &&
-                <div className="flex flex-col-reverse items-center justify-center ml-2">
+                <div className="flex flex-col-reverse items-center justify-center sm:ml-2">
                     {countInvoice == 1 ?
                         <Button
                             onClick={() => {
