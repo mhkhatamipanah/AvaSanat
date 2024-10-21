@@ -27,7 +27,7 @@ const ButtonInvoice = ({ id }) => {
         <>
 
 
-            {countInvoice ? <div className="mt-3 flex items-center justify-center">
+            {countInvoice ? <div className="sm:mt-3 flex items-center justify-center">
                 {countInvoice == 1 ?
                     <Button
                         onClick={() => {
@@ -36,11 +36,11 @@ const ButtonInvoice = ({ id }) => {
                             setCountInvoice(countInvoice - 1)
                             rerenderBTN_Invoice()
                         }}
-                        className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
+                        className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
                         variant="light"
                         color="primary"
                     >
-                        <Trash className="w-5 text-red-600" size={24} />
+                        <Trash className="sm:w-5 w-4 text-red-600" />
                     </Button>
                     :
                     <Button
@@ -49,11 +49,11 @@ const ButtonInvoice = ({ id }) => {
                             setCountInvoice(countInvoice - 1)
                             rerenderBTN_Invoice()
                         }}
-                        className="px-0 min-w-10 h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
+                        className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
                         variant="light"
                         color="primary"
                     >
-                        <MinusCircle className="w-5 text-gray-600" size={24} />
+                        <MinusCircle className="sm:w-5 w-4 text-gray-600" />
                     </Button>
                 }
 
@@ -69,11 +69,11 @@ const ButtonInvoice = ({ id }) => {
                         setCountInvoice(countInvoice + 1)
                         rerenderBTN_Invoice()
                     }}
-                    className="px-0 min-w-10 h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
+                    className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
                     variant="light"
                     color="primary"
                 >
-                    <PlusCircle className="w-5 text-green-600" size={24} />
+                    <PlusCircle className="sm:w-5 w-4 text-green-600" />
                 </Button>
             </div> :
 
@@ -81,7 +81,7 @@ const ButtonInvoice = ({ id }) => {
                     addToCart(id, JSON.stringify({ id: id }));
                     setCountInvoice(countInvoice + 1)
                     rerenderBTN_Invoice()
-                }} className="w-full text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-sm px-5 py-2.5 me-2 mb-2 rounded-br-3xl rounded-tl-3xl">افزودن به پیش فاکتور</button>
+                }} className="w-full text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-[12px] sm:text-sm px-5 py-2.5 me-2 mb-2 rounded-br-3xl rounded-tl-3xl">افزودن به پیش فاکتور</button>
             }
         </>
     )

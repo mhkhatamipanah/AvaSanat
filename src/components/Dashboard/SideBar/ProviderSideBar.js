@@ -18,7 +18,6 @@ const ProviderSideBar = ({getChildren}) => {
 
 const getCookie  = async ()=>{
   const cookie = await cookieGet()
-  console.log(cookie)
   if((!cookie?.name  == "AvaSanatToken")|| !cookie){
     router.push('/login')
   }

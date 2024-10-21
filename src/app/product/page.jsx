@@ -58,10 +58,10 @@ const Page = () => {
                   height={500} className='object-cover w-full h-full' src={`data:image/webp;base64,${e.imageBase64}`} alt="profile-picture" />
                 </div>
                 <div className="p-4 sm:p-6 text-center">
-                  <p className="block mb-2 vazirDemibold text-lg antialiased leading-snug tracking-normal text-blue-gray-900 ">
+                  <p className="text-right block mb-2 vazirDemibold max-sm:h-[35px] text-[13px] sm:text-md md:text-lg antialiased leading-snug tracking-normal text-blue-gray-900 ellipsisTwoLine">
                     {e.title}
                   </p>
-                  <p className="block mb-2 vazirLight text-sm antialiased leading-snug tracking-normal text-blue-gray-900 text-gray-500 ">
+                  <p className="text-right block vazirLight max-sm:h-[30px] text-[11px] sm:text-sm antialiased leading-snug tracking-normal text-blue-gray-900 text-gray-500 ellipsisTwoLine ">
                     {e.description}
                   </p>
 

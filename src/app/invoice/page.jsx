@@ -36,6 +36,9 @@ const Page = () => {
         setLoading(false)
 
       })
+    } else {
+      setData([])
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -96,6 +99,7 @@ const Page = () => {
       }));
       setSelectedItems(allItems);
     }
+
   }, [data]);
 
   const sendOtpHandler = async () => {
@@ -164,7 +168,7 @@ const Page = () => {
   )
   const renderEmptyState = () => (
     <div className="h-full w-full flex justify-center items-center col-span-2">
-      <div className="flex flex-col gap-3 justify-center items-center mb-16">
+      <div className="flex flex-col gap-3 justify-center items-center max-[768px]:mb-5 mb-16">
         <Image
           width={500}
           height={500}
@@ -222,11 +226,11 @@ const Page = () => {
   )
   return (
     <>
-      <div className='h-fit flex justify-center items-center xl:px-0 px-6 vazirMedium mb-20'>
+      <div className='h-fit flex justify-center items-center xl:px-0 max-[768px]:px-3 px-6 vazirMedium mb-20'>
 
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8 min-h-screen max-w-screen-2xl'>
           <div className='grid grid-cols-7 w-full px-4 gap-3'>
-            <div className='col-span-5 w-full rounded-lg bg-white boxShadow p-6'>
+            <div className='max-[768px]:col-span-7 md:col-span-4 lg:col-span-5 w-full rounded-lg bg-white boxShadow max-[768px]:p-3 p-6'>
               <div className='grid grid-cols-2 gap-3'>
                 {loading ? LoadingState() :
                   data?.length === 0 ? renderEmptyState() : renderInvoice()
@@ -238,8 +242,8 @@ const Page = () => {
               </div>
             </div>
 
-            <div className='col-span-2 w-full border border-gray-300 rounded-lg bg-white boxShadow h-min'>
-              <div className='col-span-2 w-full flex flex-col  gap-4 p-3'>
+            <div className='max-[768px]:col-span-7 md:col-span-3 lg:col-span-2 w-full border border-gray-300 rounded-lg bg-white boxShadow h-min'>
+              <div className='col-span-2 w-full flex flex-col gap-4 p-3'>
                 <div className='w-full p-2'>
                   <div className='flex items-center justify-between' >
                     <p>

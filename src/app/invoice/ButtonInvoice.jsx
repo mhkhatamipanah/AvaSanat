@@ -44,11 +44,11 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                                 removeItemById(id)
 
                             }}
-                            className="px-0 min-w-10 h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
+                            className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
                             variant="light"
                             color="primary"
                         >
-                            <Trash className="w-5 text-red-600" size={24} />
+                            <Trash className="sm:w-5 w-4 text-red-600" />
                         </Button>
                         :
                         <Button
@@ -57,11 +57,11 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                                 setCountInvoice(countInvoice - 1)
                                 rerenderBTN_Invoice()
                             }}
-                            className="px-0 min-w-10 h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
+                            className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
                             variant="light"
                             color="primary"
                         >
-                            <MinusCircle className="w-5 text-gray-600" size={24} />
+                            <MinusCircle className="sm:w-5 w-4 text-gray-600" />
                         </Button>
                     }
                     <div className="w-10 h-10 flex justify-center items-center">
@@ -75,11 +75,11 @@ const ButtonInvoice = ({ id, invoiceContainer ,  selectedProduct , setSelectedIt
                             setCountInvoice(countInvoice + 1)
                             rerenderBTN_Invoice()
                         }}
-                        className="px-0 min-w-10 h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
+                        className="px-0 min-w-7 h-7 sm:min-w-10 sm:h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
                         variant="light"
                         color="primary"
                     >
-                        <PlusCircle className="w-5 text-green-600" size={24} />
+                        <PlusCircle className="sm:w-5 w-4 text-green-600" />
                     </Button>
                 </div>
 

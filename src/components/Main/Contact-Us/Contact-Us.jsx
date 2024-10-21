@@ -114,8 +114,8 @@ const ContactUs = () => {
         <section className='grid grid-cols-9 w-full mt-3'>
           <div className='col-span-9 lg:col-span-5 w-full h-full flex justify-center items-center max-[768px]:order-last'>
             <div className='grid grid-cols-2 gap-5 p-2 items-center w-full '>
-              <div className='w-full flex justify-center col-span-2 my-2 min-[768px]:mt-7'>
-                <p className='text-base sm:text-lg md:text-xl lg:text-3xl '>  پیام خود را ثبت کنید</p>
+              <div className='w-full flex justify-center col-span-2 sm:my-2 min-[768px]:mt-7'>
+                <p className='text-lg sm:text-lg md:text-xl lg:text-3xl '>  پیام خود را ثبت کنید</p>
 
               </div>
               <div className='max-sm:col-span-2'>
@@ -176,8 +176,8 @@ const ContactUs = () => {
                 </Button>
               </div>
               <div className='flex gap-2 items-center col-span-2'>
-                <BadgeInfo className='text-gray-700' />
-                <p className='text-gray-600 text-sm'> در طول روز فقط 2 بار میتوانید پیام خود را ثبت کنید</p>
+                <BadgeInfo className='text-gray-700 max-sm:w-5 max-sm:h-5' />
+                <p className='text-gray-600 text-[11px] sm:text-sm'> در طول روز فقط 2 بار میتوانید پیام خود را ثبت کنید</p>
               </div>
 
             </div>
@@ -190,7 +190,7 @@ const ContactUs = () => {
         </section>
         <section className='grid grid-cols-9 w-full  lg:gap-16 mt-3  '>
           <div className='col-span-9 lg:col-span-4 w-full my-2 lg:my-8 overflow-hidden'>
-            <div className='relative h-full pb-[500px] overflow-hidden rounded-2xl'>
+            <div className='relative h-full pb-[240px] sm:pb-[500px] overflow-hidden rounded-2xl'>
               <iframe
                 className='left-0 top-0 absolute border-0 w-full h-full overflow-hidden '
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620.290327245494!2d51.42279731843917!3d35.687326235086175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e0182ea57cf15%3A0x195f7de6a3a8c5d6!2z2KfZhNqp2KrYsdmI2qnZhNmI2LE!5e0!3m2!1sfa!2s!4v1722453409872!5m2!1sfa!2s"
@@ -208,19 +208,19 @@ const ContactUs = () => {
             <div className='flex flex-col gap-4 mt-5'>
               <div className='flex gap-2'>
                 <MapPin />
-                <p>
+                <p className=' text-sm sm:text-base  '>
                   تهران، میدان امام خمینی، خیابان لاله زار، کوچه ملانوروزی، پلاک 7
                 </p>
               </div>
               <div className='flex gap-2'>
                 <PhoneCall />
-                <p className='ltr'>
+                <p className='ltr text-sm sm:text-base  '>
                   0902 366 53 06
                 </p>
               </div>
               <div className='flex gap-2'>
                 <Instagram />
-                <p className='ltr'>
+                <p className='ltr text-sm sm:text-base  '>
                   Avasanat.ir
                 </p>
               </div>
