@@ -3,6 +3,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Link from "next/link";
 import Image from "next/image";
 import { ContactRound, FileText, Home, Images, InfoIcon, Vote } from "lucide-react";
+import AccordionMobile from "./AccordionMobile";
 
 export default function MobileNav({ showSideBar, setShowSidebar }) {
     const [state, setState] = React.useState({
@@ -39,6 +40,7 @@ export default function MobileNav({ showSideBar, setShowSidebar }) {
                     <Home />
                     <Link onClick={() => { setShowSidebar(false) }} className=" w-full text-sm p-3 pr-2 " href='/'>صفحه اصلی</Link>
                 </div>
+                <AccordionMobile setShowSidebar={setShowSidebar}/>
                 <div className="flex items-center mr-3">
                     <FileText />
                     <Link onClick={() => { setShowSidebar(false) }} className=" w-full text-sm p-3 pr-2 " href='/blogs'>   مقالات </Link>

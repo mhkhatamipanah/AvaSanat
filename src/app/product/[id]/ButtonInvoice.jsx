@@ -81,7 +81,7 @@ const ButtonInvoice = ({ id }) => {
                     addToCart(id, JSON.stringify({ id: id }));
                     setCountInvoice(countInvoice + 1)
                     rerenderBTN_Invoice()
-                }} className="w-full text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-[12px] sm:text-sm px-5 py-2.5 me-2 mb-2 rounded-br-3xl rounded-tl-3xl">افزودن به پیش فاکتور</button>
+                }} className="w-full text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-[10px] min-[400px]:text-[12px] sm:text-sm px-2.5 sm:px-5 py-1.5 sm:py-2.5 mb-2 rounded-br-3xl rounded-tl-3xl">افزودن به پیش فاکتور</button>
             }
         </>
     )
