@@ -22,7 +22,7 @@ export async function POST(req, res) {
 
     try {
       const res = await sharp(buffer)
-        .resize(500, 500)
+        .resize(550, 310)
         .webp({ lossless: true, quality: 60, alphaQuality: 80, force: true })
         .toBuffer();
 

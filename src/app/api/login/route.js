@@ -53,7 +53,4 @@ export async function POST(req, res) {
     );
   }
 
-  // const response = NextResponse.json({ path: `/panel/${role}` });
-
-  // return response;
 }

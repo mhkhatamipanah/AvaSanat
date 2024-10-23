@@ -52,7 +52,7 @@ const Page = ({ params }) => {
     <>
       <section className="min-h-screen">
 
-        <div className='flex flex-col items-center justify-center w-full my-5 sm:my-9 md:my-14 px-4'>
+        <div className='flex flex-col items-center justify-center w-full my-5 sm:my-9 md:my-14 px-2.5 sm:px-4'>
 
           {data.length == 0 && LoadingState()}
           <div className='max-w-[1500px] grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 max-[340px]:grid-cols-1 w-full gap-3 mb-3'>
@@ -64,15 +64,15 @@ const Page = ({ params }) => {
                   <Image width={500} height={500} className='object-cover w-full h-full' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
                 </Link>
                 <div className="p-3 sm:p-6 text-center pb-3">
-                  <Link href={`/product/${categoryUrl}/${e.id}`} >
+                  {/* <Link href={`/product/${categoryUrl}/${e.id}`} > */}
 
-                    <p className="block text-right mb-2 vazirDemibold max-sm:h-[35px] text-[13px] sm:text-md md:text-lg antialiased tracking-normal text-blue-gray-900 ellipsisOneLine">
+                    <p className="block text-right mb-2 vazirDemibold text-[13px] sm:text-md md:text-lg antialiased tracking-normal text-blue-gray-900 ellipsisOneLine">
                       {e.title}
                     </p>
-                    <p className="block text-right vazirLight max-sm:h-[30px] text-[11px] sm:text-sm  antialiased tracking-normal text-blue-gray-900 h-[48px] text-gray-500 ellipsisTwoLine">
+                    <p className="block text-right vazirLight text-[11px] sm:text-sm tracking-normal text-blue-gray-900 text-gray-500 ellipsisTwoLine mb-1">
                       {e.description}
                     </p>
-                  </Link>
+                  {/* </Link> */}
 
 
 

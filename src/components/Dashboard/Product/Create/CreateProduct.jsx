@@ -175,16 +175,30 @@ const CreateProduct = () => {
                     get_OneProduct(idProduct).then((res => {
                         if (res?.success) {
                             const data = res.results
-                            const { title, description, subtitle, brand ,  specifications, feature, category, indexMainImage } = data[0]
+                            const { title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
                             setSubtitle(subtitle)
 
                             setPreviewBase64(res.images)
-                            setInputs(feature)
+                            console.log(res)
                             setMainImage(indexMainImage)
-
-                            setInputsSpecifications(specifications)
+                            const newFeatureArray = feature.map((item, index) => {
+                                return {
+                                    id: index,       
+                                    title: item.title,
+                                    values: item.values
+                                };
+                            });
+                            setInputs(newFeatureArray)
+                            const newSpecificationsArray = specifications.map((item, index) => {
+                                return {
+                                    id: index,       
+                                    title: item.title,
+                                    value: item.value
+                                };
+                            });
+                            setInputsSpecifications(newSpecificationsArray)
                             setCategoryInput(new Set([category]))
                             setBrand(new Set([brand]))
                         }
@@ -213,7 +227,7 @@ const CreateProduct = () => {
             return
         }
         let brandValue = brand.values().next().value;
-        
+
         if (!titleInput) {
             toast.error(" تیتر را وارد کنید")
             return
@@ -247,7 +261,7 @@ const CreateProduct = () => {
         formData.append("description", description);
         formData.append("subtitle", subtitle);
         formData.append("brand", brandValue);
-        
+
 
         formData.append("category", categoryInputValue);
 

@@ -192,10 +192,10 @@ const SearchComponent = () => {
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2 max-sm:w-5 max-sm:h-5' color='var(--color-2)'/>
                         <div>
-                          <p className='text-gray-800 text-[13px] sm:text-md'>
+                          <p className='text-gray-800 text-[13px] sm:text-md ellipsisOneLine'>
                             {e.title}
                           </p>
-                          <p className='text-gray-500 text-[11px] sm:text-sm'>
+                          <p className='text-gray-500 text-[11px] sm:text-sm ellipsisOneLine'>
                             {e.description}
                           </p>
                         </div>
@@ -230,10 +230,10 @@ const SearchComponent = () => {
                       <div className='flex items-center gap-2 my-2'>
                         <Search className='mr-2' color='var(--color-2)' />
                         <div>
-                          <p className='text-gray-800 text-[13px] sm:text-md'>
+                          <p className='text-gray-800 text-[13px] sm:text-md ellipsisOneLine'>
                             {e.title}
                           </p>
-                          <p className='text-gray-500 text-[11px] sm:text-sm'>
+                          <p className='text-gray-500 text-[11px] sm:text-sm ellipsisOneLine'>
                             {e.subtitle}
                           </p>
                         </div>

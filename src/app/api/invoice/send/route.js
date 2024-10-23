@@ -89,13 +89,13 @@ export async function POST(req, res) {
         expTime: expireOTP,
       });
 
-      return NextResponse.json({ message: "کد ارسال شد" });
+      return NextResponse.json({success: true, message: "کد ارسال شد" });
     } else {
-      return NextResponse.json({ message: "مشکلی پیش آمده" }, { status: 400 });
+      return NextResponse.json({success: false, message: "مشکلی پیش آمده" }, { status: 400 });
     }
   } catch (e){
     console.log(e)
 
-    return NextResponse.json({ message: "ارور ناشناخته" }, { status: 500 });
+    return NextResponse.json({success: false, message: "ارور ناشناخته" }, { status: 500 });
   }
 }

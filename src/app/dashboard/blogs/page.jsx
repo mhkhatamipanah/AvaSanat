@@ -77,7 +77,7 @@ const Page = () => {
         <Image
           width={500}
           height={500}
-          className="w-full he-full max-w-[250px] max-h-[250px]"
+           className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
           src={img1}
           alt='empty'
         />

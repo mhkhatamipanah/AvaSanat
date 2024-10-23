@@ -26,39 +26,7 @@ function POST(req, res) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          (0, _db["default"])(); //     // Validate User
-          //     const userData = await whoAreYou(req);
-          //     if (!userData) {
-          //       return NextResponse.json(
-          //         { message: "مشکلی در احراز هویت به وجود آمده" },
-          //         { status: 401 }
-          //       );
-          //     }
-          //     const timeAndDate = time_date();
-          //     // Validate Body
-          //     const body = await req.json();
-          //     const { nameOfSeller, address, amount, deliveryTime, product } = body;
-          //     if (!amount.trim()) {
-          //       return NextResponse.json(
-          //         { message: "  مقدار را به درستی وارد کنید" },
-          //         { status: 400 }
-          //       );
-          //     }
-          //     if (!product.trim()) {
-          //       return NextResponse.json(
-          //         { message: " محصول را به درستی وارد کنید" },
-          //         { status: 400 }
-          //       );
-          //     }
-          //     const firstDate = moment(deliveryTime);
-          //     const secondDate = moment(timeAndDate.dateJalali);
-          //     if (!secondDate.isBefore(firstDate)) {
-          //       return NextResponse.json(
-          //         { message: " تاریخ را به درستی وارد کنید" },
-          //         { status: 400 }
-          //       );
-          //     }
-
+          (0, _db["default"])();
           _context.next = 4;
           return regeneratorRuntime.awrap(req.formData());
 
@@ -148,41 +116,7 @@ function GET(req, res) {
       switch (_context2.prev = _context2.next) {
         case 0:
           (0, _db["default"])();
-          _ref = new URL(req.url), searchParams = _ref.searchParams; // const count = searchParams.get("count");
-          // if (count) {
-          //   let countData = await Order.find({})
-          //     .count()
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          //   return NextResponse.json({ countData });
-          // }
-          //   const fourOrder = searchParams.get("fourOrder");
-          //   if (fourOrder) {
-          //     const order = await Order.find({ status: 0 }, "-__v")
-          //       .populate("user_id", "-__v")
-          //       .lean()
-          //       .sort({ createdAt: -1 })
-          //       .limit(4)
-          //       .catch((err) => {
-          //         console.log(err);
-          //       });
-          //     return NextResponse.json(order);
-          //   }
-          //   const perPage = searchParams.get("perPage");
-          //   const page = searchParams.get("page");
-          //   const order = await Order.find({}, "-__v")
-          //     .populate("user_id", "-__v")
-          //     .lean()
-          //     .sort({ createdAt: -1 })
-          //     .limit(perPage ? perPage : 5)
-          //     .skip(perPage && page ? perPage * (page - 1) : 0)
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          //   return NextResponse.json(order);
-          // }
-
+          _ref = new URL(req.url), searchParams = _ref.searchParams;
           perPage = searchParams.get("per_page");
           page = searchParams.get("page");
           search = searchParams.get("search");

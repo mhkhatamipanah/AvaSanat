@@ -128,12 +128,12 @@ const Page = ({ params }) => {
         {data && data.length === 0 && LoadingState()}
         <div className='max-w-[1500px] w-full'>
           {data && data.data &&
-            <section className="w-full grid grid-cols-3 rounded mt-3 px-4">
+            <section className="w-full grid grid-cols-3 rounded mt-3 px-2 sm:px-4">
               <div className="w-full max-[768px]:col-span-3 col-span-1 p-2 rounded-xl">
                 <div className="w-full grid grid-cols-4 gap-4 overflow-hidden max-[768px]:px-3">
                   {mainImage && (
                     <div
-                      className="product-image relative overflow-hidden rounded-xl col-span-4 "
+                      className="product-image relative overflow-hidden rounded-xl col-span-4 border border-gray-300 border-solid"
                       onMouseMove={handleMouseMove}
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
@@ -141,7 +141,7 @@ const Page = ({ params }) => {
                       <Image
                         width={500}
                         height={500}
-                        className="boxShadow w-full zoom-image"
+                        className="w-full zoom-image"
                         src={`data:image/webp;base64,${mainImage.image}`}
                         alt="Main"
                         style={{
@@ -157,16 +157,16 @@ const Page = ({ params }) => {
                       width={500}
                       height={500}
                       key={`image-${i}`}
-                      className="boxShadow2 rounded-lg col-span-1"
+                      className="rounded-lg col-span-1"
                       src={`data:image/webp;base64,${e.image}`}
                       alt={`Bottom Image ${i + 1}`}
                     />
                   ))}
                   {bottomImages && bottomImages.length > 0 && <div
                     onClick={() => { setIsOpen(true) }}
-                    className="  col-span-1 bg-white  cursor-pointer p-[2px]"
+                    className="col-span-1 bg-white  cursor-pointer p-[2px]"
                   >
-                    <div className="boxShadow w-full h-full  flex justify-center items-center rounded-lg">
+                    <div className="boxShadow2 w-full h-full  flex justify-center items-center rounded-lg">
                       <Ellipsis size={30} />
 
                     </div>
@@ -193,7 +193,7 @@ const Page = ({ params }) => {
                 <div className="vazirLight">
                   <div className="vazirMedium text-gray-600 mt-4 flex items-center">
                     <p className="text-base sm:text-xl">
-                      دسته بندی: &nbsp;
+                      دسته بندی:&nbsp;
                     </p>
                     <Link className="hover:underline hover:text-blue-500 text-blue-600 transition-all text-sm sm:text-lg md:text-lg" href={`/product/${data.data.routeCategory}`}> {data.data.titleCategory}</Link>
 
@@ -201,7 +201,7 @@ const Page = ({ params }) => {
                 </div>
                 <div className="vazirLight mt-4 flex items-center">
                   <p className="text-base sm:text-xl">
-                    برند:  &nbsp;
+                    برند:&nbsp;
                   </p>
                   <p className="text-sm sm:text-lg md:text-lg">
                     {data.data.brand}

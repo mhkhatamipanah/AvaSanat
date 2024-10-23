@@ -114,9 +114,11 @@ const editPromise = (url, data) => {
 };
 
 // 3- EditApi
-const editApi = (url, data) => {
+const editApi = async (url, data) => {
   try {
-    toast.promise(editPromise(url, data), {
+    const resultPromise = editPromise(url, data);
+
+    toast.promise(resultPromise, {
       loading: "در حال پردازش اطلاعات...",
       success: (data) => {
         return `${data.message}`;
@@ -126,7 +128,9 @@ const editApi = (url, data) => {
         return `${e}`;
       },
     });
-    return true;
+
+    const result = await resultPromise; // منتظر نتیجه‌ی پرامیس بمان
+    return result.success ? true : false; // بر اساس نتیجه تصمیم بگیر
   } catch (e) {
     console.log(e);
     return false;

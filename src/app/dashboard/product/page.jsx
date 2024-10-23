@@ -80,7 +80,7 @@ const Page = () => {
     <div className="h-full w-full flex justify-center items-center">
       <div className="flex flex-col gap-3 justify-center items-center mb-16">
         <Image
-          className="w-full he-full max-w-[250px] max-h-[250px]"
+           className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
           width={500}
           height={500}
           src={img1}
@@ -112,12 +112,8 @@ const Page = () => {
                       </Link>
                     </div>
 
-                    <div className='oneLineShow'>
-                      <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2'>{e.title}</p>
-                    </div>
-                    <div className='twoLineShow'>
-                      <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm'>{e.description}</p>
-                    </div>
+                      <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2 ellipsisOneLine'>{e.title}</p>
+                      <p className='text-right text-gray-600 mt-2 mb-4 lg:text-md md:text-sm text-xs ellipsisTwoLine'>{e.description}</p>
 
                     <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
 

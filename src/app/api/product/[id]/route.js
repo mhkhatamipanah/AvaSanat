@@ -48,7 +48,13 @@ export async function GET(req, { params }) {
 
     if (related) {
       let routeCategory = searchParams.get("routeCategory");
-      const category = await Product.find({ routeCategory }, "-__v")
+      const category = await Product.find(
+        {
+          routeCategory,
+          id_Product: { $ne: id }, // اضافه کردن فیلتر برای id_Product
+        },
+        "-__v"
+      )
         .limit(10)
         .catch((err) => {
           console.log(err);
@@ -66,13 +72,17 @@ export async function GET(req, { params }) {
           {
             $match: {
               routeCategory: { $ne: routeCategory },
-              _id: { $nin: existingProductIds },
-            },
-          }, // جستجو برای محصولاتی که routeCategory متفاوت دارند و در نتایج اولیه نیستند
-          { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
-          { $project: { __v: 0 } }, // حذف فیلد __v
-        ]);
 
+              _id: { $nin: existingProductIds },
+
+              id_Product: { $ne: id }, // اضافه کردن فیلتر برای id_Product
+            },
+          },
+
+          { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
+
+          { $project: { __v: 0, id_Product: 0 } }, // حذف فیلد __v و id_Product
+        ]);
         // ترکیب داده‌های اولیه با داده‌های تصادفی
         relatedArray = [...category, ...randomProducts];
       }
@@ -80,9 +90,10 @@ export async function GET(req, { params }) {
       const imageData = relatedArray.map((ducomentProduct) => {
         const imageTransfer = ducomentProduct.file.map((e) => {
           if (ducomentProduct.indexMainImage === e.index) {
+            console.log(e.thumbnail)
             const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-
             const thumbnailBase64 = thumbnailBuffer.toString("base64");
+            console.log(thumbnailBase64);
 
             return {
               fileName: `uploaded_image_${Date.now()}.webp`, // For reference
@@ -90,10 +101,11 @@ export async function GET(req, { params }) {
             };
           }
         });
+
         const newArr = imageTransfer.filter(
           (item) => item !== null && typeof item !== "undefined"
         );
-
+        // console.log(newArr);
         return {
           newArr,
           title: ducomentProduct.title,
@@ -173,9 +185,7 @@ export async function PUT(req, { params }) {
     );
     const maxIndex = oneProduct?.file.reduce((max, e) => {
       return e.index > max ? e.index : max;
-    }, -Infinity);
-
-    console.log(maxIndex);
+    }, 0);
 
     const files = [];
     for (let i = 0; i < 20; i++) {
@@ -230,11 +240,17 @@ export async function PUT(req, { params }) {
         }
       );
       if (product) {
-        return NextResponse.json({ message: "ادیت شد" }, { status: 200 });
+        return NextResponse.json(
+          { success: true, message: "ادیت شد" },
+          { status: 200 }
+        );
       }
     } catch (err) {
       console.log(err);
-      return NextResponse.json({ message: "ارور ناشناخته" }, { status: 500 });
+      return NextResponse.json(
+        { success: false, message: "ارور ناشناخته" },
+        { status: 500 }
+      );
     }
   } catch (err) {
     console.error(err); // خطاها را نمایش دهید
@@ -256,6 +272,9 @@ export async function DELETE(req, { params }) {
       { status: 200 }
     );
   } else {
-    return NextResponse.json({ message: "محصول حدف نشد" }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "محصول حدف نشد" },
+      { status: 400 }
+    );
   }
 }

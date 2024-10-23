@@ -58,7 +58,7 @@ export async function PUT(req, { params }) {
         const buffer = Buffer.from(bufferData);
   
         res = await sharp(buffer)
-          .resize(500, 500)
+          .resize(550, 310)
           .webp({ lossless: true, quality: 60, alphaQuality: 80, force: true })
           .toBuffer();
       }
@@ -75,39 +75,15 @@ export async function PUT(req, { params }) {
         }
       );
       if (blog) {
-        return NextResponse.json({ message: "ادیت شد" }, { status: 201 });
+        return NextResponse.json({success: true , message: "ادیت شد" }, { status: 201 });
       }
       // else {
       // }
     } catch (err) {
       console.log(err);
-      return NextResponse.json({ message: "ارور ناشناخته" }, { status: 500 });
+      return NextResponse.json({success: false , message: "ارور ناشناخته" }, { status: 500 });
 
-      const mergeImage = oneProduct?.file.concat(filesArray);
-
-      const product = await Blog.findOneAndUpdate(
-        { id_Product: id },
-        {
-          ...(title && { title }),
-          ...(subtitle && { subtitle }),
-          ...(description && { description }),
-          ...(brand && { brand }),
-
-          ...(objectId && { category: objectId }),
-          ...(changeImage && { file: mergeImage }),
-
-          ...(routeCategory && { routeCategory }),
-          ...(titleCategory && { titleCategory }),
-
-          ...(indexMainImage && { indexMainImage }),
-
-          ...(featureData && { feature: featureData }),
-          ...(specificationsData && { specifications: specificationsData }),
-        }
-      );
-      if (product) {
-        return NextResponse.json({ message: "ادیت شد" }, { status: 200 });
-      }
+    
     }
   } catch (err) {
     console.error(err); // خطاها را نمایش دهید
@@ -129,6 +105,6 @@ export async function DELETE(req, { params }) {
       { status: 200 }
     );
   } else {
-    return NextResponse.json({ message: "بلاگ حدف نشد" }, { status: 400 });
+    return NextResponse.json({ success: false , message: "بلاگ حدف نشد" }, { status: 400 });
   }
 }

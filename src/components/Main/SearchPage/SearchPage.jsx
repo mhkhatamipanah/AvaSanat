@@ -121,16 +121,7 @@ const SearchPage = () => {
                                                                 <div className='twoLineShow'>
                                                                     <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm vazirMedium'>{e.subtitle}</p>
                                                                 </div>
-                                                                {/* <div className="mt-4 flex gap-2">
-                                                            <div className='flex gap-1 items-center rounded-full bg-blue-100 px-2 py-1 text-xs vazirDemibold text-blue-600'>
-                                                                <span > {convertToJalaliDate(e.updatedAt)}</span>
-                                                                <Calendar className='mb-[2px]' size={18} />
-                                                            </div>
-                                                            <div className='flex gap-1 items-center rounded-full bg-orange-100 px-2 py-1 text-xs vazirDemibold text-orange-600'>
-                                                                <span > {convertToTime(e.updatedAt)}</span>
-                                                                <TimerIcon className='mb-[2px]' size={18} />
-                                                            </div>
-                                                        </div> */}
+                                                               
                                                             </div>
 
                                                         </div>

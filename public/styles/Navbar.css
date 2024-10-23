@@ -2,3 +2,6 @@
   .active{
     color: rgb(205, 71, 71) ;
   }
+  .MuiDrawer-paperAnchorRight{
+    height: 100% !important;
+  }

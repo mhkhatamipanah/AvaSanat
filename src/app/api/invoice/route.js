@@ -50,7 +50,7 @@ export async function POST(req, res) {
       await Promise.all(promises);
       return NextResponse.json({  success: true , data: arrayInvoice });
     }else{
-      return NextResponse.json({  data: [] });
+      return NextResponse.json({ success: false, data: [] });
 
     }
   

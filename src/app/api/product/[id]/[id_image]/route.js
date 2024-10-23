@@ -30,13 +30,13 @@ export async function DELETE(req, { params }) {
     });
     if (updateProduct) {
       return NextResponse.json(
-        { message: "محصول با موفقیت حذف شد", success: true },
+        { message: "عکس محصول با موفقیت حذف شد", success: true },
         { status: 200 }
       );
     } else {
-      return NextResponse.json({ message: "محصول حدف نشد" }, { status: 400 });
+      return NextResponse.json({success: false, message: "عکس محصول حدف نشد" }, { status: 400 });
     }
   } catch (err) {
-    return NextResponse.json({ message: "خطای سرور" }, { status: 500 });
+    return NextResponse.json({success: false, message: "خطای سرور" }, { status: 500 });
   }
 }

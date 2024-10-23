@@ -7,7 +7,7 @@ import Proforma_Invoice from './Proforma_Invoice/Proforma_Invoice'
 
 const Home = () => {
   return (
-    <>
+    < >
     <Landing/>
     <Brands/>
     <AboutUs/>

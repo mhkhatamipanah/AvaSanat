@@ -158,7 +158,7 @@ const TableComponents = ({
             <div className="h-full w-full flex justify-center items-center">
               <div className="flex flex-col gap-3 justify-center items-center mb-16">
                 <Image
-                  className="w-full he-full max-w-[250px] max-h-[250px]"
+                   className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
                   width={500}
                   height={500}
                   src={img1}

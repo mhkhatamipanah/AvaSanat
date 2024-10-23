@@ -33,7 +33,7 @@ const Page = () => {
     <>
       <section className="min-h-screen">
 
-        <div className='flex flex-col items-center justify-center w-full my-5 sm:my-9 md:my-14 px-4'>
+        <div className='flex flex-col items-center justify-center w-full my-5 sm:my-9 md:my-14 px-2.5 sm:px-4'>
           {data.length == 0 && LoadingState()}
           <div className='max-w-[1500px] w-full grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 justify-center '>
             {data && data.data && data.data.length == 0 && <div className="h-full w-full flex justify-center items-center">

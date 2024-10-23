@@ -127,31 +127,32 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
-
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .ellipsisOneLine {
-  display: -webkit-box; /* Use flexbox model */
-  -webkit-box-orient: vertical; /* Orient the box vertically */
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  overflow: hidden; /* Hide overflow */
-  text-overflow: ellipsis; /* Show ellipsis */
-  /* max-height: 3em;              Set max height to 2 lines (1.5em per line) */
-  /* line-height: 1.5em;           Set line height */
+  display: -webkit-box !important;  /* Use flexbox model */
+  -webkit-box-orient: vertical !important; /* Orient the box vertically */
+  -webkit-line-clamp: 1 !important;
+  line-clamp: 1 !important;
+  overflow: hidden !important; /* Hide overflow */
+  text-overflow: ellipsis !important; /* Show ellipsis */
+  /* max-height: 1.5em;
+  line-height: 1.5em; */
 }
 .ellipsisTwoLine {
-  display: -webkit-box; /* Use flexbox model */
-  -webkit-box-orient: vertical; /* Orient the box vertically */
-  -webkit-line-clamp:2;
-  line-clamp: 2;
-  overflow: hidden; /* Hide overflow */
-  text-overflow: ellipsis; /* Show ellipsis */
-  /* max-height: 3em;              Set max height to 2 lines (1.5em per line) */
-  /* line-height: 1.5em;           Set line height */
+  display: -webkit-box !important; /* Use flexbox model */
+  -webkit-box-orient: vertical !important; /* Orient the box vertically */
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  overflow: hidden !important; /* Hide overflow */
+  text-overflow: ellipsis !important; /* Show ellipsis */
+
+  /* line-height: 1.5rem;
+  max-height: 3rem; */
 }
+
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill
 
@@ -178,7 +179,7 @@ select:-webkit-autofill:focus */ {
 .boxShadow {
   box-shadow: 0px 0px 10px #0000005f;
 }
-.boxShadow {
+.boxShadow2 {
   box-shadow: 0px 0px 5px #0000005f;
 }
 .boxShadow3 {

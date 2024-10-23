@@ -44,7 +44,7 @@ function POST(req, res) {
           buffer = Buffer.from(bufferData);
           _context.prev = 13;
           _context.next = 16;
-          return regeneratorRuntime.awrap(sharp(buffer).resize(500, 500).webp({
+          return regeneratorRuntime.awrap(sharp(buffer).resize(550, 310).webp({
             lossless: true,
             quality: 60,
             alphaQuality: 80,

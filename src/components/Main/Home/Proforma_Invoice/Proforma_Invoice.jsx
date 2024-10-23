@@ -12,8 +12,9 @@ const Proforma_Invoice = () => {
             <section className="flex justify-center w-full pt-5 pb-5 md:pb-10 lg:pb-14 md:pt-14 lg:pt-20 bg-gray-100">
                 <div className=" max-w-[1500px] px-6">
                     <Title text={"نحوه ثبت سفارش"} size={48} />
-
-                    <Image alt='wds' className='w-full' src={width < 768 ? img1 : img2} />
+                    
+                    <Image alt='wds' className='w-full max-[768px]:hidden block' src={img2} />
+                    <Image alt='wds' className='w-full max-[768px]:block hidden' src={img1} />
                 </div>
             </section>
         </>

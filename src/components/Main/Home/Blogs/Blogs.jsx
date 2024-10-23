@@ -47,7 +47,7 @@ const Blogs = () => {
         <div className="h-full w-full flex justify-center items-center vazirDemibold">
             <div className="flex flex-col gap-3 justify-center items-center mb-16">
                 <Image
-                    className="w-full he-full max-w-[250px] max-h-[250px]"
+                     className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
                     width={500}
                     height={500}
                     src={img1}
@@ -80,10 +80,10 @@ const Blogs = () => {
 
                     }
                     return (
-                        <section key={i} className='max-[768px]:px-0 px-3'>
+                        <section key={i} className='max-[768px]:px-0 px-1'>
 
-                            <div  className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid">
-                                <Link href={`/blogs/${e.id}`}>
+                            <div  className="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-md p-2 border border-gray-100 border-solid ">
+                                <Link className='aspect-video' href={`/blogs/${e.id}`}>
                                     <div className='overflow-hidden cursor-pointer rounded-md'>
                                         <img src={`data:image/webp;base64,${e?.image}`} className="aspect-video w-full object-cover hover:scale-110 transition-all" alt="as" />
                                     </div>

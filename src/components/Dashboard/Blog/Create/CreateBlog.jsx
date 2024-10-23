@@ -25,7 +25,6 @@ function CreateBlog() {
       get_OneBlog(idBlog).then((res => {
         // if (res?.success) {
         const data = res.results
-        console.log(data)
         const { title, subtitle, content } = data[0]
 
         //     setCategoryInput(title)
