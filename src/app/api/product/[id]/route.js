@@ -73,7 +73,7 @@ export async function GET(req, { params }) {
             },
           },
           { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
-          { $project: { __v: 0, id_Product: 0 } }, // حذف فیلد __v و id_Product
+          { $project: { __v: 0, } }, // حذف فیلد __v و id_Product
         ]);
         // ترکیب داده‌های اولیه با داده‌های تصادفی
         relatedArray = [...category, ...randomProducts];
@@ -84,10 +84,10 @@ export async function GET(req, { params }) {
             let thumbnailBase64;
             if (Buffer.isBuffer(e.thumbnail)) {
               console.log("e.thumbnail is a Buffer.");
-               thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-               thumbnailBase64 = thumbnailBuffer.toString("base64");
+              thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+              thumbnailBase64 = thumbnailBuffer.toString("base64");
             } else {
-               thumbnailBase64 = e.thumbnail.toString("base64");
+              thumbnailBase64 = e.thumbnail.toString("base64");
             }
             return {
               fileName: `uploaded_image_${Date.now()}.webp`, // For reference
@@ -98,7 +98,7 @@ export async function GET(req, { params }) {
         const newArr = imageTransfer.filter(
           (item) => item !== null && typeof item !== "undefined"
         );
-
+        console.log(ducomentProduct);
         return {
           newArr,
           title: ducomentProduct.title,
