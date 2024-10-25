@@ -58,7 +58,7 @@ const AllBlogs = () => {
                         {data && data.data &&
                             <>
                                 {/* <div className='grid grid-cols-1 gap-4 py-2'> */}
-                                <div className=' grid min-[450px]:grid-cols-2 md:grid-cols-3 gap-3'>
+                                <div className=' grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 gap-3'>
                                     {
                                         data.data.map((e, i) => {
                                             return (
