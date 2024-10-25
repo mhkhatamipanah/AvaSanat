@@ -1,7 +1,9 @@
 .bg-banner {
     transform: translateX(200px) rotate(-70deg);
 }
-
+.slick-dots li{
+    margin: 0 !important;
+}
 /* .marginCarousel > div{
 padding-right: 4px;
 }

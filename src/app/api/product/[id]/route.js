@@ -25,9 +25,7 @@ export async function GET(req, { params }) {
       const imageData = category.map((ducomentProduct) => {
         const imageTransfer = ducomentProduct.file.map((e) => {
           const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-
           const thumbnailBase64 = thumbnailBuffer.toString("base64");
-
           return {
             fileName: `uploaded_image_${Date.now()}.webp`, // For reference
             thumbnailBase64: thumbnailBase64,
@@ -64,48 +62,43 @@ export async function GET(req, { params }) {
 
       if (category.length < 5) {
         const remainingProductsCount = 5 - category.length;
-
         // جمع آوری IDs محصولاتی که در نتایج اولیه وجود دارند
         const existingProductIds = category.map((product) => product._id);
-
         const randomProducts = await Product.aggregate([
           {
             $match: {
               routeCategory: { $ne: routeCategory },
-
               _id: { $nin: existingProductIds },
-
               id_Product: { $ne: id }, // اضافه کردن فیلتر برای id_Product
             },
           },
-
           { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
-
           { $project: { __v: 0, id_Product: 0 } }, // حذف فیلد __v و id_Product
         ]);
         // ترکیب داده‌های اولیه با داده‌های تصادفی
         relatedArray = [...category, ...randomProducts];
       }
-
       const imageData = relatedArray.map((ducomentProduct) => {
         const imageTransfer = ducomentProduct.file.map((e) => {
           if (ducomentProduct.indexMainImage === e.index) {
-            console.log(e.thumbnail)
-            const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
-            const thumbnailBase64 = thumbnailBuffer.toString("base64");
-            console.log(thumbnailBase64);
-
+            let thumbnailBase64;
+            if (Buffer.isBuffer(e.thumbnail)) {
+              console.log("e.thumbnail is a Buffer.");
+               thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+               thumbnailBase64 = thumbnailBuffer.toString("base64");
+            } else {
+               thumbnailBase64 = e.thumbnail.toString("base64");
+            }
             return {
               fileName: `uploaded_image_${Date.now()}.webp`, // For reference
               thumbnailBase64: thumbnailBase64,
             };
           }
         });
-
         const newArr = imageTransfer.filter(
           (item) => item !== null && typeof item !== "undefined"
         );
-        // console.log(newArr);
+
         return {
           newArr,
           title: ducomentProduct.title,

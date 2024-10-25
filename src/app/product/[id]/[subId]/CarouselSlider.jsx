@@ -105,9 +105,9 @@ const BookSlider = ({ id, routeCategory }) => {
                             return (
                                 <div className='' key={`slider-${i}`}>
                                     <div className='max-[768px]:m-2 m-3 p-2 border border-gray-300 rounded-xl'>
-                                        {/* <Link href={`/product/${e.routeCategory}/${e.id}`} > */}
-                                        <Image width={500} height={500} className='object-cover w-full h-full rounded-md aspect-square' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
-                                        {/* </Link> */}
+                                        <Link href={`/product/${e.routeCategory}/${e.id}`} >
+                                            <Image width={500} height={500} className='object-cover w-full h-full rounded-md aspect-square border border-solid border-gray-100' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                                        </Link>
                                         <div className=" text-right p-2">
                                             <p className="block mb-2 mt-1 vazirDemibold text-gray-800 lg:text-md md:text-base text-sm antialiased leading-snug tracking-normal text-blue-gray-900 ellipsisOneLine">
                                                 {e.title}

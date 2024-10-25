@@ -23,7 +23,7 @@ const getCookie  = async ()=>{
   }
 }
 useEffect(() => {
-  getCookie()
+  // getCookie()
 }, [])
 
 
