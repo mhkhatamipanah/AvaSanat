@@ -19,33 +19,9 @@ const images = [
 
 const Landing = () => {
 
-  // const [loaded, setLoaded] = React.useState([])
-  // const [currentSlide, setCurrentSlide] = React.useState(0)
-
-  // const [sliderRef] = useKeenSlider({
-  //   animationEnded(s) {
-  //     setCurrentSlide(s.track.details.rel)
-  //   },
-  //   loop: true,
-  //   initial: 0,
-  // })
-
-  // React.useEffect(() => {
-  //   const new_loaded = [...loaded]
-  //   new_loaded[currentSlide] = true
-  //   // setLoaded(new_loaded)
-  // }, [currentSlide])
 
   return (
-    // <div ref={sliderRef} className="keen-slider ">
-    //   {/* {console.log(loaded)} */}
-    //   {images.map((src, idx) => (
-    //     <div key={idx} className="keen-slider__slide lazy__slide h-[90vh]">
-    //       <img className='h-[90vh] !border-0' src={loaded[idx] ? src : ""} />
-    //     </div>
-    //   ))}
-    // </div>
-    // <div className="bg-gray-100">
+
     <section className="relative flex flex-col items-center justify-center w-full bg-[#f7f7f7] overflow-hidden">
 
 
@@ -63,8 +39,7 @@ const Landing = () => {
             disableOnInteraction: false,
           }}
           slidesPerView={1}
-          // onSlideChange={() => console.log('slide change')}
-          // onSwiper={(swiper) => console.log(swiper)}
+        
         >
           <SwiperSlide className='w-full h-full max-h-[700px] relative'>
             <img

@@ -4,15 +4,27 @@
 .slick-dots li{
     margin: 0 !important;
 }
-/* .marginCarousel > div{
-padding-right: 4px;
-}
 
-.marginCarousel{
-padding-right: 4px;
+/* Swiper */
 
-}
-.slick-list{
-padding-right: 4px !important;
-
-} */
+.swiper-lazy-preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .swiper-lazy-preloader-white {
+    border: 4px solid #fff;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
