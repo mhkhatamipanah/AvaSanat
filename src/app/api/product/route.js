@@ -2,6 +2,7 @@ import Product from "@/src/models/Product";
 import Category from "@/src/models/Category";
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
+import { handlePdfBuffer } from "@/src/utils/Backend/BufferPdf/BufferPdf";
 const mongoose = require("mongoose");
 
 const sharp = require("sharp");
@@ -25,7 +26,10 @@ export async function POST(req, res) {
 
     const category = formData.get("category");
     const indexMainImage = formData.get("indexMainImage");
-
+    
+    const pdfFile = formData.get("pdfFile");
+    
+    const fileNameWithoutExtension = pdfFile?.name.split(".").slice(0, -1).join(".");
     const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
@@ -34,6 +38,13 @@ export async function POST(req, res) {
     );
     const routeCategory = oneCategory.route;
     const titleCategory = oneCategory.title;
+
+    let pdfBuffer;
+    if (pdfFile) {
+       pdfBuffer = await handlePdfBuffer(pdfFile);
+       console.log(pdfBuffer)
+    }
+
 
     const files = [];
     for (let i = 0; i < 20; i++) {
@@ -73,6 +84,9 @@ export async function POST(req, res) {
         feature: featureData,
         specifications: specificationsData,
         ...(indexMainImage && { indexMainImage }),
+        ...(pdfBuffer && { pdfFile:pdfBuffer }),
+        ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
+        
       });
       if (product) {
         return NextResponse.json({  success: true , message: "ساخته شد" }, { status: 201 });

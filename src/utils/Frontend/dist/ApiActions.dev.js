@@ -1010,7 +1010,7 @@ var edit_Invoice = function edit_Invoice(id, data) {
       }
     }
   }, null, null, [[0, 14]]);
-}; //Product
+}; //blod
 
 
 var create_Blog = function create_Blog(url, data) {
@@ -1104,6 +1104,137 @@ var get_OneBlog = function get_OneBlog(id) {
   }, null, null, [[0, 14]]);
 };
 
+var downloadPdf = function downloadPdf(url, data, id) {
+  return regeneratorRuntime.async(function downloadPdf$(_context36) {
+    while (1) {
+      switch (_context36.prev = _context36.next) {
+        case 0:
+          // استفاده از toast.promise برای مدیریت وضعیت دانلود
+          _sonner.toast.promise(new Promise(function _callee4(resolve, reject) {
+            var response, errorData, responseData, message, success, fileName, base64File, byteCharacters, byteArrays, offset, slice, byteNumbers, i, byteArray, blob, fileUrl, link;
+            return regeneratorRuntime.async(function _callee4$(_context35) {
+              while (1) {
+                switch (_context35.prev = _context35.next) {
+                  case 0:
+                    _context35.prev = 0;
+                    _context35.next = 3;
+                    return regeneratorRuntime.awrap(fetch(url, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json" // تعیین نوع محتوا
+
+                      },
+                      body: JSON.stringify(data) // ارسال داده‌ها به سرور
+
+                    }));
+
+                  case 3:
+                    response = _context35.sent;
+
+                    if (response.ok) {
+                      _context35.next = 10;
+                      break;
+                    }
+
+                    _context35.next = 7;
+                    return regeneratorRuntime.awrap(response.json());
+
+                  case 7:
+                    errorData = _context35.sent;
+                    reject(errorData.message || "کاتالوگ یافت نشد");
+                    return _context35.abrupt("return");
+
+                  case 10:
+                    _context35.next = 12;
+                    return regeneratorRuntime.awrap(response.json());
+
+                  case 12:
+                    responseData = _context35.sent;
+                    message = responseData.message;
+                    success = responseData.success;
+                    fileName = responseData.fileName;
+                    base64File = responseData.fileData;
+
+                    if (success) {
+                      // تبدیل Base64 به Blob
+                      byteCharacters = atob(base64File); // تبدیل Base64 به بایت
+
+                      byteArrays = [];
+
+                      for (offset = 0; offset < byteCharacters.length; offset += 1024) {
+                        slice = byteCharacters.slice(offset, offset + 1024);
+                        byteNumbers = new Array(slice.length);
+
+                        for (i = 0; i < slice.length; i++) {
+                          byteNumbers[i] = slice.charCodeAt(i);
+                        }
+
+                        byteArray = new Uint8Array(byteNumbers);
+                        byteArrays.push(byteArray);
+                      }
+
+                      blob = new Blob(byteArrays, {
+                        type: "application/pdf"
+                      });
+                      fileUrl = window.URL.createObjectURL(blob);
+                      link = document.createElement("a");
+                      link.href = fileUrl;
+                      link.download = fileName || "".concat(id, ".pdf"); // استفاده از نام فایل بدون encode
+
+                      link.click();
+                      window.URL.revokeObjectURL(fileUrl);
+                      resolve(message || "دانلود موفق");
+                    } else {
+                      reject("Download failed");
+                    }
+
+                    _context35.next = 23;
+                    break;
+
+                  case 20:
+                    _context35.prev = 20;
+                    _context35.t0 = _context35["catch"](0);
+                    reject(_context35.t0.message || "Failed to download file.");
+
+                  case 23:
+                  case "end":
+                    return _context35.stop();
+                }
+              }
+            }, null, null, [[0, 20]]);
+          }), {
+            loading: "در حال دانلود فایل...",
+            success: function success(message) {
+              return message; // پیام موفقیت که از resolve بازگشت داده می‌شود
+            },
+            error: function error(err) {
+              return err; // پیام خطا که از reject بازگشت داده می‌شود
+            }
+          });
+
+        case 1:
+        case "end":
+          return _context36.stop();
+      }
+    }
+  });
+};
+
+var deleteFile = function deleteFile(url, data) {
+  return regeneratorRuntime.async(function deleteFile$(_context37) {
+    while (1) {
+      switch (_context37.prev = _context37.next) {
+        case 0:
+          return _context37.abrupt("return", editApi(url, data));
+
+        case 1:
+        case "end":
+          return _context37.stop();
+      }
+    }
+  });
+};
+
 var ApiActions = function ApiActions() {
   return {
     // Login
@@ -1142,7 +1273,9 @@ var ApiActions = function ApiActions() {
     create_Blog: create_Blog,
     edit_Blog: edit_Blog,
     delete_Blog: delete_Blog,
-    get_OneBlog: get_OneBlog
+    get_OneBlog: get_OneBlog,
+    downloadPdf: downloadPdf,
+    deleteFile: deleteFile
   };
 };
 

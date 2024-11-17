@@ -37,7 +37,7 @@ export default function TabComponent({ specifications, description }) {
                 {description && <Tab key="description" title="توضیحات تکمیلی">
                     <Card>
                         <CardBody className="vazirMedium rtl text-right">
-                            <p className="text-gray-700  p-3">
+                            <p className="text-gray-800 text-sm sm:text-base !leading-7 py-1 px-3">
                             {description}
                             </p>
                         </CardBody>

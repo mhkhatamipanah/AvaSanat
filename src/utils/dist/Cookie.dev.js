@@ -16,12 +16,6 @@ var _jsCookie = _interopRequireDefault(require("js-cookie"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function getCookie(name) {
   return _jsCookie["default"].get(name);
 }
@@ -38,27 +32,31 @@ function setCookie(name, value) {
 }
 
 function addToCart(productId, quantity) {
+  // خواندن مقدار فعلی کوکی
+  var cookieValue = getCookie("Avasanat");
+  var cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+  // اضافه کردن آیتم جدید با کلید یونیک
+
+  cart[Date.now()] = {
+    id: productId,
+    quantity: quantity
+  }; // ذخیره دوباره در کوکی
+
+  setCookie("Avasanat", JSON.stringify(cart));
+}
+
+function removeFromCart(uniqueKey) {
   var cart = getCookie("Avasanat");
 
   if (cart) {
     cart = JSON.parse(cart);
-  } else {
-    cart = {};
-  } // پارس کردن quantity به یک شیء جاوااسکریپت
 
+    if (cart[uniqueKey]) {
+      delete cart[uniqueKey]; // حذف آیتم با کلید خاص
 
-  var productDetails = JSON.parse(quantity); // اگر محصول قبلاً در سبد خرید موجود است، مقدار count را افزایش دهید
-
-  if (cart[productId]) {
-    cart[productId].count++;
-  } else {
-    // اگر محصول موجود نیست، آن را اضافه کنید
-    cart[productId] = _objectSpread({}, productDetails, {
-      count: 1
-    });
+      setCookie("Avasanat", JSON.stringify(cart)); // ذخیره دوباره در کوکی
+    }
   }
-
-  setCookie("Avasanat", JSON.stringify(cart));
 }
 
 function getItemCount(productId) {
@@ -77,16 +75,6 @@ function getItemCount(productId) {
 
 
   return 0;
-}
-
-function removeFromCart(productId) {
-  var cart = getCookie("Avasanat");
-
-  if (cart) {
-    cart = JSON.parse(cart);
-    delete cart[productId];
-    setCookie("Avasanat", JSON.stringify(cart));
-  }
 }
 
 function clearCart() {

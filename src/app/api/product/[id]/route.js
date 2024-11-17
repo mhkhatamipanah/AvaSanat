@@ -2,8 +2,11 @@ import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 import Product from "@/src/models/Product";
 import Category from "@/src/models/Category";
+import { handlePdfBuffer } from "@/src/utils/Backend/BufferPdf/BufferPdf";
 const mongoose = require("mongoose");
 const sharp = require("sharp");
+
+
 
 export async function GET(req, { params }) {
   try {
@@ -83,7 +86,6 @@ export async function GET(req, { params }) {
           if (ducomentProduct.indexMainImage === e.index) {
             let thumbnailBase64;
             if (Buffer.isBuffer(e.thumbnail)) {
-              console.log("e.thumbnail is a Buffer.");
               thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
               thumbnailBase64 = thumbnailBuffer.toString("base64");
             } else {
@@ -98,7 +100,6 @@ export async function GET(req, { params }) {
         const newArr = imageTransfer.filter(
           (item) => item !== null && typeof item !== "undefined"
         );
-        console.log(ducomentProduct);
         return {
           newArr,
           title: ducomentProduct.title,
@@ -162,7 +163,16 @@ export async function PUT(req, { params }) {
     const changeImage = formData.get("changeImage");
     const indexMainImage = formData.get("indexMainImage");
 
+    const pdfFile = formData.get("pdfFile");
+    const fileNameWithoutExtension = pdfFile?.name.split(".").slice(0, -1).join(".");
+
     const objectId = new mongoose.Types.ObjectId(category);
+
+    let pdfBuffer;
+    if (pdfFile) {
+       pdfBuffer = await handlePdfBuffer(pdfFile);
+    }
+
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
         console.log(err);
@@ -230,6 +240,8 @@ export async function PUT(req, { params }) {
 
           ...(featureData && { feature: featureData }),
           ...(specificationsData && { specifications: specificationsData }),
+          ...(pdfBuffer && { pdfFile:pdfBuffer }),
+          ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
         }
       );
       if (product) {

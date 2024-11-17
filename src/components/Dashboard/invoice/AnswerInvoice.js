@@ -20,13 +20,18 @@ const AnswerInvoice = ({ params, pushRoute, getOneTicket, editTicket }) => {
 
   const [data, setdata] = useState(null);
 
+  const [phone, setPhone] = useState("");
+  const [description, setDescription] = useState("");
+
+
   const getOneData = async () => {
     const res = await getOneTicket(id);
     setdata(res.product);
-    setAnswer(res.results.text_answer);
+    setAnswer(res.results[0].text_answer);
+    setDescription(res.results[0].description)
+    setPhone(res.results[0].phone)
     setIsLoading(false);
-
-    if (data && !data.results.seen) {
+    if ( !res.results[0].seen) {
       seenTicket();
     }
   };
@@ -65,6 +70,8 @@ const AnswerInvoice = ({ params, pushRoute, getOneTicket, editTicket }) => {
             <div className="relative ">
               <div className="relative overflow-hidden rounded-lg ">
                 <div className="p-4">
+                  { phone && <p>شماره تلفن : {phone}</p>}
+                  { description && <p> توضیحات : {description}</p>}
                   <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-2">
                     {data &&
                       data.map((e, i) => {
@@ -134,6 +141,12 @@ const AnswerInvoice = ({ params, pushRoute, getOneTicket, editTicket }) => {
           </p>
         </div>
         <div>
+          {answer &&   <div className="flex items-center gap2 mb-2">
+          <p>تعداد حروف: </p> 
+          <p>{'\u00A0' + answer.length}</p>
+
+          </div>}
+        
           <Textarea
             value={answer}
             onChange={(e) => {

@@ -64,6 +64,14 @@ var ProductSchema = new Schema({
   },
   specifications: {
     type: Array
+  },
+  pdfFile: {
+    type: Buffer,
+    required: false
+  },
+  pdfFileName: {
+    type: String,
+    required: false
   }
 }, {
   timestamps: true

@@ -186,7 +186,7 @@ const Page = () => {
 
       {data && data.map((e, i) => {
         return (
-          <div id={`invoiceContainer-${i}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.id}>
+          <div id={`invoiceContainer-${e.key}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.key}>
             <Link className='aspect-square h-28 sm:h-32 md:h-36' href={`/product/${e.route}/${e.id}`}>
               <Image
                 width={500}
@@ -202,6 +202,7 @@ const Page = () => {
                   {e.subtitle}
                 </p>
                 <div className='flex gap-2 flex-wrap'>
+                 
                   {e.feature &&
                     Object.entries(e.feature).map(([key, value], index) => {
                       return (
@@ -214,7 +215,7 @@ const Page = () => {
 
               </div>
               <div className='flex flex-col justify-center items-center'>
-                <ButtonInvoice id={e.id} invoiceContainer={i} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
+                <ButtonInvoice id={e.key} invoiceContainer={e.key} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
               </div>
 
             </div>

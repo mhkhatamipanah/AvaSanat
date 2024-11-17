@@ -5,12 +5,12 @@ import { useContext, useEffect, useState } from "react"
 // nextui
 import { Button, Spinner } from "@nextui-org/react";
 // icon
-import { Ellipsis, MinusCircle, PlusCircle, Trash } from "lucide-react";
+import { Ellipsis, FileDown,} from "lucide-react";
 // component
 import RadioBTN from "./RadioBTN";
 import TabComponent from "./Tabs";
 // api
-import { addToCart, decreaseItemCount, removeFromCart, getItemCount } from "@/src/utils/Cookie"
+import { addToCart, getItemCount } from "@/src/utils/Cookie"
 
 import getApi from "@/src/utils/Frontend/sendApiToBackend/simpleData/getApi"
 import Link from "next/link";
@@ -20,6 +20,8 @@ import { InvoiceContext } from "@/src/hooks/useContextProvider/ContextProvider";
 import CarouselSlider from "./CarouselSlider";
 import ModalGallery from "@/src/components/Main/ModalGallery/ModalGallery";
 import Image from "next/image";
+import { ApiActions } from "@/src/utils/Frontend/ApiActions";
+import { toast } from "sonner";
 
 const Page = ({ params }) => {
   const { updateInvoice, setUpdateInvoice } = useContext(InvoiceContext);
@@ -73,6 +75,7 @@ const Page = ({ params }) => {
       // فیلتر کردن تصاویر فرعی
       const bottomImages = data.image.filter((e) => e.type === "bottom_image");
       setBottomImages(bottomImages)
+      bottomImages.unshift(mainImage)
     }
 
   }
@@ -116,6 +119,8 @@ const Page = ({ params }) => {
     </div>
   )
 
+
+  const { downloadPdf  } = ApiActions ()
   return (
     <>
       <ModalGallery
@@ -131,7 +136,7 @@ const Page = ({ params }) => {
             <section className="w-full grid grid-cols-3 rounded mt-3 px-2 sm:px-4">
               <div className="w-full max-[768px]:col-span-3 col-span-1 p-2 rounded-xl">
                 <div className="w-full grid grid-cols-4 gap-4 overflow-hidden max-[768px]:px-3">
-                  {mainImage && (
+                  {
                     <div
                       className="product-image relative overflow-hidden rounded-xl col-span-4 border border-gray-300 border-solid"
                       onMouseMove={handleMouseMove}
@@ -141,8 +146,8 @@ const Page = ({ params }) => {
                       <Image
                         width={500}
                         height={500}
-                        className="w-full zoom-image"
-                        src={`data:image/webp;base64,${mainImage.image}`}
+                        className="w-full zoom-image aspect-square object-cover"
+                        src={ mainImage?.image ? `data:image/webp;base64,${mainImage.image}` : `/images/placeholder.jpg`}
                         alt="Main"
                         style={{
                           transform: isHovered ? `scale(1.2)` : `scale(1)`,
@@ -151,20 +156,23 @@ const Page = ({ params }) => {
                         }}
                       />
                     </div>
-                  )}
+                  }
+
+
                   {bottomImages && bottomImages.map((e, i) => (
                     <Image
+                      onClick={() => { setMainImage(e) }}
                       width={500}
                       height={500}
                       key={`image-${i}`}
-                      className="rounded-lg col-span-1"
-                      src={`data:image/webp;base64,${e.image}`}
+                      className="rounded-lg col-span-1 cursor-pointer aspect-square object-cover"
+                      src={e?.image ? `data:image/webp;base64,${e.image}` : `/images/placeholder.jpg`}
                       alt={`Bottom Image ${i + 1}`}
                     />
                   ))}
                   {bottomImages && bottomImages.length > 0 && <div
                     onClick={() => { setIsOpen(true) }}
-                    className="col-span-1 bg-white  cursor-pointer p-[2px]"
+                    className="col-span-1 bg-white  cursor-pointer p-[2px] aspect-square"
                   >
                     <div className="boxShadow2 w-full h-full  flex justify-center items-center rounded-lg">
                       <Ellipsis size={30} />
@@ -220,74 +228,45 @@ const Page = ({ params }) => {
 
                 {data.data.feature.length > 0 && <div className="border border-b my-3"></div>}
 
-
-                {countInvoice ? <div className="sm:mt-3 flex items-center">
-                  {countInvoice == 1 ?
-                    <Button
-                      onClick={() => {
-
-                        removeFromCart(data.data.id_Product)
-                        setCountInvoice(countInvoice - 1)
-                        rerenderBTN_Invoice()
-                      }}
-                      className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
-                      variant="light"
-                      color="primary"
-                    >
-                      <Trash className="sm:w-5 w-4 text-red-600" />
-                    </Button>
-                    :
-                    <Button
-                      onClick={() => {
-                        decreaseItemCount(data.data.id_Product)
-                        setCountInvoice(countInvoice - 1)
-                        rerenderBTN_Invoice()
-                      }}
-                      className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-gray-100 shadow border border-solid border-gray-200 hover:!bg-gray-300"
-                      variant="light"
-                      color="primary"
-                    >
-                      <MinusCircle className="sm:w-5 w-4 text-gray-600" />
-                    </Button>
-                  }
-
-                  <div className="w-10 h-10 flex justify-center items-center">
-
-                    <p className="vazirMedium">
-                      {countInvoice}
-                    </p>
-                  </div>
+                <div className="flex flex-col gap-4 w-min">
                   <Button
                     onClick={() => {
+                      const isAllSelected = data.data.feature.every(feature => selectedValues[feature.title]);
+                      if (!isAllSelected) {
+                        toast.error("لطفا ویژگی را وارد کنید");
+                        return; // اگر ویژگی انتخاب نشده باشد، تابع متوقف می‌شود
+                      } 
                       addToCart(data.data.id_Product, JSON.stringify({ id: data.data.id_Product, feature: selectedValues }))
                       setCountInvoice(countInvoice + 1)
                       rerenderBTN_Invoice()
-                    }}
-                    className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-green-100 shadow border border-solid border-green-200 hover:!bg-green-300"
-                    variant="light"
-                    color="primary"
-                  >
-                    <PlusCircle className="sm:w-5 w-4 text-green-600" />
-                  </Button>
-                </div> :
-                  <Button
-                    onClick={() => {
-                      addToCart(data.data.id_Product, JSON.stringify({ id: data.data.id_Product, feature: selectedValues }))
-                      setCountInvoice(countInvoice + 1)
-                      rerenderBTN_Invoice()
+                      toast.success("محصول به پیش فاکتور اضافه شد");
+                      
                     }}
 
                     className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm">
                     افزودن به  پیش فاکتور
                   </Button>
-                }
+                    {data.data.pdfFile &&     <Button
+                    onClick={() => {
+                      downloadPdf(`/api/product/download/${subId}`, JSON.stringify({}, subId)).then((res) => { 
+                        
+                       })
+                    }}
 
+                    className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm">
+                    <FileDown/>
+                    دانلود کاتالوگ
+                  </Button>}
+              
+                </div>
 
               </div>
 
 
             </section>
           }
+
+
           {data && data.data && <section className="mt-6 px-4">
             <TabComponent
               description={data.data.description}

@@ -101,7 +101,6 @@ const BookSlider = ({ id, routeCategory }) => {
                 <div className=' flex justify-center items-center flex-col marginCarousel'>
                     <Slider style={{ width: 'calc(100% )' }} {...settings}>
                         {data && data.data && data.data.map((e, i) => {
-                            console.log(e)
                             return (
                                 <div className='' key={`slider-${i}`}>
                                     <div className='max-[768px]:m-2 m-3 p-2 border border-gray-300 rounded-xl'>

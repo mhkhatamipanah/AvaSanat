@@ -403,7 +403,7 @@ const edit_Invoice = async (id, data) => {
   }
 };
 
-//Product
+//blod
 
 const create_Blog = async (url, data) => {
   return postApi(url, data);
@@ -429,7 +429,82 @@ const get_OneBlog = async (id) => {
     return false;
   }
 };
+const downloadPdf = async (url, data, id) => {
+  // استفاده از toast.promise برای مدیریت وضعیت دانلود
+  toast.promise(
+    new Promise(async (resolve, reject) => {
+      try {
+        // ارسال داده‌ها در درخواست POST
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // تعیین نوع محتوا
+          },
+          body: JSON.stringify(data), // ارسال داده‌ها به سرور
+        });
 
+        if (!response.ok) {
+          const errorData = await response.json();
+          reject(errorData.message || "کاتالوگ یافت نشد");
+          return;
+        }
+
+        const responseData = await response.json();
+        const message = responseData.message;
+        const success = responseData.success;
+        const fileName = responseData.fileName;
+        const base64File = responseData.fileData;
+
+
+        if (success) {
+          // تبدیل Base64 به Blob
+          const byteCharacters = atob(base64File); // تبدیل Base64 به بایت
+          const byteArrays = [];
+
+          for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+            const slice = byteCharacters.slice(offset, offset + 1024);
+            const byteNumbers = new Array(slice.length);
+
+            for (let i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+          }
+
+          const blob = new Blob(byteArrays, { type: "application/pdf" });
+
+          const fileUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.download = fileName || `${id}.pdf`; // استفاده از نام فایل بدون encode
+          link.click();
+
+          window.URL.revokeObjectURL(fileUrl);
+          resolve(message || "دانلود موفق");
+        } else {
+          reject("Download failed");
+        }
+      } catch (error) {
+        reject(error.message || "Failed to download file.");
+      }
+    }),
+    {
+      loading: "در حال دانلود فایل...",
+      success: (message) => {
+        return message; // پیام موفقیت که از resolve بازگشت داده می‌شود
+      },
+      error: (err) => {
+        return err; // پیام خطا که از reject بازگشت داده می‌شود
+      },
+    }
+  );
+};
+
+ const deleteFile = async (url, data) => {
+  return editApi(url, data);
+};
 export const ApiActions = () => {
   return {
     // Login
@@ -477,5 +552,8 @@ export const ApiActions = () => {
     edit_Blog,
     delete_Blog,
     get_OneBlog,
+
+    downloadPdf ,
+    deleteFile
   };
 };

@@ -109,7 +109,7 @@ const SearchPage = () => {
                                                         <div className='relative flex flex-col gap-3 w-full rounded-lg p-3 bg-gray-50 border border-solid border-gray-300' key={`blog-${i}`}>
                                                             <div className='w-full aspect-square overflow-hidden rounded-lg border border-solid border-gray-200' >
 
-                                                                <Link href={`/product/${e.routeCategory}/${e.id}`}>
+                                                                <Link href={`/product/${e.route}/${e.id}`}>
                                                                     <img className='aspect-square object-cover w-full h-full cursor-pointer hover:scale-105 transition-all duration-400 ' src=
                                                                         {e?.image ? `data:image/webp;base64,${e?.image}` : "/images/placeholder.jpg"} alt="" />
                                                                 </Link>

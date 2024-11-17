@@ -1,6 +1,5 @@
-import { Button } from '@nextui-org/react';
-import { Ban } from 'lucide-react';
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 
 const RadioBTN = ({ title, data, onChange }) => {
     const [radioValue, setRadioValue] = useState("");
@@ -35,14 +34,7 @@ const RadioBTN = ({ title, data, onChange }) => {
                         </div>
                     );
                 })}
-                <Button
-                    onClick={() => { setRadioValue(""); onChange(""); }}
-                    className="px-0 min-w-8 h-8 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
-                    variant="light"
-                    color="primary"
-                >
-                    <Ban className="w-4 text-red-600" size={16} />
-                </Button>
+                
             </div>
         </>
 

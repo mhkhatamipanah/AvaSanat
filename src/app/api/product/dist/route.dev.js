@@ -14,6 +14,8 @@ var _db = _interopRequireDefault(require("@/src/configs/db"));
 
 var _server = require("next/server");
 
+var _BufferPdf = require("@/src/utils/Backend/BufferPdf/BufferPdf");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -27,7 +29,7 @@ var mongoose = require("mongoose");
 var sharp = require("sharp");
 
 function POST(req, res) {
-  var formData, feature, featureData, specifications, specificationsData, title, description, subtitle, brand, category, indexMainImage, objectId, oneCategory, routeCategory, titleCategory, files, i, file, filesArray, product;
+  var formData, feature, featureData, specifications, specificationsData, title, description, subtitle, brand, category, indexMainImage, pdfFile, objectId, oneCategory, routeCategory, titleCategory, pdfBuffer, files, i, file, filesArray, product;
   return regeneratorRuntime.async(function POST$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -49,18 +51,34 @@ function POST(req, res) {
           brand = formData.get("brand");
           category = formData.get("category");
           indexMainImage = formData.get("indexMainImage");
+          pdfFile = formData.get("pdfFile");
+          console.log(pdfFile.name);
           objectId = new mongoose.Types.ObjectId(category);
-          _context2.next = 18;
+          _context2.next = 20;
           return regeneratorRuntime.awrap(_Category["default"].findOne({
             _id: category
           }, "-__v")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 18:
+        case 20:
           oneCategory = _context2.sent;
           routeCategory = oneCategory.route;
           titleCategory = oneCategory.title;
+
+          if (!pdfFile) {
+            _context2.next = 28;
+            break;
+          }
+
+          _context2.next = 26;
+          return regeneratorRuntime.awrap((0, _BufferPdf.handlePdfBuffer)(pdfFile));
+
+        case 26:
+          pdfBuffer = _context2.sent;
+          console.log(pdfBuffer);
+
+        case 28:
           files = [];
 
           for (i = 0; i < 20; i++) {
@@ -71,8 +89,8 @@ function POST(req, res) {
             }
           }
 
-          _context2.prev = 23;
-          _context2.next = 26;
+          _context2.prev = 30;
+          _context2.next = 33;
           return regeneratorRuntime.awrap(Promise.all(files.map(function _callee(e, i) {
             var bufferData, buffer, res;
             return regeneratorRuntime.async(function _callee$(_context) {
@@ -108,9 +126,9 @@ function POST(req, res) {
             });
           })));
 
-        case 26:
+        case 33:
           filesArray = _context2.sent;
-          _context2.next = 29;
+          _context2.next = 36;
           return regeneratorRuntime.awrap(_Product["default"].create(_objectSpread({
             title: title,
             subtitle: subtitle,
@@ -124,13 +142,17 @@ function POST(req, res) {
             specifications: specificationsData
           }, indexMainImage && {
             indexMainImage: indexMainImage
+          }, {}, pdfBuffer && {
+            pdfFile: pdfBuffer
+          }, {}, pdfFile.name && {
+            pdfFileName: pdfFile.name
           })));
 
-        case 29:
+        case 36:
           product = _context2.sent;
 
           if (!product) {
-            _context2.next = 32;
+            _context2.next = 39;
             break;
           }
 
@@ -141,13 +163,13 @@ function POST(req, res) {
             status: 201
           }));
 
-        case 32:
-          _context2.next = 38;
+        case 39:
+          _context2.next = 45;
           break;
 
-        case 34:
-          _context2.prev = 34;
-          _context2.t0 = _context2["catch"](23);
+        case 41:
+          _context2.prev = 41;
+          _context2.t0 = _context2["catch"](30);
           console.log(_context2.t0);
           return _context2.abrupt("return", _server.NextResponse.json({
             success: false,
@@ -156,21 +178,21 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 38:
-          _context2.next = 43;
+        case 45:
+          _context2.next = 50;
           break;
 
-        case 40:
-          _context2.prev = 40;
+        case 47:
+          _context2.prev = 47;
           _context2.t1 = _context2["catch"](0);
           console.error(_context2.t1); // خطاها را نمایش دهید
 
-        case 43:
+        case 50:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 40], [23, 34]]);
+  }, null, null, [[0, 47], [30, 41]]);
 }
 
 function GET(req, res) {

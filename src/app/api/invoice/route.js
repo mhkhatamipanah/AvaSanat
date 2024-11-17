@@ -10,9 +10,8 @@ export async function POST(req, res) {
 
     if(body){
       const arrayInvoice = [];
-
       // استفاده از promises
-      const promises = Object.values(body).map(async (value) => {
+      const promises = Object.entries(body).map(async ([key, value]) =>  {
         const obj = {};
         const oneProduct = await Product.findOne(
           { id_Product: value.id },
@@ -35,10 +34,12 @@ export async function POST(req, res) {
           const newArr = imageData.filter(
             (item) => item !== null && typeof item !== "undefined"
           );
+          {console.log()}
   
-          obj.feature = value.feature
+          obj.key = key
+          obj.feature =JSON.parse(value.quantity).feature
           obj.title = oneProduct.title;
-          obj.id = oneProduct.id_Product;
+          obj.id = key;
           obj.subtitle = oneProduct.subtitle;
           obj.route = oneProduct.routeCategory;
           obj.image = newArr[0]?.thumbnailBase64;

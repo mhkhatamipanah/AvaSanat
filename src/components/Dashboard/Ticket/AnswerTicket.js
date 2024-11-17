@@ -78,6 +78,11 @@ const AnswerTicket = ({ params, pushRoute, getOneTicket, editTicket }) => {
         </p>
       </div>
       <div>
+      {answer &&   <div className="flex items-center gap2 mb-2">
+          <p>تعداد حروف: </p> 
+          <p>{'\u00A0' + answer.length}</p>
+
+          </div>}
         <Textarea
           value={answer}
           onChange={(e) => {

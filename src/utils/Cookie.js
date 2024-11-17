@@ -7,28 +7,30 @@ function getCookie(name) {
 function setCookie(name, value, options = { expires: 7, path: "/" ,sameSite: "None", secure: true }) {
   Cookies.set(name, value, options);
 }
+
 function addToCart(productId, quantity) {
+  // خواندن مقدار فعلی کوکی
+  let cookieValue = getCookie("Avasanat");
+  let cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+
+  // اضافه کردن آیتم جدید با کلید یونیک
+  cart[Date.now()] = { id: productId, quantity };
+
+  // ذخیره دوباره در کوکی
+  setCookie("Avasanat", JSON.stringify(cart));
+}
+
+function removeFromCart(uniqueKey) {
   let cart = getCookie("Avasanat");
   if (cart) {
     cart = JSON.parse(cart);
-  } else {
-    cart = {};
+    if (cart[uniqueKey]) {
+      delete cart[uniqueKey]; // حذف آیتم با کلید خاص
+      setCookie("Avasanat", JSON.stringify(cart)); // ذخیره دوباره در کوکی
+    }
   }
-
-  // پارس کردن quantity به یک شیء جاوااسکریپت
-  const productDetails = JSON.parse(quantity);
-
-  // اگر محصول قبلاً در سبد خرید موجود است، مقدار count را افزایش دهید
-  if (cart[productId]) {
-    cart[productId].count++;
-  } else {
-    // اگر محصول موجود نیست، آن را اضافه کنید
-    cart[productId] = { ...productDetails, count: 1 };
-  }
-
-  setCookie("Avasanat", JSON.stringify(cart));
 }
- 
+
 
 function getItemCount(productId) {
   // Retrieve the cart from the cookie
@@ -51,14 +53,6 @@ function getItemCount(productId) {
 }
 
 
-function removeFromCart(productId) {
-  let cart = getCookie("Avasanat");
-  if (cart) {
-    cart = JSON.parse(cart);
-    delete cart[productId];
-    setCookie("Avasanat", JSON.stringify(cart));
-  }
-}
 
 function clearCart() {
   setCookie("Avasanat", JSON.stringify({}));

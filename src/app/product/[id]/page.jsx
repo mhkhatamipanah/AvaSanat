@@ -61,7 +61,7 @@ const Page = ({ params }) => {
             {data && data.data && data.data.map((e, i) => {
               return (<div key={i} className=" flex flex-col text-gray-700 bg-white shadow-lg border-[3px] border-gray-200 hover:border-[#f548485d] transition-all duration-500 ease-in-out bg-clip-border rounded-xl h-min">
                 <Link href={`/product/${categoryUrl}/${e.id}`} className="mx-2 mt-2 sm:mx-3 md:mx-4 sm:mt-3 md:mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-lg">
-                  <Image width={500} height={500} className='object-cover w-full h-full' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                  <Image width={500} height={500} className='object-cover w-full h-full aspect-square' src={e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="profile-picture" />
                 </Link>
                 <div className="p-3 sm:p-6 text-center pb-3">
                   {/* <Link href={`/product/${categoryUrl}/${e.id}`} > */}
@@ -76,8 +76,8 @@ const Page = ({ params }) => {
 
 
 
-
-                  <ButtonInvoice id={e.id} />
+                  <Link  href={`/product/${categoryUrl}/${e.id}`}  className="w-full block text-white bg-[#d94038] hover:bg-[#c73028] vazirLight font-medium rounded text-[10px] min-[400px]:text-[12px] sm:text-sm px-2.5 sm:px-5 py-1.5 sm:py-2.5 my-2 rounded-br-3xl rounded-tl-3xl">جزییات   </Link>
+                  {/* <ButtonInvoice id={e.id} /> */}
 
 
                 </div>

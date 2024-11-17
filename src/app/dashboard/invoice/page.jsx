@@ -67,6 +67,9 @@ const Page = () => {
           شماره تلفن
         </th>
         <th scope="col" className="p-3 text-center vazirMedium text-[14px]">
+      تعداد محصول
+        </th>
+        <th scope="col" className="p-3 text-center vazirMedium text-[14px]">
           تاریخ
         </th>
         <th scope="col" className="p-3 text-center vazirMedium text-[14px]">
@@ -88,6 +91,7 @@ const Page = () => {
     return (
       <tbody>
         {data.map((e) => {
+      
           return (
             <tr
               className="hover:bg-gray-200 transition-all odd:bg-gray-100 "
@@ -105,7 +109,12 @@ const Page = () => {
               >
                 {e.phone}
               </td>
-
+              <td
+                className="px-6 py-4 vazirMedium font-medium text-gray-900 whitespace-nowrap text-center"
+              >
+               {e.invoice.length}
+              </td>
+       
 
               <td className="px-6 py-4 vazirMedium">
                 {convertToJalaliDate(e.createdAt)}

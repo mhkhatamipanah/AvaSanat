@@ -7,7 +7,7 @@ import { ApiActions } from "@/src/utils/Frontend/ApiActions"
 // NextUI
 import { Input, Button, SelectItem, Select, Spinner, Textarea } from "@nextui-org/react"
 // Icon
-import { CaseUpper, CircleFadingPlus, FileCheck, SpellCheck, Trash2Icon, } from "lucide-react"
+import { CaseUpper, CircleFadingPlus, Download, FileCheck, SpellCheck, Trash2Icon, X, } from "lucide-react"
 
 // Imoort Components
 import FeatureValue from "./FeatureValue"
@@ -174,8 +174,9 @@ const CreateProduct = () => {
                 if (idProduct) {
                     get_OneProduct(idProduct).then((res => {
                         if (res?.success) {
-                            const data = res.results
-                            const { title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
+                            const data = res?.results
+
+                            const { pdfFileName , pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
                             setSubtitle(subtitle)
@@ -185,7 +186,7 @@ const CreateProduct = () => {
                             setMainImage(indexMainImage)
                             const newFeatureArray = feature.map((item, index) => {
                                 return {
-                                    id: index,       
+                                    id: index,
                                     title: item.title,
                                     values: item.values
                                 };
@@ -193,7 +194,7 @@ const CreateProduct = () => {
                             setInputs(newFeatureArray)
                             const newSpecificationsArray = specifications.map((item, index) => {
                                 return {
-                                    id: index,       
+                                    id: index,
                                     title: item.title,
                                     value: item.value
                                 };
@@ -201,6 +202,13 @@ const CreateProduct = () => {
                             setInputsSpecifications(newSpecificationsArray)
                             setCategoryInput(new Set([category]))
                             setBrand(new Set([brand]))
+                            if (pdfFile) {
+                                setHasPdf(true)
+                            }
+                            if(pdfFileName){
+                                setPdfName(pdfFileName)
+                            }
+
                         }
                     }))
                 }
@@ -264,6 +272,11 @@ const CreateProduct = () => {
 
 
         formData.append("category", categoryInputValue);
+
+
+        if (pdfFile) {
+            formData.append("pdfFile", pdfFile);
+        }
 
         arrayImmages.forEach((file, index) => {
             formData.append(`file${index}`, file);
@@ -330,9 +343,35 @@ const CreateProduct = () => {
     };
 
 
+    const { downloadPdf , deleteFile } = ApiActions()
 
+    const [pdfFile, setPdfFile] = useState(null);
+    const [pdfName, setPdfName] = useState(null);
+    const [hasPdf, setHasPdf] = useState(false);
 
+    const downloadFile = () => {
+        downloadPdf(`/api/product/download/${idProduct}`, JSON.stringify({}, idProduct)).then((res) => { 
+            
+         })
+    }
+    const removeFile = () => {
+        deleteFile(`/api/product/download/${idProduct}`, JSON.stringify({})).then((res) => { 
+            
+         })
+    }
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
 
+        if (file.size > 15 * 1024 * 1024) {
+            // اگر فایل بزرگ‌تر از 15 مگابایت بود
+            toast.error("اندازه فایل باید کمتر از 15 مگابایت باشد!");
+            return; // فایل را ست نمی‌کنیم
+        }
+        if (file) {
+            setPdfFile(file);
+            console.log("Selected file:", file);
+        }
+    };
 
     return (
         <Suspense>
@@ -558,6 +597,48 @@ const CreateProduct = () => {
                     data={data}
                 />
             ))}
+
+            <div className="my-10 flex items-center">
+
+                <div>
+                    <label
+                        htmlFor="file-input"
+                        className="cursor-pointer bg-blue-600 text-white py-2.5 px-3.5 rounded-lg shadow-sm text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    >
+                        انتخاب فایل
+                    </label>
+                    <input
+                        onChange={handleFileChange}
+                        id="file-input"
+                        type="file"
+                        className="sr-only"
+                    />
+                </div>
+                {pdfFile && (
+                    <div className="mx-3 text-sm">
+                        <p className="text-base vazirMedium">فایل انتخاب شده: {pdfFile.name}</p>
+                        <p className="text-base vazirMedium">اندازه: {(pdfFile.size / 1024).toFixed(2)} KB</p>
+                        <p className="text-base vazirMedium">نوع: {pdfFile.type}</p>
+                    </div>
+                )}
+                {hasPdf && <div className="mr-3">
+                    <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
+                        <Download size={28} className="text-green-700 cursor-pointer" onClick={downloadFile} />
+                    </Button>
+
+                </div>}
+                {hasPdf && <div className="mr-3">
+                    <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
+                        <X size={28} className="text-red-700 cursor-pointer" onClick={removeFile} />
+                    </Button>
+
+                </div>}
+
+                {pdfName && <p className="mx-2"> نام :  {pdfName}</p>}
+             
+            
+            </div>
+
 
             <div className="grid grid-cols-1 md:grid-cols-2">
                 <Textarea

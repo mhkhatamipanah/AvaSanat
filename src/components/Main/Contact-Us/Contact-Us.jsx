@@ -93,7 +93,6 @@ const ContactUs = () => {
         toast.error("لطفا شماره تلفن را وارد کنید")
         return
       }
-      console.log(phone.length)
       if (phone.length !== 11) {
         toast.error("لطفا 11 رقم تلفن را وارد کنید")
         return
