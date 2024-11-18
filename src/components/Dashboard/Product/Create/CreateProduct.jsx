@@ -164,6 +164,8 @@ const CreateProduct = () => {
 
     const { get_OneProduct, get_CategoryProduct } = ApiActions()
 
+    const [productLoaded, setProductLoaded] = useState(false);
+
     useEffect(() => {
         let data = {
             allId: true
@@ -176,13 +178,11 @@ const CreateProduct = () => {
                         if (res?.success) {
                             const data = res?.results
 
-                            const { pdfFileName , pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
+                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
                             setTitleInput(title)
                             setDescription(description)
                             setSubtitle(subtitle)
-
                             setPreviewBase64(res.images)
-                            console.log(res)
                             setMainImage(indexMainImage)
                             const newFeatureArray = feature.map((item, index) => {
                                 return {
@@ -205,9 +205,11 @@ const CreateProduct = () => {
                             if (pdfFile) {
                                 setHasPdf(true)
                             }
-                            if(pdfFileName){
+                            if (pdfFileName) {
                                 setPdfName(pdfFileName)
                             }
+                            setProductLoaded(true)
+
 
                         }
                     }))
@@ -343,21 +345,21 @@ const CreateProduct = () => {
     };
 
 
-    const { downloadPdf , deleteFile } = ApiActions()
+    const { downloadPdf, deleteFile } = ApiActions()
 
     const [pdfFile, setPdfFile] = useState(null);
     const [pdfName, setPdfName] = useState(null);
     const [hasPdf, setHasPdf] = useState(false);
 
     const downloadFile = () => {
-        downloadPdf(`/api/product/download/${idProduct}`, JSON.stringify({}, idProduct)).then((res) => { 
-            
-         })
+        downloadPdf(`/api/product/download/${idProduct}`, JSON.stringify({}, idProduct)).then((res) => {
+
+        })
     }
     const removeFile = () => {
-        deleteFile(`/api/product/download/${idProduct}`, JSON.stringify({})).then((res) => { 
-            
-         })
+        deleteFile(`/api/product/download/${idProduct}`, JSON.stringify({})).then((res) => {
+
+        })
     }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -373,6 +375,12 @@ const CreateProduct = () => {
         }
     };
 
+
+    const LoadingState = () => (
+        <div className="w-full h-[600px] flex justify-center items-center">
+            <Spinner />
+        </div>
+    )
     return (
         <Suspense>
             <ModalDelete
@@ -384,278 +392,284 @@ const CreateProduct = () => {
                 onModalOpenChange={onModalOpenChange}
                 deleteEventHandler={deleteEventHandler}
             />
-            <div className="grid gap-4 gap-y-10 md:grid-cols-2 2xl:grid-cols-4 mb-10">
-                <Input
-                    value={titleInput}
-                    onChange={(e) => { setTitleInput(e.target.value) }}
-                    className="labelRight"
-                    label=" نام محصول"
-                    placeholder="دسته بندی را وارد کنید"
-                    labelPlacement="outside"
-                    endContent={
-                        <SpellCheck className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                />
-                <Input
-                    value={subtitle}
-                    onChange={(e) => { setSubtitle(e.target.value) }}
-                    className="labelRight"
-                    label="توضیح کوتاه"
-                    placeholder="توضیح کوتاه را وارد کنید"
-                    labelPlacement="outside"
-                    endContent={
-                        <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                />
+            {(idProduct && !productLoaded) ? LoadingState() :
+                <>
+                    <div className="grid gap-4 gap-y-10 md:grid-cols-2 2xl:grid-cols-4 mb-10">
+                        <Input
+                            value={titleInput}
+                            onChange={(e) => { setTitleInput(e.target.value) }}
+                            className="labelRight"
+                            label=" نام محصول"
+                            placeholder="دسته بندی را وارد کنید"
+                            labelPlacement="outside"
+                            endContent={
+                                <SpellCheck className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                            }
+                        />
+                        <Input
+                            value={subtitle}
+                            onChange={(e) => { setSubtitle(e.target.value) }}
+                            className="labelRight"
+                            label="توضیح کوتاه"
+                            placeholder="توضیح کوتاه را وارد کنید"
+                            labelPlacement="outside"
+                            endContent={
+                                <CaseUpper className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                            }
+                        />
 
 
-                <div className="w-full h-full flex flex-col justify-end pb-[2px]">
+                        <div className="w-full h-full flex flex-col justify-end pb-[2px]">
 
-                    <Select
-                        value={categoryInput}
-                        onSelectionChange={(e) => {
-                            setCategoryInput(e);
-                        }}
-                        variant="faded"
-                        label="دسته بندی را انتخاب کنید"
-                        className="selectNextUi w-full"
-                    >
-                        {categoryValue && categoryValue.map((e) => {
-                            return (
-                                <SelectItem className="vazirMedium" value={e._id} key={e._id}>
-                                    {e.title}
-                                </SelectItem>
-                            )
-                        })}
-                        {categoryValue === null &&
+                            <Select
+                                value={categoryInput}
+                                onSelectionChange={(e) => {
+                                    setCategoryInput(e);
+                                }}
+                                variant="faded"
+                                label="دسته بندی را انتخاب کنید"
+                                className="selectNextUi w-full"
+                            >
+                                {categoryValue && categoryValue.map((e) => {
+                                    return (
+                                        <SelectItem className="vazirMedium" value={e._id} key={e._id}>
+                                            {e.title}
+                                        </SelectItem>
+                                    )
+                                })}
+                                {categoryValue === null &&
 
-                            <SelectItem>
-                                <div className="flex items-center gap-2">
-                                    <Spinner size="sm" />
-                                    <p className="vazirLight">
-                                        در حال پردازش اطلاعات
-                                    </p>
-                                </div>
-                            </SelectItem>
+                                    <SelectItem>
+                                        <div className="flex items-center gap-2">
+                                            <Spinner size="sm" />
+                                            <p className="vazirLight">
+                                                در حال پردازش اطلاعات
+                                            </p>
+                                        </div>
+                                    </SelectItem>
 
-                        }
-                    </Select>
-                </div>
-                <div className="w-full h-full flex flex-col justify-end pb-[2px]">
-
-                    <Select
-                        value={brand}
-                        onSelectionChange={(e) => {
-                            setBrand(e);
-                        }}
-                        variant="faded"
-                        label=" برند را انتخاب کنید"
-                        className="selectNextUi w-full"
-                    >
-                        <SelectItem className="vazirMedium" value={"Enda"} key={"Enda"}>
-                            Enda
-                        </SelectItem>
-                        <SelectItem className="vazirMedium" value={"Siemens"} key={"Siemens"}>
-                            Siemens
-                        </SelectItem>
-                        <SelectItem className="vazirMedium" value={"Eaton"} key={"Eaton"}>
-                            Eaton
-                        </SelectItem>
-                        <SelectItem className="vazirMedium" value={"Schrack"} key={"Schrack"}>
-                            Schrack
-                        </SelectItem>
-                        <SelectItem className="vazirMedium" value={"GMT CNT"} key={"GMT CNT"}>
-                            GMT CNT
-                        </SelectItem>
-                    </Select>
-                </div>
-
-                <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-2 2xl:col-span-4  ">
-                    <label ref={wrapperRef}
-                        onDragEnter={onDragEnter}
-                        onDragLeave={onDragLeave}
-                        onDrop={onDrop}
-                        htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-[#ededed] hover:bg-gray-100 ">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6" style={{ pointerEvents: 'none' }}>
-                            <svg className="w-8 h-8 mb-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                            </svg>
-                            <p className="mb-2 text-sm text-gray-500 "><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                            <p className="text-xs text-gray-500 "> PNG, JPG یا</p>
+                                }
+                            </Select>
                         </div>
-                        <input onChange={handleImageChange} value="" id="dropzone-file" type="file" className="hidden" />
-                    </label>
-                </div>
+                        <div className="w-full h-full flex flex-col justify-end pb-[2px]">
 
+                            <Select
+                                value={brand}
+                                onSelectionChange={(e) => {
+                                    setBrand(e);
+                                }}
+                                variant="faded"
+                                label=" برند را انتخاب کنید"
+                                className="selectNextUi w-full"
+                            >
+                                <SelectItem className="vazirMedium" value={"Enda"} key={"Enda"}>
+                                    Enda
+                                </SelectItem>
+                                <SelectItem className="vazirMedium" value={"Siemens"} key={"Siemens"}>
+                                    Siemens
+                                </SelectItem>
+                                <SelectItem className="vazirMedium" value={"Eaton"} key={"Eaton"}>
+                                    Eaton
+                                </SelectItem>
+                                <SelectItem className="vazirMedium" value={"Schrack"} key={"Schrack"}>
+                                    Schrack
+                                </SelectItem>
+                                <SelectItem className="vazirMedium" value={"GMT CNT"} key={"GMT CNT"}>
+                                    GMT CNT
+                                </SelectItem>
+                            </Select>
+                        </div>
 
-
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
-
-                {preview && preview.length !== 0 &&
-                    preview.map((e, i) => {
-                        return (
-                            <div className="relative my-4 group" key={i}>
-                                <img src={e} alt="Preview" className={
-                                    `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
-
-                                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                                    <div className="flex gap-2">
-                                        <span
-                                            className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
-                                            onClick={() => {
-                                                setIdDelete(i + previewBase64.length)
-                                                setTitle("عکس محصول")
-                                                setText(`عکس محصول`)
-                                                setIsOpen(true)
-                                            }}
-                                        >
-                                            <Trash2Icon size={28} />
-                                        </span>
-                                        <span
-                                            className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
-                                            onClick={() => {
-                                                setMainImage(i + indexLastImage + 1)
-
-                                            }}
-                                        >
-                                            <FileCheck size={28} />
-                                        </span>
-                                    </div>
+                        <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-2 2xl:col-span-4  ">
+                            <label ref={wrapperRef}
+                                onDragEnter={onDragEnter}
+                                onDragLeave={onDragLeave}
+                                onDrop={onDrop}
+                                htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-[#ededed] hover:bg-gray-100 ">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6" style={{ pointerEvents: 'none' }}>
+                                    <svg className="w-8 h-8 mb-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p className="mb-2 text-sm text-gray-500 "><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p className="text-xs text-gray-500 "> PNG, JPG یا</p>
                                 </div>
-                            </div>
+                                <input onChange={handleImageChange} value="" id="dropzone-file" type="file" className="hidden" />
+                            </label>
+                        </div>
 
-                        )
-                    })
-                }
 
-                {previewBase64 && previewBase64.length !== 0 &&
-                    previewBase64.map((e, i) => {
-                        if (e.index > indexLastImage) {
-                            setIndexLastImage(e.index)
-                        }
-                        return (
-                            <div className="relative my-4 group" key={i}>
-                                <img className={`max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === e.index ? "p-1 !border-blue-600" : ""}`} src={`data:image/webp;base64,${e?.thumbnailBase64}`} alt="" />
-                                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                                    <div className="flex gap-2">
-                                        <span
-                                            className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
-                                            onClick={() => {
-                                                setIdDelete(i)
-                                                setTitle("عکس محصول")
-                                                setText(`عکس محصول `)
-                                                setIsOpen(true)
-                                            }}
-                                        >
-                                            <Trash2Icon size={28} />
-                                        </span>
-                                        <span
-                                            className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
-                                            onClick={() => {
-                                                setMainImage(e.index)
 
-                                            }}
-                                        >
-                                            <FileCheck size={28} />
-                                        </span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-
-            </div>
-            <div className="mb-5">
-
-                <Button onClick={createElement} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
-                    افزودن ویژگی
-                </Button>
-            </div>
-            {inputs.map((data, i) => (
-                <FeatureValue
-                    key={i}
-                    inputs={inputs}
-                    setInputs={setInputs}
-                    data={data}
-                />
-            ))}
-            <div className="mb-5">
-
-                <Button onClick={createSpecifications} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
-                    افزودن مشخصات
-                </Button>
-            </div>
-            {inputsSpecifications.map((data, i) => (
-                <SpecificationsValue
-                    key={i}
-                    inputs={inputsSpecifications}
-                    setInputs={setInputsSpecifications}
-                    data={data}
-                />
-            ))}
-
-            <div className="my-10 flex items-center">
-
-                <div>
-                    <label
-                        htmlFor="file-input"
-                        className="cursor-pointer bg-blue-600 text-white py-2.5 px-3.5 rounded-lg shadow-sm text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    >
-                        انتخاب فایل
-                    </label>
-                    <input
-                        onChange={handleFileChange}
-                        id="file-input"
-                        type="file"
-                        className="sr-only"
-                    />
-                </div>
-                {pdfFile && (
-                    <div className="mx-3 text-sm">
-                        <p className="text-base vazirMedium">فایل انتخاب شده: {pdfFile.name}</p>
-                        <p className="text-base vazirMedium">اندازه: {(pdfFile.size / 1024).toFixed(2)} KB</p>
-                        <p className="text-base vazirMedium">نوع: {pdfFile.type}</p>
                     </div>
-                )}
-                {hasPdf && <div className="mr-3">
-                    <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
-                        <Download size={28} className="text-green-700 cursor-pointer" onClick={downloadFile} />
+
+
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
+
+                        {preview && preview.length !== 0 &&
+                            preview.map((e, i) => {
+                                return (
+                                    <div className="relative my-4 group" key={i}>
+                                        <img src={e} alt="Preview" className={
+                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
+
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                                            <div className="flex gap-2">
+                                                <span
+                                                    className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
+                                                    onClick={() => {
+                                                        setIdDelete(i + previewBase64.length)
+                                                        setTitle("عکس محصول")
+                                                        setText(`عکس محصول`)
+                                                        setIsOpen(true)
+                                                    }}
+                                                >
+                                                    <Trash2Icon size={28} />
+                                                </span>
+                                                <span
+                                                    className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
+                                                    onClick={() => {
+                                                        setMainImage(i + indexLastImage + 1)
+
+                                                    }}
+                                                >
+                                                    <FileCheck size={28} />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                )
+                            })
+                        }
+
+                        {previewBase64 && previewBase64.length !== 0 &&
+                            previewBase64.map((e, i) => {
+                                if (e.index > indexLastImage) {
+                                    setIndexLastImage(e.index)
+                                }
+                                return (
+                                    <div className="relative my-4 group" key={i}>
+                                        <img className={`max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === e.index ? "p-1 !border-blue-600" : ""}`} src={`data:image/webp;base64,${e?.thumbnailBase64}`} alt="" />
+                                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                                            <div className="flex gap-2">
+                                                <span
+                                                    className="text-red-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
+                                                    onClick={() => {
+                                                        setIdDelete(i)
+                                                        setTitle("عکس محصول")
+                                                        setText(`عکس محصول `)
+                                                        setIsOpen(true)
+                                                    }}
+                                                >
+                                                    <Trash2Icon size={28} />
+                                                </span>
+                                                <span
+                                                    className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
+                                                    onClick={() => {
+                                                        setMainImage(e.index)
+
+                                                    }}
+                                                >
+                                                    <FileCheck size={28} />
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+
+                    </div>
+                    <div className="mb-5">
+
+                        <Button onClick={createElement} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
+                            افزودن ویژگی
+                        </Button>
+                    </div>
+                    {inputs.map((data, i) => (
+                        <FeatureValue
+                            key={i}
+                            inputs={inputs}
+                            setInputs={setInputs}
+                            data={data}
+                        />
+                    ))}
+                    <div className="mb-5">
+
+                        <Button onClick={createSpecifications} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
+                            افزودن مشخصات
+                        </Button>
+                    </div>
+                    {inputsSpecifications.map((data, i) => (
+                        <SpecificationsValue
+                            key={i}
+                            inputs={inputsSpecifications}
+                            setInputs={setInputsSpecifications}
+                            data={data}
+                        />
+                    ))}
+
+                    <div className="my-10 flex items-center">
+
+                        <div>
+                            <label
+                                htmlFor="file-input"
+                                className="cursor-pointer bg-blue-600 text-white py-2.5 px-3.5 rounded-lg shadow-sm text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                                انتخاب فایل
+                            </label>
+                            <input
+                                onChange={handleFileChange}
+                                id="file-input"
+                                type="file"
+                                className="sr-only"
+                            />
+                        </div>
+                        {pdfFile && (
+                            <div className="mx-3 text-sm">
+                                <p className="text-base vazirMedium">فایل انتخاب شده: {pdfFile.name}</p>
+                                <p className="text-base vazirMedium">اندازه: {(pdfFile.size / 1024).toFixed(2)} KB</p>
+                                <p className="text-base vazirMedium">نوع: {pdfFile.type}</p>
+                            </div>
+                        )}
+                        {hasPdf && <div className="mr-3">
+                            <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
+                                <Download size={28} className="text-green-700 cursor-pointer" onClick={downloadFile} />
+                            </Button>
+
+                        </div>}
+                        {hasPdf && <div className="mr-3">
+                            <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
+                                <X size={28} className="text-red-700 cursor-pointer" onClick={removeFile} />
+                            </Button>
+
+                        </div>}
+
+                        {pdfName && <p className="mx-2"> نام :  {pdfName}</p>}
+
+
+                    </div>
+
+
+                    <div className="grid grid-cols-1 md:grid-cols-2">
+                        <Textarea
+                            value={description}
+                            onChange={(e) => {
+                                setDescription(e.target.value);
+                            }}
+                            id="textarea"
+                            // isRequired={true}
+                            label="توضیح تکمیلی"
+                            placeholder="توضیح تکمیلی را وارد کنید..."
+                            className="w-full mb-6 textAreaNextUi"
+                        />
+                    </div>
+                    <Button onClick={createNewProduct} className={`${idProduct ? "bg-blue-600" : "bg-green-700"}  text-white`}>
+                        {idProduct ? "ادیت" : "ساخت"} محصول جدید
                     </Button>
+                </>
+            }
 
-                </div>}
-                {hasPdf && <div className="mr-3">
-                    <Button className="min-w-0 bg-transparent px-1.5" id="downloadFile">
-                        <X size={28} className="text-red-700 cursor-pointer" onClick={removeFile} />
-                    </Button>
-
-                </div>}
-
-                {pdfName && <p className="mx-2"> نام :  {pdfName}</p>}
-             
-            
-            </div>
-
-
-            <div className="grid grid-cols-1 md:grid-cols-2">
-                <Textarea
-                    value={description}
-                    onChange={(e) => {
-                        setDescription(e.target.value);
-                    }}
-                    id="textarea"
-                    // isRequired={true}
-                    label="توضیح تکمیلی"
-                    placeholder="توضیح تکمیلی را وارد کنید..."
-                    className="w-full mb-6 textAreaNextUi"
-                />
-            </div>
-            <Button onClick={createNewProduct} className={`${idProduct ? "bg-blue-600" : "bg-green-700"}  text-white`}>
-                {idProduct ? "ادیت" : "ساخت"} محصول جدید
-            </Button>
         </Suspense>
 
     )

@@ -21,3 +21,18 @@ const getApi = async (url, setdata = null, setloading = null , router=null) => {
   
   export default getApi;
   
+
+  // Fetch Blog Data
+export async function get_SSR_Data(url,) {
+
+
+  const res = await fetch(`${url}`, { cache: 'no-store' });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch blog data: ${res.status} ${res.statusText}`);
+  }
+
+  const data = await res.json();
+
+  return data;
+}

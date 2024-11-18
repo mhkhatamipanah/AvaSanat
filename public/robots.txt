@@ -2,8 +2,16 @@
 User-agent: *
 Allow: /
 
+# Googlebot
+User-agent: Googlebot
+Allow: /
+
+# BadBot
+User-agent: BadBot
+Disallow: /
+
 # Host
-Host: https://example.com
+Host: https://ava-sanat.vercel.app/
 
 # Sitemaps
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://ava-sanat.vercel.app/sitemap.xml

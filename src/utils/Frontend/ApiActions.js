@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 export const MONGOOSE = process.env.MONGOOSE;
 export const JWT_KEY = process.env.JWT_KEY;
+export const BASE_URL = process.env.BASE_URL;
 
 // Function For Params
 const params = (obj) => {

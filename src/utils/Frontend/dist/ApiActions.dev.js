@@ -3,15 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ApiActions = exports.JWT_KEY = exports.MONGOOSE = void 0;
+exports.ApiActions = exports.BASE_URL = exports.JWT_KEY = exports.MONGOOSE = void 0;
 
 var _sonner = require("sonner");
 
 var MONGOOSE = process.env.MONGOOSE;
 exports.MONGOOSE = MONGOOSE;
-var JWT_KEY = process.env.JWT_KEY; // Function For Params
-
+var JWT_KEY = process.env.JWT_KEY;
 exports.JWT_KEY = JWT_KEY;
+var BASE_URL = process.env.BASE_URL; // Function For Params
+
+exports.BASE_URL = BASE_URL;
 
 var params = function params(obj) {
   var page = obj.page;

@@ -161,7 +161,14 @@ export async function GET(req, res) {
         indexMainImage: ducomentProduct.indexMainImage,
       };
     });
-    return NextResponse.json({ data: imageData });
+
+    const oneCategory = await Category.findOne({ route: filterCategory }, "title description").catch(
+      (err) => {
+        console.log(err);
+      }
+    );
+    
+    return NextResponse.json({ data: imageData ,category:oneCategory } , );
   }
 
   // detailProduct
