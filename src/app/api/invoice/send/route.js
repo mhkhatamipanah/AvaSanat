@@ -2,6 +2,7 @@ import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 import OTP from "@/src/models/otp";
 import axios from "axios";
+import { API_KEY_SMSIR } from "@/src/utils/Frontend/ApiActions";
 
 const isInteger = (str) => {
   return !isNaN(parseInt(str));
@@ -21,50 +22,56 @@ export async function POST(req, res) {
     const { phone } = body;
     if (!phone.trim() || phone.trim().length !== 11) {
       return NextResponse.json(
-        { success: false , message: " شماره را به درستی وارد کنید" },
+        { success: false, message: " شماره را به درستی وارد کنید" },
         { status: 400 }
       );
     }
     if (!isInteger(phone)) {
       return NextResponse.json(
-        {  success: false ,message: " شماره باید عدد باشد" },
+        { success: false, message: " شماره باید عدد باشد" },
         { status: 400 }
       );
     }
 
-   
-    // const oneHoureBefore =  new Date().getTime() - (1000*60*60)
-    // const countRequestOneHour = await OTP.find({ phone , expTime: { $gt: oneHoureBefore }}).count().catch((err) => {
-    //   console.log(err);
-    // });
-    // if(countRequestOneHour > 4 ){
-    //   return NextResponse.json({ message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید" } , { status: 429 });
-    // }
+    const oneHoureBefore = new Date().getTime() - 1000 * 60 * 60;
+    const countRequestOneHour = await OTP.countDocuments({
+      phone,
+      expTime: { $gt: oneHoureBefore },
+    }).catch((err) => {
+      console.log(err);
+    });
 
-    // const sendBefore = await OTP.find({ phone , expTime: { $gt: new Date().getTime() }}).count().catch((err) => {
-    //   console.log(err);
-    // });
-    // if(sendBefore > 0 ){
-    //   return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
+    if (countRequestOneHour > 4) {
+      return NextResponse.json(
+        { message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید" },
+        { status: 429 }
+      );
+    }
 
-    // }
+    const sendBefore = await OTP.countDocuments({
+      phone,
+      expTime: { $gt: new Date().getTime() }, // زمان فعلی برای چک کردن تاریخ انقضا
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    if (sendBefore > 0) {
+      return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
+    }
 
     const date = new Date();
     const expireOTP = date.getTime() + 1000 * 60 * 2;
-    const otpCode =  sixDigitOTP()
-    console.log()
+    const otpCode = sixDigitOTP();
+    console.log();
     OTP.create({
       phone: body.phone,
       code: otpCode,
       expTime: expireOTP,
     });
-    // بعدا باید otp رو بردارم که به فرانت نفرستم 
-    return NextResponse.json({ success: true , message: "کد ارسال شد" , otp: otpCode });
-
 
     var data = JSON.stringify({
       mobile: body.phone,
-      templateId: "153190",
+      templateId: "784035",
       parameters: [{ name: "CODE", value: otpCode }],
     });
 
@@ -74,7 +81,7 @@ export async function POST(req, res) {
       headers: {
         "Content-Type": "application/json",
         Accept: "text/plain",
-        "x-api-key": process.env.API_KEY_SMSIR,
+        "x-api-key": API_KEY_SMSIR,
       },
       data: data,
     };
@@ -89,13 +96,19 @@ export async function POST(req, res) {
         expTime: expireOTP,
       });
 
-      return NextResponse.json({success: true, message: "کد ارسال شد" });
+      return NextResponse.json({ success: true, message: "کد ارسال شد" });
     } else {
-      return NextResponse.json({success: false, message: "مشکلی پیش آمده" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "مشکلی پیش آمده" },
+        { status: 400 }
+      );
     }
-  } catch (e){
-    console.log(e)
+  } catch (e) {
+    console.log(e);
 
-    return NextResponse.json({success: false, message: "ارور ناشناخته" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "ارور ناشناخته" },
+      { status: 500 }
+    );
   }
 }

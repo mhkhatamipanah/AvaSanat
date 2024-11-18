@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ApiActions = exports.BASE_URL = exports.JWT_KEY = exports.MONGOOSE = void 0;
+exports.ApiActions = exports.API_KEY_SMSIR = exports.BASE_URL = exports.JWT_KEY = exports.MONGOOSE = void 0;
 
 var _sonner = require("sonner");
 
@@ -11,9 +11,11 @@ var MONGOOSE = process.env.MONGOOSE;
 exports.MONGOOSE = MONGOOSE;
 var JWT_KEY = process.env.JWT_KEY;
 exports.JWT_KEY = JWT_KEY;
-var BASE_URL = process.env.BASE_URL; // Function For Params
-
+var BASE_URL = process.env.BASE_URL;
 exports.BASE_URL = BASE_URL;
+var API_KEY_SMSIR = process.env.API_KEY_SMSIR; // Function For Params
+
+exports.API_KEY_SMSIR = API_KEY_SMSIR;
 
 var params = function params(obj) {
   var page = obj.page;
@@ -121,11 +123,6 @@ var postApi = function postApi(url, data) {
           {
             loading: "در حال پردازش اطلاعات...",
             success: function success(response) {
-              if (response.otp) {
-                _sonner.toast.info(response.otp); // نمایش OTP در صورت وجود
-
-              }
-
               return response.message; // پیام موفقیت را برمی‌گرداند
             },
             error: function error(err) {

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 export const MONGOOSE = process.env.MONGOOSE;
 export const JWT_KEY = process.env.JWT_KEY;
 export const BASE_URL = process.env.BASE_URL;
+export const API_KEY_SMSIR = process.env.API_KEY_SMSIR;
 
 // Function For Params
 const params = (obj) => {
@@ -65,9 +66,7 @@ const postApi = async (url, data) => {
       {
         loading: "در حال پردازش اطلاعات...",
         success: (response) => {
-          if (response.otp) {
-            toast.info(response.otp); // نمایش OTP در صورت وجود
-          }
+      
           return response.message; // پیام موفقیت را برمی‌گرداند
         },
         error: (err) => {

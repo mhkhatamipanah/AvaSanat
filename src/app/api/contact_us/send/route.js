@@ -2,6 +2,7 @@ import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 import OTP from "@/src/models/otp";
 import axios from "axios";
+import { API_KEY_SMSIR } from "@/src/utils/Frontend/ApiActions";
 
 const isInteger = (str) => {
   return !isNaN(parseInt(str));
@@ -13,6 +14,8 @@ const sixDigitOTP = () => {
   } while (randomNumber.length < 6);
   return randomNumber;
 };
+
+
 export async function POST(req, res) {
   try {
     connectDB();
@@ -33,39 +36,41 @@ export async function POST(req, res) {
     }
 
    
-    // const oneHoureBefore =  new Date().getTime() - (1000*60*60)
-    // const countRequestOneHour = await OTP.find({ phone , expTime: { $gt: oneHoureBefore }}).count().catch((err) => {
-    //   console.log(err);
-    // });
-    // if(countRequestOneHour > 4 ){
-    //   return NextResponse.json({ message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید" } , { status: 429 });
-    // }
+    const oneHoureBefore =  new Date().getTime() - (1000*60*60)
+    const countRequestOneHour = await OTP.countDocuments({
+      phone,
+      expTime: { $gt: oneHoureBefore },
+    }).catch((err) => {
+      console.log(err);
+    });
+    if(countRequestOneHour > 4 ){
+      return NextResponse.json({ message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید" } , { status: 429 });
+    }
 
-    // const sendBefore = await OTP.find({ phone , expTime: { $gt: new Date().getTime() }}).count().catch((err) => {
-    //   console.log(err);
-    // });
-    // if(sendBefore > 0 ){
-    //   return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
+    const sendBefore = await OTP.countDocuments({
+      phone,
+      expTime: { $gt: new Date().getTime() }, // زمان فعلی برای چک کردن تاریخ انقضا
+    }).catch((err) => {
+      console.log(err);
+    });
+    if(sendBefore > 0 ){
+      return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
 
-    // }
+    }
 
     const date = new Date();
     const expireOTP = date.getTime() + 1000 * 60 * 2;
     const otpCode =  sixDigitOTP()
-    console.log()
     OTP.create({
       
-      phone: body.phone,
+      phone ,
       code: otpCode,
       expTime: expireOTP,
     });
-    // بعدا باید otp رو بردارم که به فرانت نفرستم 
-    return NextResponse.json({ success: true , message: "کد ارسال شد" , otp: otpCode });
-
 
     var data = JSON.stringify({
       mobile: body.phone,
-      templateId: "153190",
+      templateId: "784035",
       parameters: [{ name: "CODE", value: otpCode }],
     });
 
@@ -75,7 +80,7 @@ export async function POST(req, res) {
       headers: {
         "Content-Type": "application/json",
         Accept: "text/plain",
-        "x-api-key": process.env.API_KEY_SMSIR,
+        "x-api-key": API_KEY_SMSIR,
       },
       data: data,
     };

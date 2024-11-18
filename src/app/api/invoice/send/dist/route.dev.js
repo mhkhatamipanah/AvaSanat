@@ -13,6 +13,8 @@ var _otp = _interopRequireDefault(require("@/src/models/otp"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _ApiActions = require("@/src/utils/Frontend/ApiActions");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var isInteger = function isInteger(str) {
@@ -30,7 +32,7 @@ var sixDigitOTP = function sixDigitOTP() {
 };
 
 function POST(req, res) {
-  var body, phone, date, expireOTP, otpCode, data, config, result;
+  var body, phone, oneHoureBefore, countRequestOneHour, sendBefore, date, expireOTP, otpCode, data, config, result;
   return regeneratorRuntime.async(function POST$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -70,19 +72,56 @@ function POST(req, res) {
           }));
 
         case 10:
-          // const oneHoureBefore =  new Date().getTime() - (1000*60*60)
-          // const countRequestOneHour = await OTP.find({ phone , expTime: { $gt: oneHoureBefore }}).count().catch((err) => {
-          //   console.log(err);
-          // });
-          // if(countRequestOneHour > 4 ){
-          //   return NextResponse.json({ message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید" } , { status: 429 });
-          // }
-          // const sendBefore = await OTP.find({ phone , expTime: { $gt: new Date().getTime() }}).count().catch((err) => {
-          //   console.log(err);
-          // });
-          // if(sendBefore > 0 ){
-          //   return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
-          // }
+          oneHoureBefore = new Date().getTime() - 1000 * 60 * 60;
+          _context.next = 13;
+          return regeneratorRuntime.awrap(_otp["default"].countDocuments({
+            phone: phone,
+            expTime: {
+              $gt: oneHoureBefore
+            }
+          })["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 13:
+          countRequestOneHour = _context.sent;
+
+          if (!(countRequestOneHour > 4)) {
+            _context.next = 16;
+            break;
+          }
+
+          return _context.abrupt("return", _server.NextResponse.json({
+            message: "تعداد درخواست زیاد ساعات دیگر مجدد وارد شوید"
+          }, {
+            status: 429
+          }));
+
+        case 16:
+          _context.next = 18;
+          return regeneratorRuntime.awrap(_otp["default"].countDocuments({
+            phone: phone,
+            expTime: {
+              $gt: new Date().getTime()
+            } // زمان فعلی برای چک کردن تاریخ انقضا
+
+          })["catch"](function (err) {
+            console.log(err);
+          }));
+
+        case 18:
+          sendBefore = _context.sent;
+
+          if (!(sendBefore > 0)) {
+            _context.next = 21;
+            break;
+          }
+
+          return _context.abrupt("return", _server.NextResponse.json({
+            message: "کد برای شما از قبل ارسال شده "
+          }));
+
+        case 21:
           date = new Date();
           expireOTP = date.getTime() + 1000 * 60 * 2;
           otpCode = sixDigitOTP();
@@ -92,20 +131,36 @@ function POST(req, res) {
             phone: body.phone,
             code: otpCode,
             expTime: expireOTP
-          }); // بعدا باید otp رو بردارم که به فرانت نفرستم 
+          });
 
-
-          return _context.abrupt("return", _server.NextResponse.json({
-            success: true,
-            message: "کد ارسال شد",
-            otp: otpCode
+          data = JSON.stringify({
+            mobile: body.phone,
+            templateId: "784035",
+            parameters: [{
+              name: "CODE",
+              value: otpCode
+            }]
+          });
+          config = {
+            method: "post",
+            url: "https://api.sms.ir/v1/send/verify",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "text/plain",
+              "x-api-key": _ApiActions.API_KEY_SMSIR
+            },
+            data: data
+          };
+          _context.next = 30;
+          return regeneratorRuntime.awrap((0, _axios["default"])(config)["catch"](function (error) {
+            console.log(error);
           }));
 
-        case 20:
+        case 30:
           result = _context.sent;
 
           if (!JSON.stringify(result.data.message === "موفق")) {
-            _context.next = 26;
+            _context.next = 36;
             break;
           }
 
@@ -120,7 +175,7 @@ function POST(req, res) {
             message: "کد ارسال شد"
           }));
 
-        case 26:
+        case 36:
           return _context.abrupt("return", _server.NextResponse.json({
             success: false,
             message: "مشکلی پیش آمده"
@@ -128,12 +183,12 @@ function POST(req, res) {
             status: 400
           }));
 
-        case 27:
-          _context.next = 33;
+        case 37:
+          _context.next = 43;
           break;
 
-        case 29:
-          _context.prev = 29;
+        case 39:
+          _context.prev = 39;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           return _context.abrupt("return", _server.NextResponse.json({
@@ -143,10 +198,10 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 33:
+        case 43:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 29]]);
+  }, null, null, [[0, 39]]);
 }
