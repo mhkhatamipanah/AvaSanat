@@ -69,7 +69,8 @@ export async function GET(req, { params }) {
       const newArr = imageData.filter(
         (item) => item !== null && typeof item !== "undefined"
       );
-
+      
+      obj.count = value.count;
       obj.feature = value.feature;
       obj.title = oneProduct.title;
       obj.id = oneProduct.id_Product;

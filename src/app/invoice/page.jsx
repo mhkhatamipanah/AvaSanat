@@ -93,70 +93,74 @@ const Page = () => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      const allItems = data.map(e => ({
+      const allItems = data.map(e =>
+         ({
         id: e.id,
         ...(e.feature && { feature: e.feature }),
+        count: e.count , 
       }));
+      data.forEach(e => {
+        console.log(e);
+      });
       setSelectedItems(allItems);
     }
 
   }, [data]);
 
   const sendOtpHandler = async () => {
+    // if (isSendOTP) {
+    //   // check otp
 
-    if (isSendOTP) {
-      // check otp
+    //   let code = '';
 
-      let code = '';
+    //   for (let i = 0; i < 6; i++) {
+    //     code += document.querySelectorAll('.otp-input')[i].value;
+    //   }
+    //   if (code.length !== 6) {
+    //     toast.error("لطفا کل کد را وارد کنید")
+    //     return;
+    //   }
+    //   if (!/^\d+$/.test(code)) {
+    //     toast.error("لطفا عدد وارد کنید")
+    //     return;
+    //   }
 
-      for (let i = 0; i < 6; i++) {
-        code += document.querySelectorAll('.otp-input')[i].value;
-      }
-      if (code.length !== 6) {
-        toast.error("لطفا کل کد را وارد کنید")
-        return;
-      }
-      if (!/^\d+$/.test(code)) {
-        toast.error("لطفا عدد وارد کنید")
-        return;
-      }
+    //   const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
+    //   const res = await checkOtpInvoice(data);
 
-      const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
-      const res = await checkOtpInvoice(data);
-
-      if (res) {
-        setPhone("")
-        setDescription("")
-        setIsSendOTP(false)
-        for (let i = 0; i < 6; i++) {
-          document.querySelectorAll('.otp-input')[i].value = ""
-        }
-        setData("")
-        setSelectedItems([])
-      }
-
+    //   if (res) {
+    //     setPhone("")
+    //     setDescription("")
+    //     setIsSendOTP(false)
+    //     for (let i = 0; i < 6; i++) {
+    //       document.querySelectorAll('.otp-input')[i].value = ""
+    //     }
+    //     setData("")
+    //     setSelectedItems([])
+    //   }
 
 
-    } else {
-      // send Otp
 
-      if (!phone.trim()) {
-        toast.error("لطفا شماره تلفن را وارد کنید")
-        return
-      }
-      if (phone.length !== 11) {
-        toast.error("لطفا 11 رقم تلفن را وارد کنید")
-        return
-      }
+    // } else {
+    //   // send Otp
 
-      const data = JSON.stringify({ phone })
+    //   if (!phone.trim()) {
+    //     toast.error("لطفا شماره تلفن را وارد کنید")
+    //     return
+    //   }
+    //   if (phone.length !== 11) {
+    //     toast.error("لطفا 11 رقم تلفن را وارد کنید")
+    //     return
+    //   }
 
-      const res = sendOtpInvoice(data)
-      if (res) {
-        setIsSendOTP(true)
-      }
+    //   const data = JSON.stringify({ phone })
 
-    }
+    //   const res = sendOtpInvoice(data)
+    //   if (res) {
+    //     setIsSendOTP(true)
+    //   }
+
+    // }
   }
 
 
@@ -215,7 +219,7 @@ const Page = () => {
 
               </div>
               <div className='flex flex-col justify-center items-center'>
-                <ButtonInvoice id={e.key} invoiceContainer={e.key} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
+                <ButtonInvoice count = {Number(e.count)} realProductId = {e.id} id={e.key} invoiceContainer={e.key} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
               </div>
 
             </div>

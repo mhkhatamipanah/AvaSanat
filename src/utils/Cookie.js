@@ -31,6 +31,26 @@ function removeFromCart(uniqueKey) {
   }
 }
 
+function updateCartQuantity(uniqueKey, newCount) {
+  // خواندن مقدار فعلی کوکی
+  let cookieValue = getCookie("Avasanat");
+  let cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+
+  // بررسی وجود کلید در شیء
+  if (cart[uniqueKey]) {
+    // فرض بر این است که quantity یک آبجکت است
+    let quantityObj = JSON.parse(cart[uniqueKey].quantity); // ابتدا quantity را تجزیه کنید
+    quantityObj.count = newCount; // مقدار count را آپدیت کنید
+    cart[uniqueKey].quantity = JSON.stringify(quantityObj); // مقدار جدید را در cart قرار دهید
+
+    // ذخیره دوباره در کوکی
+    setCookie("Avasanat", JSON.stringify(cart));
+  } else {
+    console.log("Item with the given key does not exist in the cart.");
+  }
+}
+
+
 
 function getItemCount(productId) {
   // Retrieve the cart from the cookie
@@ -87,4 +107,4 @@ function getTotalUniqueItems() {
   return 0;
 }
 
-export { getCookie, addToCart, removeFromCart, setCookie, clearCart , decreaseItemCount , getTotalUniqueItems , getItemCount };
+export { getCookie, addToCart, removeFromCart, setCookie, clearCart , decreaseItemCount , getTotalUniqueItems , getItemCount , updateCartQuantity };

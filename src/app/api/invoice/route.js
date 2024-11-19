@@ -14,7 +14,7 @@ export async function POST(req, res) {
       const promises = Object.entries(body).map(async ([key, value]) =>  {
         const obj = {};
         const oneProduct = await Product.findOne(
-          { id_Product: value.id },
+          { id_Product: JSON.parse(value.quantity).id },
           "-__v -createdAt -updatedAt"
         ).catch((err) => {
           console.log(err);
@@ -34,12 +34,14 @@ export async function POST(req, res) {
           const newArr = imageData.filter(
             (item) => item !== null && typeof item !== "undefined"
           );
-          {console.log()}
-  
+
+
+          obj.count = JSON.parse(value.quantity).count
+
           obj.key = key
           obj.feature =JSON.parse(value.quantity).feature
           obj.title = oneProduct.title;
-          obj.id = key;
+          obj.id = JSON.parse(value.quantity).id;
           obj.subtitle = oneProduct.subtitle;
           obj.route = oneProduct.routeCategory;
           obj.image = newArr[0]?.thumbnailBase64;

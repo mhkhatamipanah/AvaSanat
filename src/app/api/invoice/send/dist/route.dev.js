@@ -125,13 +125,14 @@ function POST(req, res) {
           date = new Date();
           expireOTP = date.getTime() + 1000 * 60 * 2;
           otpCode = sixDigitOTP();
-          console.log();
+          console.log(otpCode);
 
           _otp["default"].create({
             phone: body.phone,
             code: otpCode,
             expTime: expireOTP
-          });
+          }); // return NextResponse.json({ success: true, message: "کد ارسال شد" });
+
 
           data = JSON.stringify({
             mobile: body.phone,

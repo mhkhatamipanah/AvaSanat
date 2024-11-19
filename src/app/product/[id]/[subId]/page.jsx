@@ -16,7 +16,6 @@ export async function generateMetadata({ params }) {
     const detailProduct = await get_SSR_Data(`${baseUrl}/api/product?${(new URLSearchParams(data)).toString()}`);
     const title = detailProduct.data.title
     const description = detailProduct.data.subtitle
-    console.log(title)
     return {
       title: `${title} | آواصنعت` || 'Default Title',
       description: description || 'Default Description',

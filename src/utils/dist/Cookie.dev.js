@@ -11,6 +11,7 @@ exports.clearCart = clearCart;
 exports.decreaseItemCount = decreaseItemCount;
 exports.getTotalUniqueItems = getTotalUniqueItems;
 exports.getItemCount = getItemCount;
+exports.updateCartQuantity = updateCartQuantity;
 
 var _jsCookie = _interopRequireDefault(require("js-cookie"));
 
@@ -56,6 +57,27 @@ function removeFromCart(uniqueKey) {
 
       setCookie("Avasanat", JSON.stringify(cart)); // ذخیره دوباره در کوکی
     }
+  }
+}
+
+function updateCartQuantity(uniqueKey, newCount) {
+  // خواندن مقدار فعلی کوکی
+  var cookieValue = getCookie("Avasanat");
+  var cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+  // بررسی وجود کلید در شیء
+
+  if (cart[uniqueKey]) {
+    // فرض بر این است که quantity یک آبجکت است
+    var quantityObj = JSON.parse(cart[uniqueKey].quantity); // ابتدا quantity را تجزیه کنید
+
+    quantityObj.count = newCount; // مقدار count را آپدیت کنید
+
+    cart[uniqueKey].quantity = JSON.stringify(quantityObj); // مقدار جدید را در cart قرار دهید
+    // ذخیره دوباره در کوکی
+
+    setCookie("Avasanat", JSON.stringify(cart));
+  } else {
+    console.log("Item with the given key does not exist in the cart.");
   }
 }
 

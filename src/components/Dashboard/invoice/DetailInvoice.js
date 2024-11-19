@@ -90,6 +90,9 @@ const DetailInvoice = ({ params, getOneTicket, editTicket }) => {
                             <p className="text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm">
                               {e.subtitle}
                             </p>
+                            <p className="text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm">
+                              {`تعداد :  ${e.count}`}
+                            </p>
                             <div className="flex gap-2 flex-wrap">
                               {/* </div> */}
                               {e.feature &&

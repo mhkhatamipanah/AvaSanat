@@ -59,15 +59,18 @@ export async function POST(req, res) {
       return NextResponse.json({ message: "کد برای شما از قبل ارسال شده " });
     }
 
+
     const date = new Date();
     const expireOTP = date.getTime() + 1000 * 60 * 2;
     const otpCode = sixDigitOTP();
-    console.log();
+    console.log(otpCode);
+
     OTP.create({
       phone: body.phone,
       code: otpCode,
       expTime: expireOTP,
     });
+    // return NextResponse.json({ success: true, message: "کد ارسال شد" });
 
     var data = JSON.stringify({
       mobile: body.phone,

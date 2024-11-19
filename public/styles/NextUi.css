@@ -168,3 +168,16 @@
 .accordionMobile button{
 padding: 0  ;
 }
+
+/* numberNextUiInput */
+.numberNextUiInput label{
+
+  padding: 0 0 0 10px;
+
+  
+}
+
+.numberNextUiInput > div:nth-of-type(1) {
+  border: 2px solid rgb(138, 138, 138);
+  border-radius: 10px;
+}
