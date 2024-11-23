@@ -56,7 +56,11 @@ function deepEqual(obj1, obj2) {
 
 function addToCart(productId, quantity) {
   var cart = getCookie("Avasanat");
-  cart = JSON.parse(cart);
+
+  if (cart) {
+    cart = JSON.parse(cart);
+  }
+
   var quantityParse = JSON.parse(quantity);
   var hasEqualFeature = Object.entries(cart).some(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
