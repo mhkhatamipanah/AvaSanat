@@ -55,13 +55,12 @@ function deepEqual(obj1, obj2) {
 }
 
 function addToCart(productId, quantity) {
+  var quantityParse = JSON.parse(quantity); // خواندن مقدار فعلی کوکی
+
   var cart = getCookie("Avasanat");
+  cart = cart ? JSON.parse(cart) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+  // بررسی اینکه آیا ویژگی مشابه در سبد خرید وجود دارد یا نه
 
-  if (cart) {
-    cart = JSON.parse(cart);
-  }
-
-  var quantityParse = JSON.parse(quantity);
   var hasEqualFeature = Object.entries(cart).some(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
         key = _ref2[0],
@@ -69,26 +68,19 @@ function addToCart(productId, quantity) {
 
     return deepEqual(JSON.parse(value.quantity).feature, quantityParse.feature);
   });
-  console.log(hasEqualFeature);
 
   if (hasEqualFeature) {
-    return false;
-  } else {
-    // خواندن مقدار فعلی کوکی
-    var cookieValue = getCookie("Avasanat");
-
-    var _cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
-    // اضافه کردن آیتم جدید با کلید یونیک
+    return false; // اگر ویژگی مشابه پیدا شد، بازگرداندن false
+  } // اضافه کردن آیتم جدید با کلید یونیک
 
 
-    _cart[Date.now()] = {
-      id: productId,
-      quantity: quantity
-    }; // ذخیره دوباره در کوکی
+  cart[Date.now()] = {
+    id: productId,
+    quantity: quantity
+  }; // ذخیره دوباره در کوکی
 
-    setCookie("Avasanat", JSON.stringify(_cart));
-    return true;
-  }
+  setCookie("Avasanat", JSON.stringify(cart));
+  return true;
 }
 
 function removeFromCart(uniqueKey) {

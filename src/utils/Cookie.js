@@ -30,32 +30,30 @@ function deepEqual(obj1, obj2) {
   return keys1.every((key) => deepEqual(obj1[key], obj2[key]));
 }
 function addToCart(productId, quantity) {
-  let cart = getCookie("Avasanat");
-  if(cart){
-    cart = JSON.parse(cart);
-  }
   let quantityParse = JSON.parse(quantity);
+  
+  // خواندن مقدار فعلی کوکی
+  let cart = getCookie("Avasanat");
+  cart = cart ? JSON.parse(cart) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
 
+  // بررسی اینکه آیا ویژگی مشابه در سبد خرید وجود دارد یا نه
   const hasEqualFeature = Object.entries(cart).some(([key, value]) =>
     deepEqual(JSON.parse(value.quantity).feature, quantityParse.feature)
   );
 
-  console.log(hasEqualFeature);
   if (hasEqualFeature) {
-    return false;
-  } else {
-    // خواندن مقدار فعلی کوکی
-    let cookieValue = getCookie("Avasanat");
-    let cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
-
-    // اضافه کردن آیتم جدید با کلید یونیک
-    cart[Date.now()] = { id: productId, quantity };
-
-    // ذخیره دوباره در کوکی
-    setCookie("Avasanat", JSON.stringify(cart));
-    return true;
+    return false; // اگر ویژگی مشابه پیدا شد، بازگرداندن false
   }
+
+  // اضافه کردن آیتم جدید با کلید یونیک
+  cart[Date.now()] = { id: productId, quantity };
+
+  // ذخیره دوباره در کوکی
+  setCookie("Avasanat", JSON.stringify(cart));
+  
+  return true;
 }
+
 
 function removeFromCart(uniqueKey) {
   let cart = getCookie("Avasanat");
