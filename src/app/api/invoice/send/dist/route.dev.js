@@ -131,37 +131,18 @@ function POST(req, res) {
             phone: body.phone,
             code: otpCode,
             expTime: expireOTP
-          }); // return NextResponse.json({ success: true, message: "کد ارسال شد" });
-
-
-          data = JSON.stringify({
-            mobile: body.phone,
-            templateId: "784035",
-            parameters: [{
-              name: "CODE",
-              value: otpCode
-            }]
           });
-          config = {
-            method: "post",
-            url: "https://api.sms.ir/v1/send/verify",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "text/plain",
-              "x-api-key": _ApiActions.API_KEY_SMSIR
-            },
-            data: data
-          };
-          _context.next = 30;
-          return regeneratorRuntime.awrap((0, _axios["default"])(config)["catch"](function (error) {
-            console.log(error);
+
+          return _context.abrupt("return", _server.NextResponse.json({
+            success: true,
+            message: "کد ارسال شد"
           }));
 
-        case 30:
+        case 31:
           result = _context.sent;
 
           if (!JSON.stringify(result.data.message === "موفق")) {
-            _context.next = 36;
+            _context.next = 37;
             break;
           }
 
@@ -176,7 +157,7 @@ function POST(req, res) {
             message: "کد ارسال شد"
           }));
 
-        case 36:
+        case 37:
           return _context.abrupt("return", _server.NextResponse.json({
             success: false,
             message: "مشکلی پیش آمده"
@@ -184,12 +165,12 @@ function POST(req, res) {
             status: 400
           }));
 
-        case 37:
-          _context.next = 43;
+        case 38:
+          _context.next = 44;
           break;
 
-        case 39:
-          _context.prev = 39;
+        case 40:
+          _context.prev = 40;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           return _context.abrupt("return", _server.NextResponse.json({
@@ -199,10 +180,10 @@ function POST(req, res) {
             status: 500
           }));
 
-        case 43:
+        case 44:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 39]]);
+  }, null, null, [[0, 40]]);
 }

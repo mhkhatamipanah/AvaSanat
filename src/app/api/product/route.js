@@ -157,6 +157,7 @@ export async function GET(req, res) {
         newArr,
         title: ducomentProduct.title,
         description: ducomentProduct.description,
+        subtitle: ducomentProduct.subtitle,
         id: ducomentProduct.id_Product,
         indexMainImage: ducomentProduct.indexMainImage,
       };

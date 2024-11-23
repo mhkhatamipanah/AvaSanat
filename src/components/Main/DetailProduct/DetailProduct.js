@@ -51,7 +51,10 @@ const DetailProduct = ({ dataServer, subId }) => {
   useEffect(() => {
     getData();
     setData(dataServer);
+    
   }, []);
+
+  const [resetRadio, setResetRadio] = useState(false); // تعریف متغیر resetRadio
 
   const [selectedValues, setSelectedValues] = useState({});
 
@@ -222,6 +225,7 @@ const DetailProduct = ({ dataServer, subId }) => {
                         <RadioBTN
                           title={e.title}
                           data={e.values}
+                          reset={resetRadio} // اضافه کردن prop reset
                           onChange={(value) =>
                             handleRadioChange(e.title, value)
                           }
@@ -230,7 +234,7 @@ const DetailProduct = ({ dataServer, subId }) => {
                     );
                   })}
 
-                <div className="w-32 vazirLight m-3">
+                <div className="w-32 vazirLight m-4">
                   <Input
                     type="number"
                     label="تعداد:"
@@ -260,17 +264,27 @@ const DetailProduct = ({ dataServer, subId }) => {
                         toast.error("لطفا ویژگی را وارد کنید");
                         return; // اگر ویژگی انتخاب نشده باشد، تابع متوقف می‌شود
                       }
-                      addToCart(
+                     const resultAddToCart =    addToCart(
                         data.data.id_Product,
                         JSON.stringify({
                           id: data.data.id_Product,
                           feature: selectedValues,
-                          count:countData
+                          count: countData,
                         })
                       );
-                      setCountInvoice(countInvoice + 1);
-                      rerenderBTN_Invoice();
-                      toast.success("محصول به پیش فاکتور اضافه شد");
+                      if(resultAddToCart){
+                        rerenderBTN_Invoice();
+                        setCountInvoice(countInvoice + 1);
+                        toast.success("محصول به پیش فاکتور اضافه شد");
+                        setSelectedValues({});
+                        setResetRadio(true); // فعال کردن reset
+                        setTimeout(() => setResetRadio(false), 0); // غیرفعال کردن reset
+                        setCountData(1)
+                      }else{
+                        toast.error("محصول تکراری، قبلا در پیش فاکتور ثبت شده ");
+
+                      }
+                 
                     }}
                     className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm"
                   >

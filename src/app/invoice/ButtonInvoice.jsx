@@ -18,12 +18,11 @@ const ButtonInvoice = ({ realProductId,  id, invoiceContainer, setSelectedItems,
     }
     // تابع حذف
     const removeItemById = (id , realProductId) => {
-        console.log(id , realProductId)
-        console.log(selectedProduct)
-        console.log(data)
-        
-        setSelectedItems(() => selectedProduct.filter(item => item.id !== realProductId));
-        setData(() => data.filter(item => item.id !== id));
+      
+        setSelectedItems(() => selectedProduct.filter(item => !item[id]));
+        setData(() => data.filter(item => !item[id]));
+
+
     };
     return (
         <>
@@ -32,15 +31,18 @@ const ButtonInvoice = ({ realProductId,  id, invoiceContainer, setSelectedItems,
                     {countInvoice == 1 ?
                         <Button
                             onClick={() => {
-                                // removeFromCart(id)
-                                // setCountInvoice(countInvoice - 1)
-                                // rerenderBTN_Invoice()
-                                // if (document.getElementById(`invoiceContainer-${invoiceContainer}`)) {
-                                //     document.getElementById(`invoiceContainer-${invoiceContainer}`).style.display = "none"
-                                // }
+                                removeFromCart(id)
+                                setCountInvoice(countInvoice - 1)
+                                rerenderBTN_Invoice()
+                                if (document.getElementById(`invoiceContainer-${invoiceContainer}`)) {
+                                    document.getElementById(`invoiceContainer-${invoiceContainer}`).style.display = "none"
+                                }
                                 removeItemById(id , realProductId)
 
-
+                                console.log(id , realProductId)
+                                console.log(selectedProduct)
+                                console.log(data)
+                                
                             }}
                             className="px-0 min-w-8 h-8 sm:min-w-10 sm:h-10 bg-red-100 shadow border border-solid border-red-200 hover:!bg-red-300"
                             variant="light"

@@ -21,11 +21,11 @@ const DetailInvoice = ({ params, getOneTicket, editTicket }) => {
     setdata(res.product);
     setAnswer(res?.results[0]?.text_answer);
     setIsAnswer(res?.results[0]?.answer);
-    setDescription(res.results[0].description)
-    setPhone(res.results[0].phone)
+    setDescription(res?.results[0].description)
+    setPhone(res?.results[0].phone)
     setIsLoading(false);
 
-    if ( !res.results[0].seen) {
+    if ( !res?.results[0].seen) {
       seenTicket();
     }
   };

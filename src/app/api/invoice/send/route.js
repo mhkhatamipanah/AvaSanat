@@ -70,7 +70,7 @@ export async function POST(req, res) {
       code: otpCode,
       expTime: expireOTP,
     });
-    // return NextResponse.json({ success: true, message: "کد ارسال شد" });
+    return NextResponse.json({ success: true, message: "کد ارسال شد" });
 
     var data = JSON.stringify({
       mobile: body.phone,

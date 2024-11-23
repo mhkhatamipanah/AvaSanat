@@ -104,7 +104,7 @@ const AllProductInCategory = ({ id, dataServer }) => {
                       {e.title}
                     </p>
                     <p className="block text-right vazirLight text-[11px] sm:text-sm tracking-normal text-blue-gray-900 text-gray-500 ellipsisTwoLine mb-1">
-                      {e.description}
+                      {e.subtitle}
                     </p>
 
                     <Link

@@ -17,6 +17,16 @@ var _jsCookie = _interopRequireDefault(require("js-cookie"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function getCookie(name) {
   return _jsCookie["default"].get(name);
 }
@@ -32,18 +42,49 @@ function setCookie(name, value) {
   _jsCookie["default"].set(name, value, options);
 }
 
+function deepEqual(obj1, obj2) {
+  if (obj1 === obj2) return true; // اگر دقیقاً یکسان باشند
+
+  if (_typeof(obj1) !== "object" || _typeof(obj2) !== "object" || obj1 == null || obj2 == null) return false;
+  var keys1 = Object.keys(obj1);
+  var keys2 = Object.keys(obj2);
+  if (keys1.length !== keys2.length) return false;
+  return keys1.every(function (key) {
+    return deepEqual(obj1[key], obj2[key]);
+  });
+}
+
 function addToCart(productId, quantity) {
-  // خواندن مقدار فعلی کوکی
-  var cookieValue = getCookie("Avasanat");
-  var cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
-  // اضافه کردن آیتم جدید با کلید یونیک
+  var cart = getCookie("Avasanat");
+  cart = JSON.parse(cart);
+  var quantityParse = JSON.parse(quantity);
+  var hasEqualFeature = Object.entries(cart).some(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        key = _ref2[0],
+        value = _ref2[1];
 
-  cart[Date.now()] = {
-    id: productId,
-    quantity: quantity
-  }; // ذخیره دوباره در کوکی
+    return deepEqual(JSON.parse(value.quantity).feature, quantityParse.feature);
+  });
+  console.log(hasEqualFeature);
 
-  setCookie("Avasanat", JSON.stringify(cart));
+  if (hasEqualFeature) {
+    return false;
+  } else {
+    // خواندن مقدار فعلی کوکی
+    var cookieValue = getCookie("Avasanat");
+
+    var _cart = cookieValue ? JSON.parse(cookieValue) : {}; // اگر کوکی خالی بود، یک شیء جدید ایجاد کن
+    // اضافه کردن آیتم جدید با کلید یونیک
+
+
+    _cart[Date.now()] = {
+      id: productId,
+      quantity: quantity
+    }; // ذخیره دوباره در کوکی
+
+    setCookie("Avasanat", JSON.stringify(_cart));
+    return true;
+  }
 }
 
 function removeFromCart(uniqueKey) {

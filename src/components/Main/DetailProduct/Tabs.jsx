@@ -37,9 +37,13 @@ export default function TabComponent({ specifications, description }) {
                 {description && <Tab key="description" title="توضیحات تکمیلی">
                     <Card>
                         <CardBody className="vazirMedium rtl text-right">
-                            <p className="text-gray-800 text-sm sm:text-base !leading-7 py-1 px-3">
-                            {description}
-                            </p>
+                            {description.split("\n").map((line, index) => (
+                                <p
+                                    key={index}
+                                    className="text-gray-800 text-sm sm:text-base !leading-[26px] py-0.5 px-3">
+                                    {line}
+                                </p>
+                            ))}
                         </CardBody>
                     </Card>
                 </Tab>

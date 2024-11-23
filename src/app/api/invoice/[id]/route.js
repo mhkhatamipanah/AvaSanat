@@ -44,10 +44,11 @@ export async function GET(req, { params }) {
       console.log(err);
     }
   );
-
+console.log(findOneTicket[0].invoice)
   const arrayInvoice = [];
   // استفاده از promises
-  const promises = findOneTicket[0].invoice.map(async (value) => {
+  const promises = findOneTicket[0].invoice.map(async (item) => {
+   const value =  Object.values(item)[0]
     const obj = {};
     const oneProduct = await Product.findOne(
       { id_Product: value.id },

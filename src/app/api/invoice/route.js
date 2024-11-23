@@ -36,16 +36,21 @@ export async function POST(req, res) {
           );
 
 
-          obj.count = JSON.parse(value.quantity).count
+          const obj = {
+            [key]: { // کلید پویا
+              count: JSON.parse(value.quantity).count,
+              feature: JSON.parse(value.quantity).feature,
+              title: oneProduct.title,
+              id: JSON.parse(value.quantity).id,
+              subtitle: oneProduct.subtitle,
+              route: oneProduct.routeCategory,
+              image: newArr[0]?.thumbnailBase64,
+            },
+          };
+      
+          arrayInvoice.push(obj); 
 
-          obj.key = key
-          obj.feature =JSON.parse(value.quantity).feature
-          obj.title = oneProduct.title;
-          obj.id = JSON.parse(value.quantity).id;
-          obj.subtitle = oneProduct.subtitle;
-          obj.route = oneProduct.routeCategory;
-          obj.image = newArr[0]?.thumbnailBase64;
-          arrayInvoice.push(obj);
+        
         }
       });
   

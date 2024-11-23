@@ -31,10 +31,11 @@ const Page = () => {
     setLoading(true)
     const cookie = getCookie("Avasanat")
     if (cookie) {
+      // console.log(cookie)
       create_Invoice("/api/invoice/", cookie).then((res) => {
         setData(res.data)
+        console.log(res.data)
         setLoading(false)
-
       })
     } else {
       setData([])
@@ -93,74 +94,76 @@ const Page = () => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      const allItems = data.map(e =>
-         ({
-        id: e.id,
-        ...(e.feature && { feature: e.feature }),
-        count: e.count , 
-      }));
-      data.forEach(e => {
-        console.log(e);
+      const allItems = data.map((e) => {
+        const [key, value] = Object.entries(e)[0]; 
+        return {
+          [key]: {
+            id: value.id,
+            ...(value.feature && { feature: value.feature }),
+            count: value.count,
+          }
+        }
       });
+
       setSelectedItems(allItems);
     }
 
   }, [data]);
 
   const sendOtpHandler = async () => {
-    // if (isSendOTP) {
-    //   // check otp
+    if (isSendOTP) {
+      // check otp
 
-    //   let code = '';
+      let code = '';
 
-    //   for (let i = 0; i < 6; i++) {
-    //     code += document.querySelectorAll('.otp-input')[i].value;
-    //   }
-    //   if (code.length !== 6) {
-    //     toast.error("لطفا کل کد را وارد کنید")
-    //     return;
-    //   }
-    //   if (!/^\d+$/.test(code)) {
-    //     toast.error("لطفا عدد وارد کنید")
-    //     return;
-    //   }
+      for (let i = 0; i < 6; i++) {
+        code += document.querySelectorAll('.otp-input')[i].value;
+      }
+      if (code.length !== 6) {
+        toast.error("لطفا کل کد را وارد کنید")
+        return;
+      }
+      if (!/^\d+$/.test(code)) {
+        toast.error("لطفا عدد وارد کنید")
+        return;
+      }
 
-    //   const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
-    //   const res = await checkOtpInvoice(data);
+      const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
+      const res = await checkOtpInvoice(data);
 
-    //   if (res) {
-    //     setPhone("")
-    //     setDescription("")
-    //     setIsSendOTP(false)
-    //     for (let i = 0; i < 6; i++) {
-    //       document.querySelectorAll('.otp-input')[i].value = ""
-    //     }
-    //     setData("")
-    //     setSelectedItems([])
-    //   }
+      if (res) {
+        setPhone("")
+        setDescription("")
+        setIsSendOTP(false)
+        for (let i = 0; i < 6; i++) {
+          document.querySelectorAll('.otp-input')[i].value = ""
+        }
+        setData("")
+        setSelectedItems([])
+      }
 
 
 
-    // } else {
-    //   // send Otp
+    } else {
+      // send Otp
 
-    //   if (!phone.trim()) {
-    //     toast.error("لطفا شماره تلفن را وارد کنید")
-    //     return
-    //   }
-    //   if (phone.length !== 11) {
-    //     toast.error("لطفا 11 رقم تلفن را وارد کنید")
-    //     return
-    //   }
+      if (!phone.trim()) {
+        toast.error("لطفا شماره تلفن را وارد کنید")
+        return
+      }
+      if (phone.length !== 11) {
+        toast.error("لطفا 11 رقم تلفن را وارد کنید")
+        return
+      }
 
-    //   const data = JSON.stringify({ phone })
+      const data = JSON.stringify({ phone })
 
-    //   const res = sendOtpInvoice(data)
-    //   if (res) {
-    //     setIsSendOTP(true)
-    //   }
+      const res = sendOtpInvoice(data)
+      if (res) {
+        setIsSendOTP(true)
+      }
 
-    // }
+    }
   }
 
 
@@ -189,28 +192,32 @@ const Page = () => {
     <>
 
       {data && data.map((e, i) => {
+        const [key, value] = Object.entries(e)[0];
+   
+
+
         return (
-          <div id={`invoiceContainer-${e.key}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={e.key}>
-            <Link className='aspect-square h-28 sm:h-32 md:h-36' href={`/product/${e.route}/${e.id}`}>
+          <div id={`invoiceContainer-${value.key}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={key}>
+            <Link className='aspect-square h-28 sm:h-32 md:h-36' href={`/product/${value.route}/${value.id}`}>
               <Image
                 width={500}
                 height={500}
-                className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={e.image ? `data:image/webp;base64,${e.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={value.image ? `data:image/webp;base64,${value.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
             </Link>
             <div className='flex justify-between w-full'>
               <div className='flex justify-evenly flex-col mr-1 w-full'>
                 <p className="vazirDemibold text-sm sm:text-md md:text-lg lg:text-xl ellipsisOneLine">
-                  {e.title}
+                  {value.title}
                 </p>
                 <p className="vazirMedium text-[12px] sm:text-sm md:text-md lg:text-lg  text-gray-700 ellipsisTwoLine">
-                  {e.subtitle}
+                  {value.subtitle}
                 </p>
                 <div className='flex gap-2 flex-wrap'>
-                 
-                  {e.feature &&
-                    Object.entries(e.feature).map(([key, value], index) => {
+
+                  {value.feature &&
+                    Object.entries(value.feature).map(([key, value], index) => {
                       return (
-                        <Chip key={`chip-${index}-${e.id}`} color="primary" variant="flat">
+                        <Chip key={`chip-${index}-${value.id}`} color="primary" variant="flat">
                           {`${key}: ${value}`}
                         </Chip>
                       )
@@ -219,7 +226,7 @@ const Page = () => {
 
               </div>
               <div className='flex flex-col justify-center items-center'>
-                <ButtonInvoice count = {Number(e.count)} realProductId = {e.id} id={e.key} invoiceContainer={e.key} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
+                <ButtonInvoice count={Number(value.count)} realProductId={value.id} id={key} invoiceContainer={value.key} selectedProduct={selectedItems} setSelectedItems={setSelectedItems} data={data} setData={setData} />
               </div>
 
             </div>
