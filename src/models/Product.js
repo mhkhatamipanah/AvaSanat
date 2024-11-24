@@ -29,6 +29,11 @@ const ProductSchema = new Schema(
       type: String,
       required: true,
     },
+    descriptionSpecifications: {
+      type: String,
+      // required: true,
+    },
+    
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

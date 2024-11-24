@@ -127,6 +127,7 @@ const Page = () => {
         toast.error("لطفا عدد وارد کنید")
         return;
       }
+   
 
       const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
       const res = await checkOtpInvoice(data);
@@ -146,7 +147,10 @@ const Page = () => {
 
     } else {
       // send Otp
-
+      if(selectedItems.length == 0 ){
+        toast.error("لطفا محصول انتخاب کنید")
+        return;
+      }
       if (!phone.trim()) {
         toast.error("لطفا شماره تلفن را وارد کنید")
         return
@@ -155,6 +159,7 @@ const Page = () => {
         toast.error("لطفا 11 رقم تلفن را وارد کنید")
         return
       }
+     
 
       const data = JSON.stringify({ phone })
 

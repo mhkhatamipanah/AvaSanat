@@ -51,7 +51,6 @@ const DetailProduct = ({ dataServer, subId }) => {
   useEffect(() => {
     getData();
     setData(dataServer);
-    
   }, []);
 
   const [resetRadio, setResetRadio] = useState(false); // تعریف متغیر resetRadio
@@ -264,7 +263,7 @@ const DetailProduct = ({ dataServer, subId }) => {
                         toast.error("لطفا ویژگی را وارد کنید");
                         return; // اگر ویژگی انتخاب نشده باشد، تابع متوقف می‌شود
                       }
-                     const resultAddToCart =    addToCart(
+                      const resultAddToCart = addToCart(
                         data.data.id_Product,
                         JSON.stringify({
                           id: data.data.id_Product,
@@ -272,19 +271,19 @@ const DetailProduct = ({ dataServer, subId }) => {
                           count: countData,
                         })
                       );
-                      if(resultAddToCart){
+                      if (resultAddToCart) {
                         rerenderBTN_Invoice();
                         setCountInvoice(countInvoice + 1);
                         toast.success("محصول به پیش فاکتور اضافه شد");
                         setSelectedValues({});
                         setResetRadio(true); // فعال کردن reset
                         setTimeout(() => setResetRadio(false), 0); // غیرفعال کردن reset
-                        setCountData(1)
-                      }else{
-                        toast.error("محصول تکراری، قبلا در پیش فاکتور ثبت شده ");
-
+                        setCountData(1);
+                      } else {
+                        toast.error(
+                          "محصول تکراری، قبلا در پیش فاکتور ثبت شده "
+                        );
                       }
-                 
                     }}
                     className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm"
                   >
@@ -308,10 +307,10 @@ const DetailProduct = ({ dataServer, subId }) => {
               </div>
             </section>
           )}
-
           {data && data.data && (
             <section className="mt-6 px-4">
               <TabComponent
+                descriptionSpecifications={data.data.descriptionSpecifications}
                 description={data.data.description}
                 specifications={data.data.specifications}
               />

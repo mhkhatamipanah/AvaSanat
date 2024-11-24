@@ -113,7 +113,7 @@ const Page = () => {
                     </div>
 
                       <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2 ellipsisOneLine'>{e.title}</p>
-                      <p className='text-right text-gray-600 mt-2 mb-4 lg:text-md md:text-sm text-xs ellipsisTwoLine'>{e.description}</p>
+                      <p className='text-right text-gray-600 mt-2 mb-4 lg:text-md md:text-sm text-xs ellipsisTwoLine'>{e.subtitle}</p>
 
                     <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
 

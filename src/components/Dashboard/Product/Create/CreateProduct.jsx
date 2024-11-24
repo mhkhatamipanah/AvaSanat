@@ -78,6 +78,7 @@ const CreateProduct = () => {
     };
     const [titleInput, setTitleInput] = useState("");
     const [description, setDescription] = useState("");
+    const [descriptionSpecifications, setDescriptionSpecifications] = useState("");
     const [subtitle, setSubtitle] = useState("");
 
     const [arrayImmages, setArrayImmages] = useState([])
@@ -178,12 +179,13 @@ const CreateProduct = () => {
                         if (res?.success) {
                             const data = res?.results
 
-                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage } = data[0]
+                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications } = data[0]
                             setTitleInput(title)
                             setDescription(description)
                             setSubtitle(subtitle)
                             setPreviewBase64(res.images)
                             setMainImage(indexMainImage)
+                            setDescriptionSpecifications(descriptionSpecifications)
                             const newFeatureArray = feature.map((item, index) => {
                                 return {
                                     id: index,
@@ -269,6 +271,7 @@ const CreateProduct = () => {
 
         formData.append("title", titleInput);
         formData.append("description", description);
+        formData.append("descriptionSpecifications", descriptionSpecifications);
         formData.append("subtitle", subtitle);
         formData.append("brand", brandValue);
 
@@ -608,7 +611,19 @@ const CreateProduct = () => {
                             data={data}
                         />
                     ))}
-
+                    <div className="grid grid-cols-1 md:grid-cols-2">
+                        <Textarea
+                            value={descriptionSpecifications}
+                            onChange={(e) => {
+                                setDescriptionSpecifications(e.target.value);
+                            }}
+                            id="descriptionSpecifications"
+                            // isRequired={true}
+                            label="توضیح مشخصات فنی"
+                            placeholder="توضیح مشخصات فنی را وارد کنید..."
+                            className="w-full mb-6 textAreaNextUi"
+                        />
+                    </div>
                     <div className="my-10 flex items-center">
 
                         <div>

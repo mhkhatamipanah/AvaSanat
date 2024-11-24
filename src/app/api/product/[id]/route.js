@@ -6,8 +6,6 @@ import { handlePdfBuffer } from "@/src/utils/Backend/BufferPdf/BufferPdf";
 const mongoose = require("mongoose");
 const sharp = require("sharp");
 
-
-
 export async function GET(req, { params }) {
   try {
     connectDB();
@@ -76,7 +74,7 @@ export async function GET(req, { params }) {
             },
           },
           { $sample: { size: remainingProductsCount } }, // انتخاب تصادفی
-          { $project: { __v: 0, } }, // حذف فیلد __v و id_Product
+          { $project: { __v: 0 } }, // حذف فیلد __v و id_Product
         ]);
         // ترکیب داده‌های اولیه با داده‌های تصادفی
         relatedArray = [...category, ...randomProducts];
@@ -156,6 +154,7 @@ export async function PUT(req, { params }) {
 
     const title = formData.get("title");
     const description = formData.get("description");
+    const descriptionSpecifications = formData.get("descriptionSpecifications");
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
 
@@ -164,13 +163,16 @@ export async function PUT(req, { params }) {
     const indexMainImage = formData.get("indexMainImage");
 
     const pdfFile = formData.get("pdfFile");
-    const fileNameWithoutExtension = pdfFile?.name.split(".").slice(0, -1).join(".");
+    const fileNameWithoutExtension = pdfFile?.name
+      .split(".")
+      .slice(0, -1)
+      .join(".");
 
     const objectId = new mongoose.Types.ObjectId(category);
 
     let pdfBuffer;
     if (pdfFile) {
-       pdfBuffer = await handlePdfBuffer(pdfFile);
+      pdfBuffer = await handlePdfBuffer(pdfFile);
     }
 
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
@@ -228,6 +230,8 @@ export async function PUT(req, { params }) {
           ...(title && { title }),
           ...(subtitle && { subtitle }),
           ...(description && { description }),
+          ...(descriptionSpecifications && { descriptionSpecifications }),
+
           ...(brand && { brand }),
 
           ...(objectId && { category: objectId }),
@@ -240,8 +244,8 @@ export async function PUT(req, { params }) {
 
           ...(featureData && { feature: featureData }),
           ...(specificationsData && { specifications: specificationsData }),
-          ...(pdfBuffer && { pdfFile:pdfBuffer }),
-          ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
+          ...(pdfBuffer && { pdfFile: pdfBuffer }),
+          ...(pdfFile?.name && { pdfFileName: fileNameWithoutExtension }),
         }
       );
       if (product) {

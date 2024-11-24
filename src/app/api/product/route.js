@@ -21,6 +21,7 @@ export async function POST(req, res) {
 
     const title = formData.get("title");
     const description = formData.get("description");
+    const descriptionSpecifications = formData.get("descriptionSpecifications");
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
 
@@ -76,6 +77,7 @@ export async function POST(req, res) {
         title,
         subtitle,
         description,
+        
         brand,
         category: objectId,
         file: filesArray,
@@ -86,6 +88,8 @@ export async function POST(req, res) {
         ...(indexMainImage && { indexMainImage }),
         ...(pdfBuffer && { pdfFile:pdfBuffer }),
         ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
+        ...(descriptionSpecifications&& { descriptionSpecifications }),
+        
         
       });
       if (product) {

@@ -17,7 +17,7 @@ const ButtonInvoice = ({ realProductId,  id, invoiceContainer, setSelectedItems,
         setUpdateInvoice(!updateInvoice)
     }
     // تابع حذف
-    const removeItemById = (id , realProductId) => {
+    const removeItemById = (id ) => {
       
         setSelectedItems(() => selectedProduct.filter(item => !item[id]));
         setData(() => data.filter(item => !item[id]));
@@ -37,7 +37,7 @@ const ButtonInvoice = ({ realProductId,  id, invoiceContainer, setSelectedItems,
                                 if (document.getElementById(`invoiceContainer-${invoiceContainer}`)) {
                                     document.getElementById(`invoiceContainer-${invoiceContainer}`).style.display = "none"
                                 }
-                                removeItemById(id , realProductId)
+                                removeItemById(id )
 
                                 console.log(id , realProductId)
                                 console.log(selectedProduct)
