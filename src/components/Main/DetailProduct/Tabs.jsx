@@ -30,7 +30,7 @@ export default function TabComponent({ specifications, description, descriptionS
 
                                     </tbody>
                                 </table>
-                                <div className="mt-1">
+                                <div className={`${(specifications && specifications.length !== 0)? "mt-1" :   ""} `}>
                                     {descriptionSpecifications.split("\n").map((line, index) => (
                                         <p
                                             key={index}
