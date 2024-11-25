@@ -85,7 +85,7 @@ const CreateProduct = () => {
     const [preview, setPreview] = useState([]);
     const [previewBase64, setPreviewBase64] = useState([]);
     const [mainImage, setMainImage] = useState(null)
-    const [indexLastImage, setIndexLastImage] = useState(null)
+    const [indexLastImage, setIndexLastImage] = useState(0)
 
     const handleImageChange = (e) => {
         const files = e.target.files;
@@ -181,7 +181,9 @@ const CreateProduct = () => {
 
                             const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications } = data[0]
                             setTitleInput(title)
-                            setDescription(description)
+                            if (description) {
+                                setDescription(description)
+                            }
                             setSubtitle(subtitle)
                             setPreviewBase64(res.images)
                             setMainImage(indexMainImage)
@@ -244,10 +246,6 @@ const CreateProduct = () => {
             toast.error(" تیتر را وارد کنید")
             return
         }
-        if (!description) {
-            toast.error(" توضیحات را وارد کنید")
-            return
-        }
 
 
 
@@ -270,8 +268,12 @@ const CreateProduct = () => {
         formData.append("specifications", jsonSpecificationsData);
 
         formData.append("title", titleInput);
-        formData.append("description", description);
-        formData.append("descriptionSpecifications", descriptionSpecifications);
+        if (description) {
+            formData.append("description", description);
+        }
+        if (descriptionSpecifications) {
+            formData.append("descriptionSpecifications", descriptionSpecifications);
+        }
         formData.append("subtitle", subtitle);
         formData.append("brand", brandValue);
 
@@ -384,6 +386,11 @@ const CreateProduct = () => {
             <Spinner />
         </div>
     )
+
+    const getTitleById = (categoryInput, categoryValue) =>
+        categoryInput && categoryValue
+            ? categoryValue.find(obj => obj._id === Array.from(categoryInput)[0])?.title
+            : null;
     return (
         <Suspense>
             <ModalDelete
@@ -423,7 +430,9 @@ const CreateProduct = () => {
 
 
                         <div className="w-full h-full flex flex-col justify-end pb-[2px]">
-
+                            <div className="w-full flex justify-end">
+                                <p className="text-sm text-gray-800 pb-1.5 pl-1">{categoryInput && categoryValue && getTitleById(categoryInput, categoryValue)}</p>
+                            </div>
                             <Select
                                 value={categoryInput}
                                 onSelectionChange={(e) => {
@@ -455,7 +464,9 @@ const CreateProduct = () => {
                             </Select>
                         </div>
                         <div className="w-full h-full flex flex-col justify-end pb-[2px]">
-
+                            <div className="w-full flex justify-end">
+                                <p className="text-sm text-gray-800 pb-1.5 pl-1">{brand}</p>
+                            </div>
                             <Select
                                 value={brand}
                                 onSelectionChange={(e) => {
@@ -481,6 +492,7 @@ const CreateProduct = () => {
                                     GMT CNT
                                 </SelectItem>
                             </Select>
+
                         </div>
 
                         <div className="flex items-center justify-center w-full md:col-span-2 xl:col-span-2 2xl:col-span-4  ">
@@ -512,7 +524,7 @@ const CreateProduct = () => {
                                 return (
                                     <div className="relative my-4 group" key={i}>
                                         <img src={e} alt="Preview" className={
-                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
+                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage  ? "p-1 !border-blue-600" : ""}`} />
 
                                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                                             <div className="flex gap-2">
@@ -530,7 +542,7 @@ const CreateProduct = () => {
                                                 <span
                                                     className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                                     onClick={() => {
-                                                        setMainImage(i + indexLastImage + 1)
+                                                        setMainImage(i + indexLastImage )
 
                                                     }}
                                                 >

@@ -1,6 +1,7 @@
 import connectDB from "@/src/configs/db";
 import { NextResponse } from "next/server";
 import Category from "@/src/models/Category";
+import Product from "@/src/models/Product";
 
 const mongoose = require("mongoose");
 const sharp = require("sharp");
@@ -50,6 +51,14 @@ export async function PUT(req, { params }) {
 
     const file = formData.get("file");
 
+    let data = await Category.findOne({ route: route, id_Category: { $ne: id } }).catch(
+      (err) => {
+        console.log(err);
+      }
+    );
+    if (data) {
+      return NextResponse.json({ success: false, message: "این route قبلا ثبت شده" }, { status: 400 });
+    }
     try {
       let res;
 
@@ -61,7 +70,12 @@ export async function PUT(req, { params }) {
           .webp({ lossless: true, quality: 60, alphaQuality: 80, force: true })
           .toBuffer();
       }
-
+      let oldData = await Category.findOne({ id_Category:  id}).catch(
+        (err) => {
+          console.log(err);
+        }
+      );
+      console.log(oldData.route)
       const category = await Category.findOneAndUpdate(
         { id_Category: id },
         {
@@ -69,14 +83,33 @@ export async function PUT(req, { params }) {
           ...(description && { description }),
           ...(route && { route }),
           ...(res && { file: res }),
-        }
+        },
+        { new: true }
       );
-
+     
       if (category) {
-        return NextResponse.json(
-          { success: true, message: "ادیت شد" },
-          { status: 200 }
+        const updateAllProduct = await Product.updateMany(
+          { routeCategory: oldData.route },
+          {
+            $set: {
+              category: category._id,
+              routeCategory: category.route,
+              titleCategory: category.title,
+            },
+          }
         );
+        if(updateAllProduct){
+          return NextResponse.json(
+            { success: true, message: "ادیت شد" },
+            { status: 200 }
+          );
+        }else{
+          return NextResponse.json(
+            { success: false, message: "ادیت نشد" },
+            { status: 401 }
+          );
+        }
+     
       }
     } catch (err) {
       console.log(err);
@@ -109,6 +142,9 @@ export async function DELETE(req, { params }) {
       { status: 200 }
     );
   } else {
-    return NextResponse.json({  success: false,message: "دسته بندی حدف نشد" }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "دسته بندی حدف نشد" },
+      { status: 400 }
+    );
   }
 }

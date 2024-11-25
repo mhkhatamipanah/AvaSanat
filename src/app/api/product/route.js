@@ -76,7 +76,7 @@ export async function POST(req, res) {
       const product = await Product.create({
         title,
         subtitle,
-        description,
+        ...(description && { description }),
         
         brand,
         category: objectId,
@@ -119,6 +119,16 @@ export async function GET(req, res) {
 
   const perPage = searchParams.get("perPage");
   const page = searchParams.get("page");
+  const q = searchParams.get("q");
+  const queryConditions = {
+    ...(q && {
+      $or: [
+        { title: { $regex: q, $options: "i" } }, 
+        { subtitle: { $regex: q, $options: "i" } },
+      ],
+    }),
+  };
+
 
   const countFilterCategory = searchParams.get("countFilterCategory");
   if(countFilterCategory){
@@ -218,7 +228,7 @@ export async function GET(req, res) {
    
   }
 
-  const category = await Product.find({}, "-__v")
+  const category = await Product.find(queryConditions, "-__v")
 
     .limit(perPage ? perPage : 20)
     .skip(perPage && page ? perPage * (page - 1) : 0)

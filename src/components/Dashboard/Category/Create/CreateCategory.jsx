@@ -97,7 +97,6 @@ const CreateCategory = () => {
         formData.append("file", arrayImmages[0]);
 
         if (idCategory) {
-
             edit_Category(`/api/category/${idCategory}`, formData).then((res) => {
                 console.log(res)
                 if (res) {
@@ -180,7 +179,7 @@ const CreateCategory = () => {
                             label=" route (بدون اسلش و فاصله)"
                             placeholder="URL را وارد کنید"
                             labelPlacement="outside"
-                            disabled={idCategory && true}
+                            // disabled={idCategory && true}
                             endContent={
                                 <Text className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                             }

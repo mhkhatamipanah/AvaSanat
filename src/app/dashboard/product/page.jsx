@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { SelectItem, Select, Spinner } from '@nextui-org/react';
+import { SelectItem, Select, Spinner, Input } from '@nextui-org/react';
 import { Button } from "@nextui-org/button";
 
 import getApi from '@/src/utils/Frontend/sendApiToBackend/simpleData/getApi';
 // Icon
-import { BadgePlus, Pencil, Trash } from 'lucide-react';
+import { BadgePlus, Pencil, Search, Trash } from 'lucide-react';
 // Components
 import PaginationComponent from '@/src/components/Dashboard/Pagination/Pagination';
 import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
@@ -40,6 +40,7 @@ const Page = () => {
   }
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [textSearch, setTextSearch] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const onModalOpenChange = () => {
@@ -57,16 +58,23 @@ const Page = () => {
   };
 
   useEffect(() => {
-    let data = {
-      perPage: perPage,
-      page: page,
-    };
-    let count = {
-      count: true
-    }
-    getApi(`/api/product?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
-    getApi(`/api/product?${(new URLSearchParams(count)).toString()}`, setCountData)
-  }, [page, perPage, rerender])
+    const timeout = setTimeout(() => {
+      setLoading(true);
+      let data = {
+        perPage: perPage,
+        page: page,
+        q: textSearch
+      };
+      let count = {
+        count: true
+      };
+      getApi(`/api/product?${new URLSearchParams(data).toString()}`, setData, setLoading);
+      getApi(`/api/product?${new URLSearchParams(count).toString()}`, setCountData);
+    }, 300); // دی‌بونس 0.3 ثانیه
+  
+    return () => clearTimeout(timeout); // پاک‌کردن تایمر در هر تغییر
+  }, [page, perPage, rerender, textSearch]);
+  
 
 
 
@@ -80,7 +88,7 @@ const Page = () => {
     <div className="h-full w-full flex justify-center items-center">
       <div className="flex flex-col gap-3 justify-center items-center mb-16">
         <Image
-           className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
+          className="w-full he-full max-w-[170px] max-h-[170px] sm:max-w-[250px] sm:max-h-[250px]"
           width={500}
           height={500}
           src={img1}
@@ -95,6 +103,8 @@ const Page = () => {
     <>
       {data && data.data &&
         <>
+
+
           <div className='grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 py-2'>
             {
               data.data.map((e, i) => {
@@ -107,13 +117,13 @@ const Page = () => {
                         <Image
                           width={500}
                           height={500}
-                           className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
+                          className=' aspect-square object-cover w-full h-full cursor-pointer hover:scale-110 transition-all duration-400 ' src=
                           {e?.newArr[0]?.thumbnailBase64 ? `data:image/webp;base64,${e?.newArr[0]?.thumbnailBase64}` : "/images/placeholder.jpg"} alt="" />
                       </Link>
                     </div>
 
-                      <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2 ellipsisOneLine'>{e.title}</p>
-                      <p className='text-right text-gray-600 mt-2 mb-4 lg:text-md md:text-sm text-xs ellipsisTwoLine'>{e.subtitle}</p>
+                    <p className='text-right md:text-md text-base vazirDemibold text-gray-800 mt-2 ellipsisOneLine'>{e.title}</p>
+                    <p className='text-right text-gray-600 mt-2 mb-4 lg:text-md md:text-sm text-xs ellipsisTwoLine'>{e.subtitle}</p>
 
                     <div className="flex gap-2 justify-end absolute left-3 -bottom-2">
 
@@ -208,7 +218,21 @@ const Page = () => {
               </Select>
             </div>
           </div>
-
+          <div className='max-w-[400px] px-[12px] mt-2'>
+            <Input
+              value={textSearch}
+              onChange={(e) => {
+                setTextSearch(e.target.value);
+              }}
+              className="labelInputNextUi borderInput marginControl  mb-4"
+              type="text"
+              placeholder=" جست و جو..."
+              labelPlacement="outside"
+              startContent={
+                <Search className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+              }
+            />
+          </div>
           {loading ? LoadingState() :
             data?.data?.length === 0 ? renderEmptyState() : renderProduct()
           }
