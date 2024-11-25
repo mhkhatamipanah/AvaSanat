@@ -28,7 +28,7 @@ const Brands = () => {
                 slidesPerView={5} // تعداد اسلایدهای قابل مشاهده در هر بار
                 loop={true} // اسلاید‌ها به صورت حلقه‌ای بچرخند
                 autoplay={{
-                  delay: 2000, // تایم تاخیر بین هر اسلاید
+                  delay: 2500, // تایم تاخیر بین هر اسلاید
                   disableOnInteraction: true, // برای اینکه پس از تعامل هم ادامه پیدا کنه
                 }}
                 breakpoints={{
