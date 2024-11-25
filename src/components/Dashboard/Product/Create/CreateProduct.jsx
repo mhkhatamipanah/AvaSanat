@@ -524,7 +524,7 @@ const CreateProduct = () => {
                                 return (
                                     <div className="relative my-4 group" key={i}>
                                         <img src={e} alt="Preview" className={
-                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${mainImage === i + indexLastImage  ? "p-1 !border-blue-600" : ""}`} />
+                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${  indexLastImage === 0 ? mainImage== i : mainImage== i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
 
                                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                                             <div className="flex gap-2">
@@ -542,7 +542,9 @@ const CreateProduct = () => {
                                                 <span
                                                     className="text-indigo-600 text-3xl rounded-full bg-gray-100 p-[10px] cursor-pointer"
                                                     onClick={() => {
-                                                        setMainImage(i + indexLastImage )
+                                                        setMainImage(
+                                                            indexLastImage === 0 ? i : i + indexLastImage + 1
+                                                        )
 
                                                     }}
                                                 >

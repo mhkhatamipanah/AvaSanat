@@ -7,8 +7,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 // import required modules
-import { Pagination } from 'swiper/modules';
-
+import { Autoplay, Pagination, } from 'swiper/modules';
 const images = [
   "/images/landing/1.png",
   "https://images.unsplash.com/photo-1590004953392-5aba2e72269a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=500&w=800&q=80",
@@ -30,12 +29,12 @@ const Landing = () => {
         <Swiper
           // spaceBetween={50}
           pagination={true}
-          modules={[Pagination]}
+          modules={[Autoplay, Pagination]}
           dir="rtl"
           // lazy={true}
           loop={true}
           autoplay={{
-            delay: 2500,
+            delay: 3500,
             disableOnInteraction: false,
           }}
           slidesPerView={1}
