@@ -79,12 +79,13 @@ export async function GET(req, { params }) {
         // ترکیب داده‌های اولیه با داده‌های تصادفی
         relatedArray = [...category, ...randomProducts];
       }
+
       const imageData = relatedArray.map((ducomentProduct) => {
         const imageTransfer = ducomentProduct.file.map((e) => {
           if (ducomentProduct.indexMainImage === e.index) {
             let thumbnailBase64;
             if (Buffer.isBuffer(e.thumbnail)) {
-              thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
+              const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
               thumbnailBase64 = thumbnailBuffer.toString("base64");
             } else {
               thumbnailBase64 = e.thumbnail.toString("base64");
