@@ -19,7 +19,7 @@ const RadioBTN = ({ title, data, onChange, reset }) => {
   return (
     <>
       <p>انتخاب {title} : </p>
-      <div className="flex gap-2 items-center my-3">
+      <div className="flex gap-2 gap-y-4 items-center my-3 flex-wrap">
         {data.map((e, i) => {
           return (
             <div key={i}>

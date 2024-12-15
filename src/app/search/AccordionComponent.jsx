@@ -109,7 +109,8 @@ const AccordionComponent = ({ setOpen }) => {
         { _id: 2, title: "Siemens" },
         { _id: 3, title: "Eaton" },
         { _id: 4, title: "Schrack" },
-        { _id: 5, title: "GMT CNT" }
+        { _id: 5, title: "GMT CNT" },
+        { _id: 6, title: "Chint" }
     ];
 
     const deleteFilter = () => {

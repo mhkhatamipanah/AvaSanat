@@ -491,6 +491,9 @@ const CreateProduct = () => {
                                 <SelectItem className="vazirMedium" value={"GMT CNT"} key={"GMT CNT"}>
                                     GMT CNT
                                 </SelectItem>
+                                <SelectItem className="vazirMedium" value={"Chint"} key={"Chint"}>
+                                    Chint
+                                </SelectItem>
                             </Select>
 
                         </div>
