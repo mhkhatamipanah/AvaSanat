@@ -129,7 +129,7 @@ const DetailProduct = ({ dataServer, subId }) => {
           {data && data.data && (
             <section className="w-full grid grid-cols-3 rounded mt-3 px-2 sm:px-4">
               <div className="w-full max-[768px]:col-span-3 col-span-1 p-2 rounded-xl">
-                <div className="w-full grid grid-cols-4 gap-4 overflow-hidden max-[768px]:px-3">
+                <div className="w-full grid grid-cols-4 gap-2.5 overflow-hidden max-[768px]:px-3">
                   {
                     <div
                       className="product-image relative overflow-hidden rounded-xl col-span-4 border border-gray-300 border-solid"
@@ -158,28 +158,29 @@ const DetailProduct = ({ dataServer, subId }) => {
 
                   {bottomImages &&
                     bottomImages.map((e, i) => (
-                      <Image
-                        onClick={() => {
-                          setMainImage(e);
-                        }}
-                        width={500}
-                        height={500}
-                        key={`image-${i}`}
-                        className="rounded-lg col-span-1 cursor-pointer aspect-square object-cover"
-                        src={
-                          e?.image
-                            ? `data:image/webp;base64,${e.image}`
-                            : `/images/placeholder.jpg`
-                        }
-                        alt={`Bottom Image ${i + 1}`}
-                      />
+                      <div className="aspect-square p-[3px]" key={`image-${i}`}>
+                        <Image
+                          onClick={() => {
+                            setMainImage(e);
+                          }}
+                          width={500}
+                          height={500}
+                          className="rounded-lg col-span-1 cursor-pointer aspect-square boxShadow2 object-cover"
+                          src={
+                            e?.image
+                              ? `data:image/webp;base64,${e.image}`
+                              : `/images/placeholder.jpg`
+                          }
+                          alt={`Bottom Image ${i + 1}`}
+                        />
+                      </div>
                     ))}
                   {bottomImages && bottomImages.length > 0 && (
                     <div
                       onClick={() => {
                         setIsOpen(true);
                       }}
-                      className="col-span-1 bg-white  cursor-pointer p-[2px] aspect-square"
+                      className="col-span-1 bg-white cursor-pointer p-[3px] aspect-square"
                     >
                       <div className="boxShadow2 w-full h-full  flex justify-center items-center rounded-lg">
                         <Ellipsis size={30} />

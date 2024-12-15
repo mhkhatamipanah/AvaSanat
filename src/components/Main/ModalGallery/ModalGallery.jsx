@@ -59,7 +59,7 @@ const ModalGallery = ({ isModalOpen, onModalOpenChange, idProduct, }) => {
                                         <img
                                             src={`data:image/webp;base64,${mainImage}`}
                                             alt="Main"
-                                            className="w-full h-auto rounded-lg object-cover max-h-[700px]"
+                                            className="w-full h-auto rounded-lg object-cover max-h-[700px] border border-solid border-gray-300"
                                         />
                                     </div>}
 
@@ -71,7 +71,7 @@ const ModalGallery = ({ isModalOpen, onModalOpenChange, idProduct, }) => {
                                                 key={index}
                                                 src={`data:image/webp;base64,${imgUrl.thumbnailBase64}`}
                                                 alt={`Gallery ${index + 1}`}
-                                                className="!w-28 !h-28  rounded-lg cursor-pointer object-cover !m-0"
+                                                className="!w-28 !h-28  border border-solid border-gray-300 rounded-lg cursor-pointer object-cover !m-0"
                                                 onClick={() => handleImageClick(imgUrl.thumbnailBase64)}
                                             />
                                         ))}

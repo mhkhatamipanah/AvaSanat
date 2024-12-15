@@ -208,8 +208,8 @@ export async function GET(req, res) {
               type: "main_image",
               image: thumbnailBase64,
             };
-          } else if (bottomImageCount < 3) {
-            // اگر تصویر فرعی باشد و هنوز کمتر از 3 تصویر فرعی اضافه شده باشد
+          } else if (bottomImageCount < 2) {
+            // اگر تصویر فرعی باشد و هنوز کمتر از 2 تصویر فرعی اضافه شده باشد
             bottomImageCount++;
             return {
               type: "bottom_image",
