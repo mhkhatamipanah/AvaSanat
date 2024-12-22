@@ -9,7 +9,7 @@ import Image from 'next/image'
 import img1 from "@/public/images/no-resualt.png";
 import { Button, Spinner } from '@nextui-org/react'
 import { searchContext } from "@/src/hooks/useContextProvider/ContextProvider";
-import {  SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal } from 'lucide-react'
 import AccordionComponent from '@/src/app/search/AccordionComponent'
 import Drawlerbottom from '@/src/app/search/Drawlerbottom'
 
@@ -30,26 +30,26 @@ const SearchPage = () => {
 
     useEffect(() => {
         setLoading(true)
+        if (q) {
+            setSearchTextContext(q)
+
+            const query = new URLSearchParams(searchParams.toString());
+
+            // حذف پارامتر 'q' (اگر وجود داشته باشد)
+            if (query.has('q')) {
+                query.delete('q');
+            }
+
+            router.push(`?${query.toString()}`, undefined, { shallow: true });
+        }
+
         let data = {
             perPage,
             page,
-            ...(q && { q }),
-            ...(!q && searchTextContext && { q: searchTextContext }), // اگر q نبود، searchTextContext را اضافه کن
-            // ...(!q && !searchTextContext && { q: "" }), // اگر q نبود، searchTextContext را اضافه کن
+            q: searchTextContext, // اگر q نبود، searchTextContext را اضافه کن
             ...(brand && { brand }),
             ...(Category && { Category }),
         };
-
-        const query = new URLSearchParams(searchParams.toString());
-
-        // حذف پارامتر 'q' (اگر وجود داشته باشد)
-        if (query.has('q')) {
-            query.delete('q');
-        }
-
-        router.push(`?${query.toString()}`, undefined, { shallow: true });
-
-
         getApi(`/api/search?${(new URLSearchParams(data)).toString()}`, setData, setLoading)
     }, [page, perPage, searchTextContext, brand, Category])
 
@@ -62,6 +62,7 @@ const SearchPage = () => {
                     width={500}
                     height={500}
                     src={img1}
+                    alt='چیزی جهت نمایش وجود ندارد آوا صنعت'
                 />
                 <p className='vazirMedium'> چیزی جهت نمایش وجود ندارد</p>
             </div>
@@ -111,7 +112,7 @@ const SearchPage = () => {
 
                                                                 <Link href={`/product/${e.route}/${e.id}`}>
                                                                     <img className='aspect-square object-cover w-full h-full cursor-pointer hover:scale-105 transition-all duration-400 ' src=
-                                                                        {e?.image ? `data:image/webp;base64,${e?.image}` : "/images/placeholder.jpg"} alt="" />
+                                                                        {e?.image ? `data:image/webp;base64,${e?.image}` : "/images/placeholder.jpg"} alt="سرچ آوا صنعت" />
                                                                 </Link>
                                                             </div>
                                                             <div className='flex flex-col'>
@@ -121,7 +122,7 @@ const SearchPage = () => {
                                                                 <div className='twoLineShow'>
                                                                     <p className='text-right text-gray-600 my-2 lg:text-lg md:text-base text-sm vazirMedium'>{e.subtitle}</p>
                                                                 </div>
-                                                               
+
                                                             </div>
 
                                                         </div>

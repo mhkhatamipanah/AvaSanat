@@ -5,13 +5,15 @@ import { useState, useRef, useEffect, Suspense } from "react"
 import { ApiActions } from "@/src/utils/Frontend/ApiActions"
 
 // NextUI
-import { Input, Button, SelectItem, Select, Spinner, Textarea } from "@nextui-org/react"
+import { Input, Button, SelectItem, Select, Spinner, Textarea  , Checkbox } from "@nextui-org/react"
 // Icon
 import { CaseUpper, CircleFadingPlus, Download, FileCheck, SpellCheck, Trash2Icon, X, } from "lucide-react"
 
 // Imoort Components
 import FeatureValue from "./FeatureValue"
 import SpecificationsValue from "./SpecificationsValue"
+import ProductCode from "./ProductCode";
+
 import { toast } from "sonner";
 import ModalDelete from '@/src/components/Dashboard/ModalDelete/ModalDelete';
 
@@ -86,6 +88,8 @@ const CreateProduct = () => {
     const [previewBase64, setPreviewBase64] = useState([]);
     const [mainImage, setMainImage] = useState(null)
     const [indexLastImage, setIndexLastImage] = useState(0)
+
+    const [isShowCodeProduct, setIsShowCodeProduct] =useState(false);
 
     const handleImageChange = (e) => {
         const files = e.target.files;
@@ -179,7 +183,7 @@ const CreateProduct = () => {
                         if (res?.success) {
                             const data = res?.results
 
-                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications } = data[0]
+                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications , codeProduct  , isShowCodeProduct} = data[0]
                             setTitleInput(title)
                             if (description) {
                                 setDescription(description)
@@ -188,6 +192,8 @@ const CreateProduct = () => {
                             setPreviewBase64(res.images)
                             setMainImage(indexMainImage)
                             setDescriptionSpecifications(descriptionSpecifications)
+                            setInputsCodeProduct(codeProduct)
+                        
                             const newFeatureArray = feature.map((item, index) => {
                                 return {
                                     id: index,
@@ -213,7 +219,10 @@ const CreateProduct = () => {
                                 setPdfName(pdfFileName)
                             }
                             setProductLoaded(true)
-
+                            if(isShowCodeProduct){
+                                setIsShowCodeProduct(isShowCodeProduct)
+                            }
+                            
 
                         }
                     }))
@@ -247,7 +256,7 @@ const CreateProduct = () => {
             return
         }
 
-
+        console.log(inputsCodeProduct)
 
 
         const productData = inputs.map(input => ({
@@ -260,6 +269,12 @@ const CreateProduct = () => {
             let { id, ...rest } = item;
             return rest;
         });
+
+        const codeProduct = inputsCodeProduct.map(input => ({
+            id: input.id,
+            code: input.code
+        }));
+        const jsonCodeProduct = JSON.stringify(codeProduct);
 
         const jsonSpecificationsData = JSON.stringify(newSpecifications);
 
@@ -279,6 +294,10 @@ const CreateProduct = () => {
 
 
         formData.append("category", categoryInputValue);
+        formData.append("codeProduct", jsonCodeProduct);
+
+        
+        formData.append("isShowCodeProduct", isShowCodeProduct);
 
 
         if (pdfFile) {
@@ -349,6 +368,20 @@ const CreateProduct = () => {
         ]);
     };
 
+    
+    const [inputsCodeProduct, setInputsCodeProduct] = useState([]);
+
+
+    const createCodeProduct = () => {
+        setInputsCodeProduct([
+            ...inputsCodeProduct,
+            {
+                id: `productCode${Date.now()}`,
+                code: "",
+   
+            }
+        ]);
+    };
 
     const { downloadPdf, deleteFile } = ApiActions()
 
@@ -527,7 +560,7 @@ const CreateProduct = () => {
                                 return (
                                     <div className="relative my-4 group" key={i}>
                                         <img src={e} alt="Preview" className={
-                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${  indexLastImage === 0 ? mainImage== i : mainImage== i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
+                                            `max-w-full h-auto aspect-square w-full object-cover border-2 rounded-md border-gray-100 border-solid ${indexLastImage === 0 ? mainImage == i : mainImage == i + indexLastImage + 1 ? "p-1 !border-blue-600" : ""}`} />
 
                                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
                                             <div className="flex gap-2">
@@ -612,6 +645,7 @@ const CreateProduct = () => {
                             inputs={inputs}
                             setInputs={setInputs}
                             data={data}
+                            
                         />
                     ))}
                     <div className="mb-5">
@@ -628,6 +662,27 @@ const CreateProduct = () => {
                             data={data}
                         />
                     ))}
+                    <div className="mb-5 flex items-center gap-2">
+
+                        <Button onClick={createCodeProduct} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
+                            افزودن کد محصول
+                        </Button>
+                        <div className="ltr">
+                        <Checkbox isSelected={isShowCodeProduct} onValueChange={setIsShowCodeProduct}>نمایش</Checkbox>
+
+                        </div>
+                    </div>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 my-6">
+                    {inputsCodeProduct.map((data, i) => (
+                        <ProductCode
+                            key={i}
+                            inputs={inputsCodeProduct}
+                            setInputs={setInputsCodeProduct}
+                            data={data}
+                        />
+                    ))}
+            </div>
+                  
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         <Textarea
                             value={descriptionSpecifications}

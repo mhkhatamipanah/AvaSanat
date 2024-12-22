@@ -19,11 +19,16 @@ export async function POST(req, res) {
     const specifications = formData.get("specifications");
     const specificationsData = JSON.parse(specifications);
 
+    const codeProduct = formData.get("codeProduct");
+    const codeProductData = JSON.parse(codeProduct);
+    
     const title = formData.get("title");
     const description = formData.get("description");
     const descriptionSpecifications = formData.get("descriptionSpecifications");
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
+    const isShowCodeProduct = formData.get("isShowCodeProduct");
+    
 
     const category = formData.get("category");
     const indexMainImage = formData.get("indexMainImage");
@@ -89,6 +94,8 @@ export async function POST(req, res) {
         ...(pdfBuffer && { pdfFile:pdfBuffer }),
         ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
         ...(descriptionSpecifications&& { descriptionSpecifications }),
+        ...(codeProductData&& { codeProduct: codeProductData }),
+        ...(isShowCodeProduct&& { isShowCodeProduct }),
         
         
       });
@@ -107,16 +114,6 @@ export async function POST(req, res) {
 export async function GET(req, res) {
   connectDB();
   const { searchParams } = new URL(req.url);
-
-  let count = searchParams.get("count");
-  if (count) {
-    let countData = await Product.countDocuments().catch((err) => {
-      console.log(err);
-    });
-
-    return NextResponse.json({ countData });
-  }
-
   const perPage = searchParams.get("perPage");
   const page = searchParams.get("page");
   const q = searchParams.get("q");
@@ -125,10 +122,10 @@ export async function GET(req, res) {
       $or: [
         { title: { $regex: q, $options: "i" } }, 
         { subtitle: { $regex: q, $options: "i" } },
+        { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
       ],
     }),
   };
-
 
   const countFilterCategory = searchParams.get("countFilterCategory");
   if(countFilterCategory){
@@ -146,6 +143,7 @@ export async function GET(req, res) {
       { routeCategory: filterCategory },
       "-__v"
     )
+    .sort({ createdAt: -1 })
       .limit(perPage ? perPage : 20)
       .skip(perPage && page ? perPage * (page - 1) : 0)
       .catch((err) => {
@@ -229,13 +227,16 @@ export async function GET(req, res) {
   }
 
   const category = await Product.find(queryConditions, "-__v")
-
+  .sort({ createdAt: -1 })
     .limit(perPage ? perPage : 20)
     .skip(perPage && page ? perPage * (page - 1) : 0)
     .catch((err) => {
       console.log(err);
     });
 
+    let countData = await Product.countDocuments(queryConditions).catch((err) => {
+      console.log(err);
+    });
   const imageData = category.map((ducomentProduct) => {
     const imageTransfer = ducomentProduct.file.map((e) => {
       if (ducomentProduct.indexMainImage === e.index) {
@@ -260,7 +261,14 @@ export async function GET(req, res) {
       subtitle: ducomentProduct.subtitle,
       brand: ducomentProduct.brand,
       titleCategory: ducomentProduct.titleCategory,
+      
     };
   });
-  return NextResponse.json({ data: imageData });
+  if(countData > 0){
+    return NextResponse.json({ data: imageData ,countData});
+
+  }else if (countData == 0){
+    return NextResponse.json({ data: [] ,countData: 0});
+
+  }
 }

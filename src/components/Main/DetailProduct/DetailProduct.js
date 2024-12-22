@@ -252,44 +252,44 @@ const DetailProduct = ({ dataServer, subId }) => {
 
                 {/* {data.data.feature.length > 0 && <div className="border border-b my-3"></div>} */}
 
+                <Button
+                  clas
+                  onClick={() => {
+                    const isAllSelected = data.data.feature.every(
+                      (feature) => selectedValues[feature.title]
+                    );
+                    if (!isAllSelected) {
+                      toast.error("لطفا ویژگی را وارد کنید");
+                      return; // اگر ویژگی انتخاب نشده باشد، تابع متوقف می‌شود
+                    }
+                    const resultAddToCart = addToCart(
+                      data.data.id_Product,
+                      JSON.stringify({
+                        id: data.data.id_Product,
+                        feature: selectedValues,
+                        count: countData,
+                      })
+                    );
+                    if (resultAddToCart) {
+                      rerenderBTN_Invoice();
+                      setCountInvoice(countInvoice + 1);
+                      toast.success("محصول به پیش فاکتور اضافه شد");
+                      setSelectedValues({});
+                      setResetRadio(true); // فعال کردن reset
+                      setTimeout(() => setResetRadio(false), 0); // غیرفعال کردن reset
+                      setCountData(1);
+                    } else {
+                      toast.error("محصول تکراری، قبلا در پیش فاکتور ثبت شده ");
+                    }
+                  }}
+                  className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm w-min"
+                >
+                  افزودن به پیش فاکتور
+                </Button>
+
                 <div className="border border-b my-3"></div>
 
                 <div className="flex flex-col gap-4 w-min">
-                  <Button
-                    onClick={() => {
-                      const isAllSelected = data.data.feature.every(
-                        (feature) => selectedValues[feature.title]
-                      );
-                      if (!isAllSelected) {
-                        toast.error("لطفا ویژگی را وارد کنید");
-                        return; // اگر ویژگی انتخاب نشده باشد، تابع متوقف می‌شود
-                      }
-                      const resultAddToCart = addToCart(
-                        data.data.id_Product,
-                        JSON.stringify({
-                          id: data.data.id_Product,
-                          feature: selectedValues,
-                          count: countData,
-                        })
-                      );
-                      if (resultAddToCart) {
-                        rerenderBTN_Invoice();
-                        setCountInvoice(countInvoice + 1);
-                        toast.success("محصول به پیش فاکتور اضافه شد");
-                        setSelectedValues({});
-                        setResetRadio(true); // فعال کردن reset
-                        setTimeout(() => setResetRadio(false), 0); // غیرفعال کردن reset
-                        setCountData(1);
-                      } else {
-                        toast.error(
-                          "محصول تکراری، قبلا در پیش فاکتور ثبت شده "
-                        );
-                      }
-                    }}
-                    className=" bg-green-700 vazirMedium text-white text-[12px] sm:text-sm"
-                  >
-                    افزودن به پیش فاکتور
-                  </Button>
                   {data.data.pdfFile && (
                     <Button
                       onClick={() => {
@@ -305,6 +305,23 @@ const DetailProduct = ({ dataServer, subId }) => {
                     </Button>
                   )}
                 </div>
+                {console.log(data.data.codeProduct)}
+                {data.data.isShowCodeProduct && (
+                 <>
+                  <p className="text-base sm:text-lg vazirLight mb-2.5">کد فنی:&nbsp;</p>
+                  
+                  <div className="flex gap-2 flex-wrap">
+                    {data.data.codeProduct.map((e) => {
+                      return (
+                          <span key={e.id} className="px-3.5 py-2 text-sm bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transform transition-all duration-300 vazirMedium">
+                            {e.code}
+                          </span>
+                      );
+                    })}
+                  </div>
+                 </> 
+
+                )}
               </div>
             </section>
           )}

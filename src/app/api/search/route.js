@@ -35,6 +35,17 @@ export async function GET(req, res) {
         ],
       }),
     };
+    const queryConditionsProduct = {
+      ...(q && {
+        $or: [
+          { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
+          { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
+    { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
+
+        ],
+      }),
+    };
+
     const searchCategory = await Category.find(queryConditions, "-__v")
       .sort({ createdAt: -1 })
       .limit(3)
@@ -42,7 +53,7 @@ export async function GET(req, res) {
         console.log(err);
       });
 
-    const searchProduct = await Product.find(queryConditions, "-__v")
+    const searchProduct = await Product.find(queryConditionsProduct, "-__v")
       .sort({ createdAt: -1 })
       .limit(3)
       .catch((err) => {
@@ -79,6 +90,8 @@ export async function GET(req, res) {
       $or: [
         { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
         { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
+    { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
+
       ],
     }),
   };

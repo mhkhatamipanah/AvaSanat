@@ -65,11 +65,8 @@ const Page = () => {
         page: page,
         q: textSearch
       };
-      let count = {
-        count: true
-      };
+    
       getApi(`/api/product?${new URLSearchParams(data).toString()}`, setData, setLoading);
-      getApi(`/api/product?${new URLSearchParams(count).toString()}`, setCountData);
     }, 300); // دی‌بونس 0.3 ثانیه
   
     return () => clearTimeout(timeout); // پاک‌کردن تایمر در هر تغییر
@@ -159,7 +156,7 @@ const Page = () => {
               })
             }
           </div>
-          <PaginationComponent countData={countData} perPage={perPage} page={page} setPage={setPage} />
+          <PaginationComponent countData={{ countData: data.countData } } perPage={perPage} page={page} setPage={setPage} />
         </>
       }
     </>

@@ -24,7 +24,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function GET(req, res) {
-  var _ref, searchParams, q, navbar, _queryConditions, searchCategory, _searchProduct, brand, Category2, perPage, page, arrayInvoice, queryConditions, searchProduct, searchCountProduct, threeData, _blog, _imageData, count, countData, blog, imageData;
+  var _ref, searchParams, q, navbar, _queryConditions, queryConditionsProduct, searchCategory, _searchProduct, brand, Category2, perPage, page, arrayInvoice, queryConditions, searchProduct, searchCountProduct, threeData, _blog, _imageData, count, countData, blog, imageData;
 
   return regeneratorRuntime.async(function GET$(_context) {
     while (1) {
@@ -49,7 +49,7 @@ function GET(req, res) {
           //   });
 
           if (!navbar) {
-            _context.next = 13;
+            _context.next = 14;
             break;
           }
 
@@ -68,23 +68,47 @@ function GET(req, res) {
             } // جستجو در زیرعنوان
             ]
           });
-          _context.next = 8;
+          queryConditionsProduct = _objectSpread({}, q && {
+            $or: [{
+              title: {
+                $regex: q,
+                $options: "i"
+              }
+            }, // جستجو در عنوان
+            {
+              subtitle: {
+                $regex: q,
+                $options: "i"
+              }
+            }, // جستجو در زیرعنوان
+            {
+              codeProduct: {
+                $elemMatch: {
+                  code: {
+                    $regex: q,
+                    $options: "i"
+                  }
+                }
+              }
+            }]
+          });
+          _context.next = 9;
           return regeneratorRuntime.awrap(_Category["default"].find(_queryConditions, "-__v").sort({
             createdAt: -1
           }).limit(3)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 8:
+        case 9:
           searchCategory = _context.sent;
-          _context.next = 11;
-          return regeneratorRuntime.awrap(_Product["default"].find(_queryConditions, "-__v").sort({
+          _context.next = 12;
+          return regeneratorRuntime.awrap(_Product["default"].find(queryConditionsProduct, "-__v").sort({
             createdAt: -1
           }).limit(3)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 11:
+        case 12:
           _searchProduct = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
             // blog: searchBlog,
@@ -92,12 +116,12 @@ function GET(req, res) {
             product: _searchProduct
           }));
 
-        case 13:
+        case 14:
           brand = searchParams.get("brand");
           Category2 = searchParams.get("Category");
 
           if (!((!brand || brand == "undefined") && (!Category2 || Category2 == "undefined") && (!q || q == "undefined"))) {
-            _context.next = 17;
+            _context.next = 18;
             break;
           }
 
@@ -106,7 +130,7 @@ function GET(req, res) {
             total_item: 0
           }));
 
-        case 17:
+        case 18:
           perPage = searchParams.get("perPage");
           page = searchParams.get("page");
           arrayInvoice = [];
@@ -122,8 +146,17 @@ function GET(req, res) {
                 $regex: q,
                 $options: "i"
               }
-            } // جستجو در زیرعنوان
-            ]
+            }, // جستجو در زیرعنوان
+            {
+              codeProduct: {
+                $elemMatch: {
+                  code: {
+                    $regex: q,
+                    $options: "i"
+                  }
+                }
+              }
+            }]
           }); // اگر برند وجود داشته باشد، شرط آن را اضافه می‌کنیم
 
           if (brand && brand !== null && brand !== "undefined") {
@@ -134,14 +167,14 @@ function GET(req, res) {
             queryConditions.routeCategory = Category2; // فرض می‌کنیم در مدل Product یک فیلد به نام brand دارید
           }
 
-          _context.next = 25;
+          _context.next = 26;
           return regeneratorRuntime.awrap(_Product["default"].find(queryConditions, "-__v").sort({
             createdAt: -1
           }).limit(perPage ? perPage : 20).skip(perPage && page ? perPage * (page - 1) : 0)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 25:
+        case 26:
           searchProduct = _context.sent;
           searchProduct.map(function (e, i) {
             var obj = {};
@@ -159,19 +192,19 @@ function GET(req, res) {
             obj.route = e.routeCategory;
             arrayInvoice.push(obj);
           });
-          _context.next = 29;
+          _context.next = 30;
           return regeneratorRuntime.awrap(_Product["default"].countDocuments(queryConditions)["catch"](function (err) {
             console.log(err);
           }));
 
-        case 29:
+        case 30:
           searchCountProduct = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
             product: arrayInvoice,
             total_item: searchCountProduct
           }));
 
-        case 35:
+        case 36:
           _blog = _context.sent;
           _imageData = _blog.map(function (ducomentProduct) {
             var thumbnailBuffer = Buffer.from(ducomentProduct.file, "base64");
@@ -188,32 +221,32 @@ function GET(req, res) {
             data: _imageData
           }));
 
-        case 38:
+        case 39:
           count = searchParams.get("count");
 
           if (!count) {
-            _context.next = 44;
+            _context.next = 45;
             break;
           }
 
-          _context.next = 42;
+          _context.next = 43;
           return regeneratorRuntime.awrap(_Blog["default"].countDocuments()["catch"](function (err) {
             console.log(err);
           }));
 
-        case 42:
+        case 43:
           countData = _context.sent;
           return _context.abrupt("return", _server.NextResponse.json({
             countData: countData
           }));
 
-        case 44:
-          _context.next = 46;
+        case 45:
+          _context.next = 47;
           return regeneratorRuntime.awrap(_Blog["default"].find({}, "-__v")["catch"](function (err) {
             console.log(err);
           }));
 
-        case 46:
+        case 47:
           blog = _context.sent;
           imageData = blog.map(function (ducomentProduct) {
             var thumbnailBuffer = Buffer.from(ducomentProduct.file, "base64");
@@ -230,7 +263,7 @@ function GET(req, res) {
             data: imageData
           }));
 
-        case 49:
+        case 50:
         case "end":
           return _context.stop();
       }
