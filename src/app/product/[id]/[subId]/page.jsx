@@ -18,7 +18,7 @@ export async function generateMetadata({ params , headers }) {
     const description = detailProduct.data.subtitle
 
       // بررسی URL یا Referrer
-      const referrer = headers.get("referer") || ""; // در Next.js می‌توانید از headers استفاده کنید
+      const referrer = headers?.get("referer") || ""; // در Next.js می‌توانید از headers استفاده کنید
       let matchedCode = null;
   
       // اگر از گوگل آمده باشد، عبارت جستجو را استخراج کن
@@ -38,15 +38,17 @@ export async function generateMetadata({ params , headers }) {
         : `${title} | آواصنعت`;  // در غیر این صورت تیتر فقط نام محصول را نمایش می‌دهد
   
     return {
-      title: `${finalTitle} | آواصنعت` || 'Default Title',
+      title: `${finalTitle}` || 'Default Title',
       description: description || 'Default Description',
       openGraph: {
-        title: `${title} | آواصنعت` || 'Default Title',
+        title: `${finalTitle}` || 'Default Title',
         description: description || 'Default Description',
      
       },
     };
-  } catch {
+  } catch (err) {
+    console.log(err)
+
     return {
       title: 'Product Not Found',
       description: 'The requested blog does not exist.',

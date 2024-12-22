@@ -305,7 +305,6 @@ const DetailProduct = ({ dataServer, subId }) => {
                     </Button>
                   )}
                 </div>
-                {console.log(data.data.codeProduct)}
                 {data.data.isShowCodeProduct && (
                  <>
                   <p className="text-base sm:text-lg vazirLight mb-2.5">کد فنی:&nbsp;</p>

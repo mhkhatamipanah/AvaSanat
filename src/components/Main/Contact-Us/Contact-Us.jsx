@@ -1,5 +1,5 @@
 "use client"
-import { BadgeInfo, CaseUpper, Instagram, MapPin, Phone, PhoneCall, SpellCheck } from 'lucide-react'
+import { BadgeInfo, CaseUpper, Instagram, MapPin, Phone, PhoneCall } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import img1 from "@/public/images/1.png"
@@ -189,39 +189,37 @@ const ContactUs = () => {
         <section className='grid grid-cols-9 w-full  lg:gap-16 mt-3  '>
           <div className='col-span-9 lg:col-span-4 w-full my-2 lg:my-8 overflow-hidden'>
             <div className='relative h-full pb-[240px] sm:pb-[500px] overflow-hidden rounded-2xl'>
-              <iframe
-                className='left-0 top-0 absolute border-0 w-full h-full overflow-hidden '
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1620.290327245494!2d51.42279731843917!3d35.687326235086175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e0182ea57cf15%3A0x195f7de6a3a8c5d6!2z2KfZhNqp2KrYsdmI2qnZhNmI2LE!5e0!3m2!1sfa!2s!4v1722453409872!5m2!1sfa!2s"
-                // width="600"
-                // height="450"
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+
+              <iframe className='left-0 top-0 absolute border-0 w-full h-full overflow-hidden ' src="https://balad.ir/embed?p=5SDti0j73my1Ww" title="مشاهده «آواصنعت» روی نقشه بلد" width="600" height="450" frameBorder="0" allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe>
             </div>
 
 
           </div>
           <div className='h-full col-span-9 lg:col-span-5 w-full relative flex flex-col justify-center'>
             <div className='flex flex-col gap-4 mt-5'>
-              <div className='flex gap-2'>
-                <MapPin />
-                <p className=' text-sm sm:text-base  '>
-                  تهران، میدان امام خمینی، خیابان لاله زار، کوچه ملانوروزی، پلاک 7
-                </p>
+              <div className="bg-white p-6 rounded-xl boxShadow2 max-w-lg mx-auto space-y-6">
+                <div className="flex items-center gap-2 ">
+                  <MapPin size={24} className="text-purple-500 text-2xl max-w-full flex-shrink-0 md:w-9 md:h-9"  />
+                  <p className="text-sm md:text-base text-gray-700 font-medium">
+                    تهران، میدان امام خمینی، خیابان لاله زار، کوچه ملانوروزی، پلاک 7
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 ">
+                  <PhoneCall size={24} className="text-green-600 text-2xl max-w-full flex-shrink-0 md:w-9 md:h-9"  />
+                  <p className="ltr text-sm md:text-base text-gray-700 font-medium">
+                    0902 366 53 06
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 ">
+                  <Instagram size={24} className="text-red-500 text-2xl max-w-full flex-shrink-0 md:w-9 md:h-9"  />
+                  <p className="ltr text-sm md:text-base text-gray-700 font-medium">
+                    Avasanat.ir
+                  </p>
+                </div>
               </div>
-              <div className='flex gap-2'>
-                <PhoneCall />
-                <p className='ltr text-sm sm:text-base  '>
-                  0902 366 53 06
-                </p>
-              </div>
-              <div className='flex gap-2'>
-                <Instagram />
-                <p className='ltr text-sm sm:text-base  '>
-                  Avasanat.ir
-                </p>
-              </div>
+
             </div>
 
           </div>

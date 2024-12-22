@@ -1,5 +1,5 @@
 import React from 'react'
-import img1 from "@/public/images/4.png"
+import img1 from "@/public/images/5.png"
 import Image from 'next/image'
 const AboutUs = () => {
   return (
@@ -8,7 +8,7 @@ const AboutUs = () => {
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8'>
 
           <section className='grid grid-cols-9 w-full lg:gap-16 mt-3 justify-center items-center '>
-            <div className='col-span-9 lg:col-span-4 w-full my-2 overflow-hidden flex flex-col items-center justify-center'>
+            <div className='col-span-9 lg:col-span-5 w-full my-2 overflow-hidden flex flex-col items-center justify-center'>
               <section className='flex gap-3 sm:gap-6 self-start'>
                 <div >
                   <span className='block w-3 rounded-xl bg-[#e43253] h-20 sm:h-24'></span>
@@ -24,7 +24,7 @@ const AboutUs = () => {
 
               </section>
 
-              <p className='text-gray-500 md:text-md lg:text-[15px] mt-5 md:mt-8 sm:text-justify'>
+              <p className='text-gray-500 md:text-md lg:text-[15px] mt-5 md:mt-8 sm:text-justify mb-5'>
                 آواصنعت به عنوان یکی از پیشروان در عرصه واردات و توزیع قطعات اتوماسیون صنعتی و ابزار دقیق، با تکیه بر تجربه و دانش فنی، همواره در تلاش است تا نیازهای متنوع صنعت را پاسخگو باشد. این شرکت با ارائه محصولات از معتبرترین برندهای جهانی و حذف واسطه‌ها، اطمینان حاصل می‌کند که مشتریان به بهترین کیفیت و قیمت دسترسی داشته باشند.
                 <br />
                 <br />
@@ -38,9 +38,9 @@ const AboutUs = () => {
 
 
             </div>
-            <div className='h-full col-span-9 lg:col-span-5 w-full relative flex flex-col justify-center'>
+            <div className='h-full col-span-9 lg:col-span-4 w-full relative flex flex-col justify-center items-center'>
 
-              <Image className='' width={1500} height={1500} src={img1} alt='about-us' />
+              <Image className='max-w-[90%]' width={1500} height={1500} src={img1} alt='about-us' />
             </div>
           </section>
         </section>
