@@ -51,7 +51,6 @@ const DetailProduct = ({ dataServer, subId }) => {
   useEffect(() => {
     getData();
     setData(dataServer);
-    console.log(dataServer)
   }, []);
 
   const [resetRadio, setResetRadio] = useState(false); // تعریف متغیر resetRadio
