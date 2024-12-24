@@ -13,18 +13,22 @@ export async function generateMetadata({ params  }) {
     };
     const baseUrl = BASE_URL || 'http://localhost:3000';
     const detailProduct = await get_SSR_Data(`${baseUrl}/api/product?${(new URLSearchParams(data)).toString()}`);
-    // const productCodes = detailProduct.data.codeProduct || []; // از API دریافت شود
     const title = detailProduct.data.title
     const description = detailProduct.data.subtitle
 
+    const productCodes = detailProduct.data.feature
+    .flatMap(e => e.values) // تمام مقادیر آرایه values در هر feature را مسطح می‌کنیم
+    .filter(e => e.productCode) // فقط مقادیری که productCode دارند را فیلتر می‌کنیم
+    .map(e => e.productCode) // فقط productCode ها را برمی‌گردانیم
+    .join(" - "); // آن‌ها را با کاما به هم وصل می‌کنیم
   
-  
+    const fullDescription = `${description} ${productCodes}`;
     return {
       title: `${title} | آواصنعت` || 'Default Title',
-      description: description || 'Default Description',
+      description: fullDescription || 'Default Description',
       openGraph: {
-        title: `${finalTitle}` || 'Default Title',
-        description: description || 'Default Description',
+        title: `${title}` || 'Default Title',
+        description: fullDescription || 'Default Description',
      
       },
     };

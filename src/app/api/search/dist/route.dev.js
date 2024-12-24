@@ -82,12 +82,13 @@ function GET(req, res) {
               }
             }, // جستجو در زیرعنوان
             {
-              codeProduct: {
+              feature: {
                 $elemMatch: {
-                  code: {
+                  "values.productCode": {
                     $regex: q,
                     $options: "i"
-                  }
+                  } // جستجو در productCode داخل values
+
                 }
               }
             }]
@@ -148,12 +149,13 @@ function GET(req, res) {
               }
             }, // جستجو در زیرعنوان
             {
-              codeProduct: {
+              feature: {
                 $elemMatch: {
-                  code: {
+                  "values.productCode": {
                     $regex: q,
                     $options: "i"
-                  }
+                  } // جستجو در productCode داخل values
+
                 }
               }
             }]

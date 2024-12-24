@@ -183,7 +183,7 @@ const CreateProduct = () => {
                         if (res?.success) {
                             const data = res?.results
 
-                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications , codeProduct  , isShowCodeProduct} = data[0]
+                            const { pdfFileName, pdfFile, title, description, subtitle, brand, specifications, feature, category, indexMainImage, descriptionSpecifications  , isShowCodeProduct} = data[0]
                             setTitleInput(title)
                             if (description) {
                                 setDescription(description)
@@ -192,7 +192,6 @@ const CreateProduct = () => {
                             setPreviewBase64(res.images)
                             setMainImage(indexMainImage)
                             setDescriptionSpecifications(descriptionSpecifications)
-                            setInputsCodeProduct(codeProduct)
                         
                             const newFeatureArray = feature.map((item, index) => {
                                 return {
@@ -256,9 +255,6 @@ const CreateProduct = () => {
             return
         }
 
-        console.log(inputsCodeProduct)
-
-
         const productData = inputs.map(input => ({
             title: input.title,
             values: input.values
@@ -269,12 +265,6 @@ const CreateProduct = () => {
             let { id, ...rest } = item;
             return rest;
         });
-
-        const codeProduct = inputsCodeProduct.map(input => ({
-            id: input.id,
-            code: input.code
-        }));
-        const jsonCodeProduct = JSON.stringify(codeProduct);
 
         const jsonSpecificationsData = JSON.stringify(newSpecifications);
 
@@ -294,10 +284,9 @@ const CreateProduct = () => {
 
 
         formData.append("category", categoryInputValue);
-        formData.append("codeProduct", jsonCodeProduct);
-
         
         formData.append("isShowCodeProduct", isShowCodeProduct);
+
 
 
         if (pdfFile) {
@@ -369,19 +358,6 @@ const CreateProduct = () => {
     };
 
     
-    const [inputsCodeProduct, setInputsCodeProduct] = useState([]);
-
-
-    const createCodeProduct = () => {
-        setInputsCodeProduct([
-            ...inputsCodeProduct,
-            {
-                id: `productCode${Date.now()}`,
-                code: "",
-   
-            }
-        ]);
-    };
 
     const { downloadPdf, deleteFile } = ApiActions()
 
@@ -662,26 +638,7 @@ const CreateProduct = () => {
                             data={data}
                         />
                     ))}
-                    <div className="mb-5 flex items-center gap-2">
-
-                        <Button onClick={createCodeProduct} endContent={<CircleFadingPlus />} className="bg-blue-600 text-white">
-                            افزودن کد محصول
-                        </Button>
-                        <div className="ltr">
-                        <Checkbox isSelected={isShowCodeProduct} onValueChange={setIsShowCodeProduct}>نمایش</Checkbox>
-
-                        </div>
-                    </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 my-6">
-                    {inputsCodeProduct.map((data, i) => (
-                        <ProductCode
-                            key={i}
-                            inputs={inputsCodeProduct}
-                            setInputs={setInputsCodeProduct}
-                            data={data}
-                        />
-                    ))}
-            </div>
+                   
                   
                     <div className="grid grid-cols-1 md:grid-cols-2">
                         <Textarea

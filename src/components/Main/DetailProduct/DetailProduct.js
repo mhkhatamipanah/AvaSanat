@@ -51,6 +51,7 @@ const DetailProduct = ({ dataServer, subId }) => {
   useEffect(() => {
     getData();
     setData(dataServer);
+    console.log(dataServer)
   }, []);
 
   const [resetRadio, setResetRadio] = useState(false); // تعریف متغیر resetRadio
@@ -233,6 +234,7 @@ const DetailProduct = ({ dataServer, subId }) => {
                       </div>
                     );
                   })}
+              
 
                 <div className="w-32 vazirLight m-4">
                   <Input
@@ -305,22 +307,7 @@ const DetailProduct = ({ dataServer, subId }) => {
                     </Button>
                   )}
                 </div>
-                {data.data.isShowCodeProduct && (
-                 <>
-                  <p className="text-base sm:text-lg vazirLight mb-2.5">کد فنی:&nbsp;</p>
-                  
-                  <div className="flex gap-2 flex-wrap">
-                    {data.data.codeProduct.map((e) => {
-                      return (
-                          <span key={e.id} className="px-3.5 py-2 text-sm bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transform transition-all duration-300 vazirMedium">
-                            {e.code}
-                          </span>
-                      );
-                    })}
-                  </div>
-                 </> 
-
-                )}
+            
               </div>
             </section>
           )}

@@ -67,12 +67,6 @@ var ProductSchema = new Schema({
   specifications: {
     type: Array
   },
-  codeProduct: {
-    type: Array
-  },
-  isShowCodeProduct: {
-    type: Boolean
-  },
   pdfFile: {
     type: Buffer,
     required: false

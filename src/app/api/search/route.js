@@ -40,8 +40,13 @@ export async function GET(req, res) {
         $or: [
           { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
           { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
-    { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
-
+          {
+            feature: {
+              $elemMatch: {
+                "values.productCode": { $regex: q, $options: "i" }, // جستجو در productCode داخل values
+              },
+            },
+          },
         ],
       }),
     };
@@ -90,8 +95,13 @@ export async function GET(req, res) {
       $or: [
         { title: { $regex: q, $options: "i" } }, // جستجو در عنوان
         { subtitle: { $regex: q, $options: "i" } }, // جستجو در زیرعنوان
-    { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
-
+        {
+          feature: {
+            $elemMatch: {
+              "values.productCode": { $regex: q, $options: "i" }, // جستجو در productCode داخل values
+            },
+          },
+        },
       ],
     }),
   };

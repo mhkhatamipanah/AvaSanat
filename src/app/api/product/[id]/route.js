@@ -153,8 +153,6 @@ export async function PUT(req, { params }) {
     const specifications = formData.get("specifications");
     const specificationsData = JSON.parse(specifications);
 
-    const codeProduct = formData.get("codeProduct");
-    const codeProductData = JSON.parse(codeProduct);
 
     const title = formData.get("title");
     const description = formData.get("description");
@@ -162,7 +160,6 @@ export async function PUT(req, { params }) {
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
 
-    const isShowCodeProduct = formData.get("isShowCodeProduct");
     
     const category = formData.get("category");
     const changeImage = formData.get("changeImage");
@@ -253,8 +250,6 @@ export async function PUT(req, { params }) {
           ...(pdfBuffer && { pdfFile: pdfBuffer }),
           ...(pdfFile?.name && { pdfFileName: fileNameWithoutExtension }),
 
-        ...(codeProductData&& { codeProduct: codeProductData }),
-        ...(isShowCodeProduct&& { isShowCodeProduct }),
 
         }
       );

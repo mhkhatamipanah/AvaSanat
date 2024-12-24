@@ -31,13 +31,17 @@ const RadioBTN = ({ title, data, onChange, reset }) => {
                 onChange={handleChange}
                 checked={radioValue === e.value}
               />
+
               <label
-                className={`px-2 py-1 bg-gray-200 text-sm sm:text-md rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all duration-150 ${
-                  radioValue === e.value ? "text-white bg-green-600 !border-none" : ""
-                }`}
+                className={``}
                 htmlFor={`${e.value}${i}`}
               >
-                {e.value}
+                {e?.productCode && <span className=" rounded-lg "> {`${e.productCode} :`} </span>}
+
+                <span className={`px-2 py-1 bg-gray-200 text-sm sm:text-md rounded-lg cursor-pointer hover:bg-green-700 hover:text-white  transition-all duration-150 ${radioValue === e.value ? "text-white bg-green-600 !border-none" : ""}`}>
+                  {e.value}
+                </span>
+
               </label>
             </div>
           );

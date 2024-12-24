@@ -19,23 +19,21 @@ export async function POST(req, res) {
     const specifications = formData.get("specifications");
     const specificationsData = JSON.parse(specifications);
 
-    const codeProduct = formData.get("codeProduct");
-    const codeProductData = JSON.parse(codeProduct);
-    
     const title = formData.get("title");
     const description = formData.get("description");
     const descriptionSpecifications = formData.get("descriptionSpecifications");
     const subtitle = formData.get("subtitle");
     const brand = formData.get("brand");
-    const isShowCodeProduct = formData.get("isShowCodeProduct");
-    
 
     const category = formData.get("category");
     const indexMainImage = formData.get("indexMainImage");
-    
+
     const pdfFile = formData.get("pdfFile");
-    
-    const fileNameWithoutExtension = pdfFile?.name.split(".").slice(0, -1).join(".");
+
+    const fileNameWithoutExtension = pdfFile?.name
+      .split(".")
+      .slice(0, -1)
+      .join(".");
     const objectId = new mongoose.Types.ObjectId(category);
     const oneCategory = await Category.findOne({ _id: category }, "-__v").catch(
       (err) => {
@@ -47,10 +45,9 @@ export async function POST(req, res) {
 
     let pdfBuffer;
     if (pdfFile) {
-       pdfBuffer = await handlePdfBuffer(pdfFile);
-       console.log(pdfBuffer)
+      pdfBuffer = await handlePdfBuffer(pdfFile);
+      console.log(pdfBuffer);
     }
-
 
     const files = [];
     for (let i = 0; i < 20; i++) {
@@ -82,7 +79,7 @@ export async function POST(req, res) {
         title,
         subtitle,
         ...(description && { description }),
-        
+
         brand,
         category: objectId,
         file: filesArray,
@@ -91,20 +88,22 @@ export async function POST(req, res) {
         feature: featureData,
         specifications: specificationsData,
         ...(indexMainImage && { indexMainImage }),
-        ...(pdfBuffer && { pdfFile:pdfBuffer }),
-        ...(pdfFile?.name && { pdfFileName:fileNameWithoutExtension }),
-        ...(descriptionSpecifications&& { descriptionSpecifications }),
-        ...(codeProductData&& { codeProduct: codeProductData }),
-        ...(isShowCodeProduct&& { isShowCodeProduct }),
-        
-        
+        ...(pdfBuffer && { pdfFile: pdfBuffer }),
+        ...(pdfFile?.name && { pdfFileName: fileNameWithoutExtension }),
+        ...(descriptionSpecifications && { descriptionSpecifications }),
       });
       if (product) {
-        return NextResponse.json({  success: true , message: "ساخته شد" }, { status: 201 });
+        return NextResponse.json(
+          { success: true, message: "ساخته شد" },
+          { status: 201 }
+        );
       }
     } catch (err) {
       console.log(err);
-      return NextResponse.json({  success: false , message: "ارور ناشناخته" }, { status: 500 });
+      return NextResponse.json(
+        { success: false, message: "ارور ناشناخته" },
+        { status: 500 }
+      );
     }
   } catch (err) {
     console.error(err); // خطاها را نمایش دهید
@@ -120,22 +119,29 @@ export async function GET(req, res) {
   const queryConditions = {
     ...(q && {
       $or: [
-        { title: { $regex: q, $options: "i" } }, 
+        { title: { $regex: q, $options: "i" } },
         { subtitle: { $regex: q, $options: "i" } },
-        { codeProduct: { $elemMatch: { code: { $regex: q, $options: "i" } } } },
+        {
+          feature: {
+            $elemMatch: {
+              "values.productCode": { $regex: q, $options: "i" }, // جستجو در productCode داخل values
+            },
+          },
+        },
       ],
     }),
   };
 
   const countFilterCategory = searchParams.get("countFilterCategory");
-  if(countFilterCategory){
-    let countData = await Product.countDocuments( { routeCategory: countFilterCategory }).catch((err) => {
+  if (countFilterCategory) {
+    let countData = await Product.countDocuments({
+      routeCategory: countFilterCategory,
+    }).catch((err) => {
       console.log(err);
     });
 
     return NextResponse.json({ countData });
   }
-
 
   const filterCategory = searchParams.get("filterCategory");
   if (filterCategory) {
@@ -143,7 +149,7 @@ export async function GET(req, res) {
       { routeCategory: filterCategory },
       "-__v"
     )
-    .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(perPage ? perPage : 20)
       .skip(perPage && page ? perPage * (page - 1) : 0)
       .catch((err) => {
@@ -175,13 +181,14 @@ export async function GET(req, res) {
       };
     });
 
-    const oneCategory = await Category.findOne({ route: filterCategory }, "title description").catch(
-      (err) => {
-        console.log(err);
-      }
-    );
-    
-    return NextResponse.json({ data: imageData ,category:oneCategory } , );
+    const oneCategory = await Category.findOne(
+      { route: filterCategory },
+      "title description"
+    ).catch((err) => {
+      console.log(err);
+    });
+
+    return NextResponse.json({ data: imageData, category: oneCategory });
   }
 
   // detailProduct
@@ -194,12 +201,13 @@ export async function GET(req, res) {
     ).catch((err) => {
       console.log(err);
     });
-    if(oneProduct){
+    if (oneProduct) {
       let bottomImageCount = 0; // شمارنده برای تصاویر فرعی
-      const imageData = oneProduct.file.map((e) => {
+      const imageData = oneProduct.file
+        .map((e) => {
           const thumbnailBuffer = Buffer.from(e.thumbnail, "base64");
           const thumbnailBase64 = thumbnailBuffer.toString("base64");
-  
+
           if (oneProduct.indexMainImage === e.index) {
             // اگر تصویر اصلی باشد
             return {
@@ -217,26 +225,25 @@ export async function GET(req, res) {
           return null; // برای مواردی که بیشتر از 3 تصویر فرعی وجود دارد، null برمی‌گردد
         })
         .filter((item) => item !== null); // حذف موارد null
-  
+
       const productObject = oneProduct.toObject();
       return NextResponse.json({ data: productObject, image: imageData });
-    }else{
+    } else {
       return NextResponse.json({ data: null, image: null });
     }
-   
   }
 
   const category = await Product.find(queryConditions, "-__v")
-  .sort({ createdAt: -1 })
+    .sort({ createdAt: -1 })
     .limit(perPage ? perPage : 20)
     .skip(perPage && page ? perPage * (page - 1) : 0)
     .catch((err) => {
       console.log(err);
     });
 
-    let countData = await Product.countDocuments(queryConditions).catch((err) => {
-      console.log(err);
-    });
+  let countData = await Product.countDocuments(queryConditions).catch((err) => {
+    console.log(err);
+  });
   const imageData = category.map((ducomentProduct) => {
     const imageTransfer = ducomentProduct.file.map((e) => {
       if (ducomentProduct.indexMainImage === e.index) {
@@ -261,14 +268,11 @@ export async function GET(req, res) {
       subtitle: ducomentProduct.subtitle,
       brand: ducomentProduct.brand,
       titleCategory: ducomentProduct.titleCategory,
-      
     };
   });
-  if(countData > 0){
-    return NextResponse.json({ data: imageData ,countData});
-
-  }else if (countData == 0){
-    return NextResponse.json({ data: [] ,countData: 0});
-
+  if (countData > 0) {
+    return NextResponse.json({ data: imageData, countData });
+  } else if (countData == 0) {
+    return NextResponse.json({ data: [], countData: 0 });
   }
 }
