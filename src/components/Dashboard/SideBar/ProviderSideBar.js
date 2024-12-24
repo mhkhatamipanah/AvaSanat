@@ -90,7 +90,7 @@ useEffect(() => {
     </Sidebar>
     <div className="w-full overflow-hidden bg-gray-50">
       <div className=" h-[64px] w-full bg-white  border-gray-200 border-b-[2px]"></div>
-      <div className="my-5 px-5  overflow-y-hidden">
+      <div className="my-3 px-3  overflow-y-hidden">
       {getChildren}
       </div>
     </div>

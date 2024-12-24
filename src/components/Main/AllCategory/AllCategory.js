@@ -37,7 +37,7 @@ const AllCategory = () => {
 
         <div className='flex flex-col items-center justify-center w-full my-5 sm:my-9 md:my-14 px-2.5 sm:px-4'>
           {data.length == 0 && LoadingState()}
-          <div className='max-w-[1500px] w-full grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 justify-center '>
+          <div className='max-w-[1500px] w-full grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 justify-center '>
             {data && data.data && data.data.length == 0 && <div className="h-full w-full flex justify-center items-center">
               <div className="flex flex-col gap-3 justify-center items-center mb-16">
                 <Image
