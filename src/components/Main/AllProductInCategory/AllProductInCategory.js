@@ -100,8 +100,7 @@ const AllProductInCategory = ({ id, dataServer }) => {
                     </Link>
                     <div className="p-3 sm:p-6 text-center pb-3">
                       {/* Title with Tooltip */}
-                      {/* Title with Tooltip */}
-                      <div className="relative group">
+                      <div className="relative group md:block max-md:hidden">
                         <p className="block text-right mb-2 vazirDemibold text-[13px] sm:text-md md:text-lg antialiased tracking-normal text-blue-gray-900 ellipsisOneLine">
                           {e.title}
                         </p>
@@ -112,8 +111,8 @@ const AllProductInCategory = ({ id, dataServer }) => {
                       </div>
 
                       {/* Subtitle with Tooltip */}
-                      <div className="relative group">
-                        <p className="block text-right vazirLight text-[11px] sm:text-sm tracking-normal text-blue-gray-900 text-gray-500 ellipsisTwoLine mb-1">
+                      <div className="relative group  md:block max-md:hidden">
+                        <p className="block text-right vazirLight text-[11px] sm:text-sm tracking-normal text-blue-gray-900 text-gray-500 ellipsisOneLine mb-1">
                           {e.subtitle}
                         </p>
                         {/* Tooltip with Animation */}
@@ -121,6 +120,12 @@ const AllProductInCategory = ({ id, dataServer }) => {
                           {e.subtitle}
                         </span>
                       </div>
+                      <p className="block text-right mb-2 vazirDemibold text-[13px] sm:text-md md:text-lg antialiased tracking-normal text-blue-gray-900 ellipsisOneLine md:!hidden max-md:block">
+                        {e.title}
+                      </p>
+                      <p className="block text-right vazirLight text-[11px] sm:text-sm tracking-normal text-blue-gray-900 text-gray-500 ellipsisOneLine mb-1 md:!hidden max-md:block">
+                        {e.subtitle}
+                      </p>
 
                       <Link
                         href={`/product/${categoryUrl}/${e.id}`}

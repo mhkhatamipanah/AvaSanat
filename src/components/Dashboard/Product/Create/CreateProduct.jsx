@@ -619,6 +619,7 @@ const CreateProduct = () => {
                         <FeatureValue
                             key={i}
                             inputs={inputs}
+                            values={data.values}
                             setInputs={setInputs}
                             data={data}
                             

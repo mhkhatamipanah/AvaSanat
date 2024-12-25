@@ -1,9 +1,9 @@
 import { Button, Input } from '@nextui-org/react';
 import { Trash } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const SpecificationsValue = ({ inputs, setInputs, data }) => {
-
+  
     // تابع برای حذف المان مشخصات
     const removeElement = (idToRemove) => {
         const updatedInputs = inputs.filter(input => input.id !== idToRemove);
