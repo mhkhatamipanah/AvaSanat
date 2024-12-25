@@ -95,7 +95,7 @@ const Page = () => {
   useEffect(() => {
     if (data && data.length > 0) {
       const allItems = data.map((e) => {
-        const [key, value] = Object.entries(e)[0]; 
+        const [key, value] = Object.entries(e)[0];
         return {
           [key]: {
             id: value.id,
@@ -127,7 +127,7 @@ const Page = () => {
         toast.error("لطفا عدد وارد کنید")
         return;
       }
-   
+
 
       const data = JSON.stringify({ phone, code, description, invoice: selectedItems })
       const res = await checkOtpInvoice(data);
@@ -147,7 +147,7 @@ const Page = () => {
 
     } else {
       // send Otp
-      if(selectedItems.length == 0 ){
+      if (selectedItems.length == 0) {
         toast.error("لطفا محصول انتخاب کنید")
         return;
       }
@@ -159,7 +159,7 @@ const Page = () => {
         toast.error("لطفا 11 رقم تلفن را وارد کنید")
         return
       }
-     
+
 
       const data = JSON.stringify({ phone })
 
@@ -180,7 +180,7 @@ const Page = () => {
   )
   const renderEmptyState = () => (
     <div className="h-full w-full flex justify-center items-center col-span-2">
-      <div className="flex flex-col gap-3 justify-center items-center max-[768px]:mb-5 mb-16">
+      <div className="flex flex-col gap-3 justify-center items-center max-[820px]:mb-5 mb-16">
         <Image
           width={500}
           height={500}
@@ -198,23 +198,23 @@ const Page = () => {
 
       {data && data.map((e, i) => {
         const [key, value] = Object.entries(e)[0];
-   
+
 
 
         return (
-          <div id={`invoiceContainer-${value.key}`} className='flex gap-2  border border-gray-300 rounded-xl p-2' key={key}>
+          <div id={`invoiceContainer-${value.key}`} className='flex gap-2  border border-gray-300 rounded-2xl p-2' key={key}>
             <Link className='aspect-square h-28 sm:h-32 md:h-36' href={`/product/${value.route}/${value.id}`}>
               <Image
                 width={500}
                 height={500}
-                className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400' src={value.image ? `data:image/webp;base64,${value.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
+                className='object-cover h-full rounded-md cursor-pointer hover:scale-105 transition-all duration-400 border border-solid' src={value.image ? `data:image/webp;base64,${value.image}` : "/images/placeholder.jpg"} alt="profile-picture" />
             </Link>
             <div className='flex justify-between w-full'>
               <div className='flex justify-evenly flex-col mr-1 w-full'>
-                <p className="vazirDemibold text-sm sm:text-md md:text-lg lg:text-xl ellipsisOneLine">
+                <p className="vazirDemibold text-sm sm:text-md mt-2 md:text-lg lg:text-xl ellipsisOneLine">
                   {value.title}
                 </p>
-                <p className="vazirMedium text-[12px] sm:text-sm md:text-md lg:text-lg  text-gray-700 ellipsisTwoLine">
+                <p className="vazirMedium text-[12px] sm:text-sm md:text-md lg:text-lg my-3 text-gray-700 ellipsisTwoLine">
                   {value.subtitle}
                 </p>
                 <div className='flex gap-2 flex-wrap'>
@@ -222,11 +222,19 @@ const Page = () => {
                   {value.feature &&
                     Object.entries(value.feature).map(([key, value], index) => {
                       return (
-                        <Chip key={`chip-${index}-${value.id}`} color="primary" variant="flat">
-                          {`${key}: ${value}`}
-                        </Chip>
-                      )
-                    })}
+                        <>
+                          <div className="inline-flex items-center px-2 py-0.5 text-sm font-medium text-blue-800 bg-blue-200 rounded-full border border-blue-300 overflow-hidden">
+                            <span className='whitespace-nowrap text-[11px] sm:text-[12px] md:text-[12.5px]'>{key}</span> :
+                          </div>
+                          <div className="inline-flex items-center px-2 py-0.5 text-sm font-medium text-sky-800 bg-sky-50 rounded-full border border-sky-100 overflow-hidden">
+                            <span className='whitespace-nowrap text-[11px] sm:text-[12px] md:text-[12.5px]'>{value}</span>
+                          </div>
+                        </>
+
+                      );
+                    })
+                  }
+
                 </div>
 
               </div>
@@ -243,12 +251,12 @@ const Page = () => {
   )
   return (
     <>
-      <div className='h-fit flex justify-center items-center xl:px-0 max-[768px]:px-3 px-6 vazirMedium mb-20'>
+      <div className='h-fit flex justify-center items-center xl:px-0 max-[820px]:px-3 px-6 vazirMedium mb-20'>
 
         <section className='w-full flex flex-col items-center mt-2 lg:mt-8 min-h-screen max-w-screen-2xl'>
           <div className='grid grid-cols-7 w-full sm:px-4 gap-3'>
-            <div className='max-[768px]:col-span-7 md:col-span-4 lg:col-span-5 w-full rounded-lg bg-white boxShadow max-[768px]:p-3 p-6'>
-              <div className='grid lg:grid-cols-2 gap-3'>
+            <div className='max-[820px]:col-span-7 md:col-span-4 lg:col-span-5 w-full rounded-lg bg-white boxShadow max-[820px]:p-3 p-6'>
+              <div className='grid xl:grid-cols-2 gap-3'>
                 {loading ? LoadingState() :
                   data?.length === 0 ? renderEmptyState() : renderInvoice()
                 }
@@ -259,7 +267,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className='max-[768px]:col-span-7 md:col-span-3 lg:col-span-2 w-full border border-gray-300 rounded-lg bg-white boxShadow h-min'>
+            <div className='max-[820px]:col-span-7 md:col-span-3 lg:col-span-2 w-full border border-gray-300 rounded-lg bg-white boxShadow h-min'>
               <div className='col-span-2 w-full flex flex-col gap-4 p-3'>
                 <div className='w-full p-2'>
                   <div className='flex items-center justify-between' >
